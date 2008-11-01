@@ -149,7 +149,7 @@ extern int main(int argc, char **argv)
         while (pause > clock()) {}
     }
 
-    sLog.outString( "%s (realm-daemon)", _FULLVERSION );
+    sLog.outString( "%s (WoW only realm-daemon for client 1.12.x)", _FULLVERSION );
     sLog.outString( "<Ctrl-C> to stop.\n" );
 
     /// realmd PID file creation

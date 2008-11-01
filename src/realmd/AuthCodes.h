@@ -66,8 +66,8 @@ enum LoginResult
 
 // we need to stick to 1 version or half of the stuff will work for someone
 // others will not and opposite
-// will only support WoW and WoW:TBC 2.4.3 client build 8606...
+// will only support WoW and WoW:TBC 2.4.3 client build 8606 for the moment and 1.12.x
 
-#define EXPECTED_MANGOS_CLIENT_BUILD        {8606, 0}
+#define EXPECTED_MANGOS_CLIENT_BUILD        {5195, 5875, 6005, 8606, 0}
 
 #endif

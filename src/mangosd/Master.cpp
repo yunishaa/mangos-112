@@ -195,7 +195,7 @@ Master::~Master()
 /// Main function
 int Master::Run()
 {
-    sLog.outString( "%s (world-daemon)", _FULLVERSION );
+    sLog.outString( "%s (world-daemon for client 1.12.x)", _FULLVERSION );
     sLog.outString( "<Ctrl-C> to stop.\n\n" );
 
     sLog.outTitle( "MM   MM         MM   MM  MMMMM   MMMM   MMMMM");

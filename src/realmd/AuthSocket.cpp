@@ -28,7 +28,8 @@
 #include "RealmList.h"
 #include "AuthSocket.h"
 #include "AuthCodes.h"
-#include <openssl/md5.h>
+#include <cwctype>                                          // needs for towupper
+#include "openssl/md5.h"
 #include "Auth/Sha1.h"
 //#include "Util.h" -- for commented utf8ToUpperOnlyLatin
 
@@ -126,16 +127,14 @@ typedef struct AUTH_LOGON_PROOF_S
     uint8   cmd;
     uint8   error;
     uint8   M2[20];
-    uint32  unk1;
     uint32  unk2;
-    uint16  unk3;
 } sAuthLogonProof_S;
 
 typedef struct XFER_INIT
 {
     uint8 cmd;                                              // XFER_INITIATE
     uint8 fileNameLen;                                      // strlen(fileName);
-    uint8 fileName[1];                                      // fileName[fileNameLen]
+    uint8 fileName[5];                                      // fileName[fileNameLen]
     uint64 file_size;                                       // file size (bytes)
     uint8 md5[MD5_DIGEST_LENGTH];                           // MD5
 }XFER_INIT;
@@ -249,13 +248,6 @@ void AuthSocket::OnRead()
 
         ///- Get the command out of it
         ibuf.SoftRead((char *)&_cmd, 1);                    // UQ1: No longer exists in new net code ???
-        //ibuf.Read((char *)&_cmd, 1);
-        /*char *command = (char *)malloc(1);
-
-        ibuf.Read(command, 1);
-
-        _cmd = (uint8)command;*/
-        //      assert(0);
         size_t i;
 
         ///- Circle through known commands and call the correct command handler
@@ -449,43 +441,43 @@ bool AuthSocket::_HandleLogonChallenge()
                     }
                     else
                     {
-                        ///- Get the password from the account table, upper it, and make the SRP6 calculation
-                        std::string rI = (*result)[0].GetCppString();
-                        _SetVSFields(rI);
+                        ///- If the user is already logged in, reject the logon attempt
+                        //if((*result)[4].GetUInt8() == 1)
+                        //{
+                        //    pkt << (uint8)REALM_AUTH_ACCOUNT_IN_USE;
+                        //}
+                        //else
+                        {
+                            ///- Get the password from the account table, upper it, and make the SRP6 calculation
+                            std::string password = (*result)[0].GetCppString();
+                            _SetVSFields(password);
 
-                        b.SetRand(19 * 8);
-                        BigNumber gmod=g.ModExp(b, N);
-                        B = ((v * 3) + gmod) % N;
+                            b.SetRand(19 * 8);
+                            BigNumber gmod=g.ModExp(b, N);
+                            B = ((v * 3) + gmod) % N;
+                            ASSERT(gmod.GetNumBytes() <= 32);
 
-                        ASSERT(gmod.GetNumBytes() <= 32);
+                            BigNumber unk3;
+                            unk3.SetRand(16*8);
 
-                        BigNumber unk3;
-                        unk3.SetRand(16*8);
+                            ///- Fill the response packet with the result
+                            pkt << (uint8)REALM_AUTH_SUCCESS;
+                            pkt.append(B.AsByteArray(), 32);
+                            pkt << (uint8)1;
+                            pkt.append(g.AsByteArray(), 1);
+                            pkt << (uint8)32;
+                            pkt.append(N.AsByteArray(), 32);
+                            pkt.append(s.AsByteArray(), s.GetNumBytes());
+                            pkt.append(unk3.AsByteArray(), 16);
+                            pkt << (uint8)0;                // Added in 1.12.x client branch
 
-                        ///- Fill the response packet with the result
-                        pkt << (uint8)REALM_AUTH_SUCCESS;
+                            std::string localeName;
+                            localeName.resize(4);
+                            for(int i = 0; i <4; ++i)
+                                localeName[i] = ch->country[4-i-1];
+                            _localization = GetLocaleByName(localeName);
 
-                        // B may be calculated < 32B so we force minnimal length to 32B
-                        pkt.append(B.AsByteArray(32), 32);   // 32 bytes
-                        pkt << (uint8)1;
-                        pkt.append(g.AsByteArray(), 1);
-                        pkt << (uint8)32;
-                        pkt.append(N.AsByteArray(), 32);
-                        pkt.append(s.AsByteArray(), s.GetNumBytes());   // 32 bytes
-                        pkt.append(unk3.AsByteArray(), 16);
-                        pkt << (uint8)0;                    // Added in 1.12.x client branch
-
-                        uint8 secLevel = (*result)[4].GetUInt8();
-                        _accountSecurityLevel = secLevel <= SEC_ADMINISTRATOR ? AccountTypes(secLevel) : SEC_ADMINISTRATOR;
-
-                        std::string localeName;
-                        localeName.resize(4);
-                        for(int i = 0; i <4; ++i)
-                            localeName[i] = ch->country[4-i-1];
-
-                        _localization = GetLocaleByName(localeName);
-
-                        sLog.outBasic("[AuthChallenge] account %s is using '%c%c%c%c' locale (%u)", _login.c_str (), ch->country[3],ch->country[2],ch->country[1],ch->country[0], _localization);
+                        }
                     }
                 }
                 delete result;
@@ -648,9 +640,7 @@ bool AuthSocket::_HandleLogonProof()
         memcpy(proof.M2, sha.GetDigest(), 20);
         proof.cmd = AUTH_LOGON_PROOF;
         proof.error = 0;
-        proof.unk1 = 0x00800000;
-        proof.unk2 = 0x00;
-        proof.unk3 = 0x00;
+        proof.unk2 = 0;
 
         SendBuf((char *)&proof, sizeof(proof));
 
@@ -659,47 +649,8 @@ bool AuthSocket::_HandleLogonProof()
     }
     else
     {
-        char data[4]={AUTH_LOGON_PROOF,REALM_AUTH_NO_MATCH,3,0};
+        char data[2]={AUTH_LOGON_PROOF,REALM_AUTH_NO_MATCH};
         SendBuf(data,sizeof(data));
-        sLog.outBasic("[AuthChallenge] account %s tried to login with wrong password!",_login.c_str ());
-
-        uint32 MaxWrongPassCount = sConfig.GetIntDefault("WrongPass.MaxCount", 0);
-        if(MaxWrongPassCount > 0)
-        {
-            //Increment number of failed logins by one and if it reaches the limit temporarily ban that account or IP
-            dbRealmServer.PExecute("UPDATE account SET failed_logins = failed_logins + 1 WHERE username = '%s'",_safelogin.c_str());
-
-            if(QueryResult *loginfail = dbRealmServer.PQuery("SELECT id, failed_logins FROM account WHERE username = '%s'", _safelogin.c_str()))
-            {
-                Field* fields = loginfail->Fetch();
-                uint32 failed_logins = fields[1].GetUInt32();
-
-                if( failed_logins >= MaxWrongPassCount )
-                {
-                    uint32 WrongPassBanTime = sConfig.GetIntDefault("WrongPass.BanTime", 600);
-                    bool WrongPassBanType = sConfig.GetBoolDefault("WrongPass.BanType", false);
-
-                    if(WrongPassBanType)
-                    {
-                        uint32 acc_id = fields[0].GetUInt32();
-                        dbRealmServer.PExecute("INSERT INTO account_banned VALUES ('%u',UNIX_TIMESTAMP(),UNIX_TIMESTAMP()+'%u','MaNGOS realmd','Failed login autoban',1)",
-                            acc_id, WrongPassBanTime);
-                        sLog.outBasic("[AuthChallenge] account %s got banned for '%u' seconds because it failed to authenticate '%u' times",
-                            _login.c_str(), WrongPassBanTime, failed_logins);
-                    }
-                    else
-                    {
-                        std::string current_ip = GetRemoteAddress();
-                        dbRealmServer.escape_string(current_ip);
-                        dbRealmServer.PExecute("INSERT INTO ip_banned VALUES ('%s',UNIX_TIMESTAMP(),UNIX_TIMESTAMP()+'%u','MaNGOS realmd','Failed login autoban')",
-                            current_ip.c_str(), WrongPassBanTime);
-                        sLog.outBasic("[AuthChallenge] IP %s got banned for '%u' seconds because account %s failed to authenticate '%u' times",
-                            current_ip.c_str(), WrongPassBanTime, _login.c_str(), failed_logins);
-                    }
-                }
-                delete loginfail;
-            }
-        }
     }
     return true;
 }
@@ -732,16 +683,22 @@ bool AuthSocket::_HandleRealmList()
     m_realmList.UpdateIfNeed();
 
     ///- Circle through realms in the RealmList and construct the return packet (including # of user characters in each realm)
+    uint8 AmountOfCharacters = 0;
+
     ByteBuffer pkt;
     pkt << (uint32) 0;
-    pkt << (uint16) m_realmList.size();
+    pkt << (uint8) m_realmList.size();
     RealmList::RealmMap::const_iterator i;
     for( i = m_realmList.begin(); i != m_realmList.end(); i++ )
     {
-        uint8 AmountOfCharacters;
-
+        pkt << (uint32) i->second.icon;
+        pkt << (uint8) i->second.color;
+        pkt << i->first;
+        pkt << i->second.address;
+        /// \todo Fix realm population
+        pkt << (float) 0.0;                                 //this is population 0.5 = low 1.0 = medium 2.0 high     (float)(maxplayers / players)*2
         // No SQL injection. id of realm is controlled by the database.
-        result = dbRealmServer.PQuery( "SELECT numchars FROM realmcharacters WHERE realmid = '%d' AND acctid='%u'",i->second.m_ID,id);
+        result = dbRealmServer.PQuery( "SELECT `numchars` FROM `realmcharacters` WHERE `realmid` = '%d' AND `acctid`='%u'",i->second.m_ID,id);
         if( result )
         {
             Field *fields = result->Fetch();
@@ -749,22 +706,15 @@ bool AuthSocket::_HandleRealmList()
             delete result;
         }
         else
+        {
             AmountOfCharacters = 0;
-
-        uint8 lock = (i->second.allowedSecurityLevel > _accountSecurityLevel) ? 1 : 0;
-
-        pkt << i->second.icon;                             // realm type
-        pkt << lock;                                       // if 1, then realm locked
-        pkt << i->second.color;                            // if 2, then realm is offline
-        pkt << i->first;
-        pkt << i->second.address;
-        pkt << i->second.populationLevel;
-        pkt << AmountOfCharacters;
-        pkt << i->second.timezone;                          // realm category
-        pkt << (uint8) 0x2C;                                // unk, may be realm number/id?
+        }
+        pkt << (uint8) AmountOfCharacters;
+        pkt << (uint8) i->second.timezone;
+        pkt << (uint8) 0;
     }
-    pkt << (uint8) 0x10;
-    pkt << (uint8) 0x00;
+    pkt << (uint8) 0x0;
+    pkt << (uint8) 0x2;
 
     ByteBuffer hdr;
     hdr << (uint8) REALM_LIST;
