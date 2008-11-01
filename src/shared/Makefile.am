@@ -23,13 +23,6 @@ SUBDIRS = Auth Config Database vmap
 AM_CPPFLAGS = $(MANGOS_INCLUDES) -I$(top_builddir)/src/shared -I$(srcdir) -I$(srcdir)/../../dep/include -I$(srcdir)/../framework -I$(srcdir)/../shared -I$(srcdir)/../../dep/include/g3dlite
 ## AM_CPPFLAGS += -I$(srcdir)/../game -I$(srcdir)/../realmd
 
-## Creating Precompiled headers
-pch_output = ${srcdir}/Common.h.gch
-pch_source = ${srcdir}/Common.h
-PCHFLAGS=-Winvalid-pch -Wno-deprecated $(CXXFLAGS)
-$(pch_output): $(pch_source)
-    $(CXX) $(PCHFLAGS) -c -o $@ $<
-
 ## Build MaNGOS shared library and its parts as convenience library.
 #  All libraries will be convenience libraries. Might be changed to shared
 #  later.
@@ -37,11 +30,11 @@ noinst_LIBRARIES = libmangosshared.a
 
 #  libmangosshared library will later be reused by ...
 libmangosshared_a_SOURCES = \
-	Common.h.gch \
 	Base.cpp \
 	Base.h \
 	ByteBuffer.h \
 	Common.cpp \
+	Common.h \
 	Errors.h \
 	Log.cpp \
 	Log.h \

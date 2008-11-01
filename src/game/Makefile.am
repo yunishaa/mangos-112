@@ -21,13 +21,6 @@
 ## CPP flags for includes, defines, etc.
 AM_CPPFLAGS = $(MANGOS_INCLUDES) -I$(top_builddir)/src/shared -I$(srcdir) -I$(srcdir)/../../dep/include -I$(srcdir)/../framework -I$(srcdir)/../shared -I$(srcdir)/../shared/vmap -I$(srcdir)/../realmd
 
-## Creating Precompiled headers
-pch_output = ${srcdir}/Common.h.gch
-pch_source = ${srcdir}/Common.h
-PCHFLAGS=-Winvalid-pch -Wno-deprecated $(CXXFLAGS)
-$(pch_output): $(pch_source)
-    $(CXX) $(PCHFLAGS) -c -o $@ $<
-
 ## Build MaNGOS game library as convenience library.
 #  All libraries will be convenience libraries. Might be changed to shared
 #  later.
@@ -35,7 +28,6 @@ noinst_LIBRARIES = libmangosgame.a
 
 #  libmangossgame library will later be reused by ...
 libmangosgame_a_SOURCES = \
-    Common.h.gch \
 	AccountMgr.cpp \
 	AccountMgr.h \
 	AddonHandler.cpp \
