@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "Common.h"
 #include "DBCStores.h"
 //#include "DataStore.h"
 #include "Policies/SingletonImp.h"
@@ -440,6 +441,7 @@ void LoadDBCStores(std::string dataPath)
     // check at up-to-date DBC files (2425 is last item extended cost added in 2.4.3)
     // check at up-to-date DBC files (71 is last char title added in 2.4.3)
     // check at up-to-date DBC files (1768 is last area added in 2.4.3)
+/*
     if( !sSpellStore.LookupEntry(53085)            || 
         !sSkillLineAbilityStore.LookupEntry(17514) || 
         !sMapStore.LookupEntry(598)                ||
@@ -451,7 +453,7 @@ void LoadDBCStores(std::string dataPath)
         sLog.outError("\nYou have _outdated_ DBC files. Please extract correct versions from current using client.");
         exit(1);
     }
-
+*/
     sLog.outString();
     sLog.outString( ">> Loaded %d data stores", DBCFilesCount );
     sLog.outString();

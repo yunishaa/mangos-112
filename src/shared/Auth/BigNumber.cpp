@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "Common.h"
 #include "Auth/BigNumber.h"
 #include <openssl/bn.h>
 #include <algorithm>

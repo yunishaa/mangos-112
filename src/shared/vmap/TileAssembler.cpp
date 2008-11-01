@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "Common.h"
 #include <G3D/Vector3.h>
 #include <G3D/Triangle.h>
 

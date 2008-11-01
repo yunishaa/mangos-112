@@ -17,6 +17,7 @@
     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#include "Common.h"
 #include "Base.h"
 
 Base::~Base ()
