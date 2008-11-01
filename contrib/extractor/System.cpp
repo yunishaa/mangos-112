@@ -251,31 +251,31 @@ int GetLocale()
     return -1;
 }
 
-void LoadMPQFiles(int const locale)
+void LoadMPQFiles()
 {
     char filename[512];
 
-    sprintf(filename,"%s/Data/%s/locale-%s.MPQ",input_path,langs[locale],langs[locale]);
-    new MPQArchive(filename);
+    //sprintf(filename,"%s/Data/%s/locale-%s.MPQ",input_path,langs[locale],langs[locale]);
+    //new MPQArchive(filename);
 
-    for(int i = 1; i < 5; ++i)
+    /*for(int i = 1; i < 5; ++i)
     {
         char ext[3] = "";
         if(i > 1)
             sprintf(ext, "-%i", i);
 
-        sprintf(filename,"%s/Data/%s/patch-%s%s.MPQ",input_path,langs[locale],langs[locale],ext);
+        sprintf(filename,"%s/Data/patch-%s%s.MPQ",input_path,langs[locale],langs[locale],ext);
         if(!FileExists(filename))
             break;
         new MPQArchive(filename);
-    }
+    }*/
 
     //need those files only if extract maps
     if(extract & EXTRACT_MAP)
     {
-        sprintf(filename,"%s/Data/common.MPQ",input_path);
+        sprintf(filename,"%s/Data/dbc.MPQ",input_path);
         new MPQArchive(filename);
-        sprintf(filename,"%s/Data/expansion.MPQ",input_path);
+        sprintf(filename,"%s/Data/terrain.MPQ",input_path);
         new MPQArchive(filename);
 
         for(int i = 1; i < 5; ++i)
@@ -299,11 +299,11 @@ int main(int argc, char * arg[])
 
     HandleArgs(argc, arg);
 
-    int const locale = GetLocale();
+    /*int const locale = GetLocale();
     if(locale < 0)
         return 1;
-
-    LoadMPQFiles(locale);
+*/
+    LoadMPQFiles();
 
     if(extract & EXTRACT_DBC)
         ExtractDBCFiles();
