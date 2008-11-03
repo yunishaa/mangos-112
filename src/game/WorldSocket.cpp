@@ -872,7 +872,7 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
     // NOTE ATM the socket is singlethreaded, have this in mind ...
     ACE_NEW_RETURN (m_Session, WorldSession (id, this, security, expansion, mutetime, locale), -1);
 
-    m_Crypt.SetKey (&K);
+    m_Crypt.SetKey(K.AsByteArray(), 40);
     m_Crypt.Init ();
 
     // In case needed sometime the second arg is in microseconds 1 000 000 = 1 sec
