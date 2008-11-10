@@ -16,13 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Opcodes.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
 #include "Player.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "Group.h"
 #include "ObjectAccessor.h"
 #include "BattleGround.h"
@@ -911,7 +910,7 @@ void Group::OfflineReadyCheck()
         Player *pl = objmgr.GetPlayer(citr->guid);
         if (!pl || !pl->GetSession())
         {
-            WorldPacket data(MSG_RAID_READY_CHECK_CONFIRM, 9);
+            WorldPacket data(MSG_RAID_READY_CHECK, 9);
             data << citr->guid;
             data << (uint8)0;
             BroadcastReadyCheck(&data);

@@ -93,7 +93,7 @@ class MANGOS_DLL_SPEC WorldSession
         void SetSecurity(uint32 security) { _security = security; }
         std::string& GetRemoteAddress() { return m_Address; }
         void SetPlayer(Player *plr) { _player = plr; }
-        uint8 Expansion() const { return m_expansion; }
+        uint8 Expansion() const { return false; /*m_expansion;*/ }
 
         /// Is the user engaged in a log out process?
         bool isLogingOut() const { return _logoutTime || m_playerLogout; }
@@ -358,7 +358,7 @@ class MANGOS_DLL_SPEC WorldSession
         void HandleGuildAcceptOpcode(WorldPacket& recvPacket);
         void HandleGuildDeclineOpcode(WorldPacket& recvPacket);
         void HandleGuildInfoOpcode(WorldPacket& recvPacket);
-        void HandleGuildEventLogOpcode(WorldPacket& recvPacket);
+//      void HandleGuildEventLogOpcode(WorldPacket& recvPacket);
         void HandleGuildRosterOpcode(WorldPacket& recvPacket);
         void HandleGuildPromoteOpcode(WorldPacket& recvPacket);
         void HandleGuildDemoteOpcode(WorldPacket& recvPacket);
@@ -468,7 +468,7 @@ class MANGOS_DLL_SPEC WorldSession
         void HandleUnlearnSkillOpcode(WorldPacket& recvPacket);
 
         void HandleQuestgiverStatusQueryOpcode(WorldPacket& recvPacket);
-        void HandleQuestgiverStatusQueryMultipleOpcode(WorldPacket& recvPacket);
+//      void HandleQuestgiverStatusQueryMultipleOpcode(WorldPacket& recvPacket);
         void HandleQuestgiverHelloOpcode(WorldPacket& recvPacket);
         void HandleQuestgiverAcceptQuestOpcode(WorldPacket& recvPacket);
         void HandleQuestgiverQuestQueryOpcode(WorldPacket& recvPacket);
@@ -510,7 +510,7 @@ class MANGOS_DLL_SPEC WorldSession
         void HandleChannelAnnounce(WorldPacket& recvPacket);
         void HandleChannelModerate(WorldPacket& recvPacket);
         void HandleChannelRosterQuery(WorldPacket& recvPacket);
-        void HandleChannelInfoQuery(WorldPacket& recvPacket);
+//      void HandleChannelInfoQuery(WorldPacket& recvPacket);
         void HandleChannelJoinNotify(WorldPacket& recvPacket);
 
         void HandleCompleteCinema(WorldPacket& recvPacket);
@@ -537,7 +537,7 @@ class MANGOS_DLL_SPEC WorldSession
         void HandleSetActionBar(WorldPacket& recv_data);
 
         void HandleChangePlayerNameOpcode(WorldPacket& recv_data);
-        void HandleDeclinedPlayerNameOpcode(WorldPacket& recv_data);
+//      void HandleDeclinedPlayerNameOpcode(WorldPacket& recv_data);
 
         void HandleTotemDestroy(WorldPacket& recv_data);
 
@@ -549,7 +549,7 @@ class MANGOS_DLL_SPEC WorldSession
         void HandleBattleGroundPlayerPortOpcode( WorldPacket &recv_data );
         void HandleBattleGroundListOpcode( WorldPacket &recv_data );
         void HandleBattleGroundLeaveOpcode( WorldPacket &recv_data );
-        void HandleBattleGroundArenaJoin( WorldPacket &recv_data );
+        //void HandleBattleGroundArenaJoin( WorldPacket &recv_data );
         void HandleBattleGroundReportAFK( WorldPacket &recv_data );
 
         void HandleWardenDataOpcode(WorldPacket& recv_data);
@@ -570,13 +570,13 @@ class MANGOS_DLL_SPEC WorldSession
         void HandleLfgSetCommentOpcode(WorldPacket& recv_data);
         void HandleNewUnknownOpcode(WorldPacket& recv_data);
         void HandleChooseTitleOpcode(WorldPacket& recv_data);
-        void HandleRealmStateRequestOpcode(WorldPacket& recv_data);
+//      void HandleRealmStateRequestOpcode(WorldPacket& recv_data);
         void HandleAllowMoveAckOpcode(WorldPacket& recv_data);
         void HandleWhoisOpcode(WorldPacket& recv_data);
         void HandleResetInstancesOpcode(WorldPacket& recv_data);
 
         // Arena Team
-        void HandleInspectArenaStatsOpcode(WorldPacket& recv_data);
+/*      void HandleInspectArenaStatsOpcode(WorldPacket& recv_data);
         void HandleArenaTeamQueryOpcode(WorldPacket& recv_data);
         void HandleArenaTeamRosterOpcode(WorldPacket& recv_data);
         void HandleArenaTeamAddMemberOpcode(WorldPacket& recv_data);
@@ -586,12 +586,12 @@ class MANGOS_DLL_SPEC WorldSession
         void HandleArenaTeamRemoveFromTeamOpcode(WorldPacket& recv_data);
         void HandleArenaTeamDisbandOpcode(WorldPacket& recv_data);
         void HandleArenaTeamPromoteToCaptainOpcode(WorldPacket& recv_data);
-
+*/
         void HandleAreaSpiritHealerQueryOpcode(WorldPacket& recv_data);
         void HandleAreaSpiritHealerQueueOpcode(WorldPacket& recv_data);
         void HandleDismountOpcode(WorldPacket& recv_data);
         void HandleSelfResOpcode(WorldPacket& recv_data);
-        void HandleReportSpamOpcode(WorldPacket& recv_data);
+//      void HandleReportSpamOpcode(WorldPacket& recv_data);
         void HandleRequestPetInfoOpcode(WorldPacket& recv_data);
 
         // Socket gem
@@ -605,7 +605,7 @@ class MANGOS_DLL_SPEC WorldSession
         void HandleSetTaxiBenchmarkOpcode(WorldPacket& recv_data);
 
         // Guild Bank
-        void HandleGuildBankGetRights(WorldPacket& recv_data);
+/*      void HandleGuildBankGetRights(WorldPacket& recv_data);
         void HandleGuildBankGetMoneyAmount(WorldPacket& recv_data);
         void HandleGuildBankQuery(WorldPacket& recv_data);
         void HandleGuildBankTabColon(WorldPacket& recv_data);
@@ -616,7 +616,7 @@ class MANGOS_DLL_SPEC WorldSession
         void HandleGuildBankModifyTab(WorldPacket& recv_data);
         void HandleGuildBankBuyTab(WorldPacket& recv_data);
         void HandleGuildBankTabText(WorldPacket& recv_data);
-        void HandleGuildBankSetTabText(WorldPacket& recv_data);
+        void HandleGuildBankSetTabText(WorldPacket& recv_data);*/
     private:
         // private trade methods
         void moveItems(Item* myItems[], Item* hisItems[]);

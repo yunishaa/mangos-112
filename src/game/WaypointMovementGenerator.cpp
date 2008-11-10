@@ -30,10 +30,10 @@ alter table creature_movement add `wpguid` int(11) default '0';
 
 */
 
+#include "ObjectMgr.h"
 #include <ctime>
 
 #include "WaypointMovementGenerator.h"
-#include "ObjectMgr.h"
 #include "Creature.h"
 #include "DestinationHolderImp.h"
 #include "CreatureAI.h"

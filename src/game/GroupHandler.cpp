@@ -16,14 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Database/DatabaseEnv.h"
 #include "Opcodes.h"
 #include "Log.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "Player.h"
 #include "Group.h"
 #include "ObjectAccessor.h"
@@ -626,7 +625,7 @@ void WorldSession::HandleRaidReadyCheckOpcode( WorldPacket & recv_data )
         recv_data >> state;
 
         // everything's fine, do it
-        WorldPacket data(MSG_RAID_READY_CHECK_CONFIRM, 9);
+        WorldPacket data(MSG_RAID_READY_CHECK, 9);
         data << GetPlayer()->GetGUID();
         data << state;
         group->BroadcastReadyCheck(&data);

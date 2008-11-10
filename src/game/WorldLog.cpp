@@ -20,6 +20,7 @@
     \ingroup u2w
 */
 
+#include "Common.h"
 #include "WorldLog.h"
 #include "Policies/SingletonImp.h"
 #include "Config/ConfigEnv.h"

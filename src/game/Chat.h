@@ -132,7 +132,7 @@ class ChatHandler
         bool HandleModifyTalentCommand (const char* args);
         bool HandleModifyHonorCommand (const char* args);
         bool HandleModifyRepCommand(const char* args);
-        bool HandleModifyArenaCommand(const char* args);
+//      bool HandleModifyArenaCommand(const char* args);
 
         bool HandleReloadCommand(const char* args);
         bool HandleReloadAllCommand(const char* args);
@@ -356,7 +356,7 @@ class ChatHandler
         bool HandleWpShowCommand(const char* args);
         bool HandleWpExportCommand(const char* args);
         bool HandleWpImportCommand(const char* args);
-        bool HandleFlyModeCommand(const char* args);
+//      bool HandleFlyModeCommand(const char* args);
         bool HandleSendOpcodeCommand(const char* args);
         bool HandleSellErrorCommand(const char* args);
         bool HandleBuyErrorCommand(const char* args);

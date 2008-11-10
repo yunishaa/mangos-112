@@ -16,13 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "ObjectMgr.h"
 #include "Database/DatabaseEnv.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
 #include "MapManager.h"
 #include "Player.h"
 #include "Opcodes.h"
-#include "ObjectMgr.h"
 #include "Guild.h"
 #include "Chat.h"
 #include "SocialMgr.h"
@@ -191,7 +191,7 @@ bool Guild::LoadGuildFromDB(uint32 GuildId)
     else
         purchased_tabs = 0;
 
-    LoadBankRightsFromDB(GuildId);                          // Must be after LoadRanksFromDB because it populates rank struct
+//  LoadBankRightsFromDB(GuildId);                          // Must be after LoadRanksFromDB because it populates rank struct
 
     //                                        0        1     2           3            4            5           6
     result = CharacterDatabase.PQuery("SELECT guildid, name, leaderguid, EmblemStyle, EmblemColor, BorderStyle, BorderColor,"
@@ -238,8 +238,8 @@ bool Guild::LoadGuildFromDB(uint32 GuildId)
     m_bankloaded = false;
     m_eventlogloaded = false;
     m_onlinemembers = 0;
-    RenumBankLogs();
-    RenumGuildEventlog();
+//  RenumBankLogs();
+//  RenumGuildEventlog();
     return true;
 }
 
@@ -590,12 +590,12 @@ void Guild::CreateRank(std::string name_,uint32 rights)
         return;
 
     AddRank(name_,rights,0);
-
+/*
     for (int i = 0; i < purchased_tabs; ++i)
     {
         CreateBankRightForTab(m_ranks.size()-1, uint8(i));
     }
-
+*/
     // guild_rank.rid always store rank+1 value
 
     // name now can be used for encoding to DB
@@ -778,21 +778,21 @@ void Guild::UpdateLogoutTime(uint64 guid)
         return;
 
     itr->second.logout_time = time(NULL);
-
+/*
     if (m_onlinemembers > 0)
         --m_onlinemembers;
     else
     {
         UnloadGuildBank();
         UnloadGuildEventlog();
-    }
+    }*/
 }
 
 // *************************************************
 // Guild Eventlog part
 // *************************************************
 // Display guild eventlog
-void Guild::DisplayGuildEventlog(WorldSession *session)
+/*void Guild::DisplayGuildEventlog(WorldSession *session)
 {
     // Load guild eventlog, if not already done
     if (!m_eventlogloaded)
@@ -820,7 +820,7 @@ void Guild::DisplayGuildEventlog(WorldSession *session)
     session->SendPacket(&data);
     sLog.outDebug("WORLD: Sent (MSG_GUILD_EVENT_LOG_QUERY)");
 }
-
+*/
 // Load guild eventlog from DB
 void Guild::LoadGuildEventLogFromDB()
 {
@@ -918,6 +918,7 @@ void Guild::LogGuildEvent(uint8 EventType, uint32 PlayerGuid1, uint32 PlayerGuid
 // Guild Bank part
 // *************************************************
 // Bank content related
+/*
 void Guild::DisplayGuildBankContent(WorldSession *session, uint8 TabId)
 {
     WorldPacket data(SMSG_GUILD_BANK_LIST,1200);
@@ -1058,10 +1059,10 @@ Item* Guild::GetItem(uint8 TabId, uint8 SlotId)
         return NULL;
     return m_TabListMap[TabId]->Slots[SlotId];
 }
-
+*/
 // *************************************************
 // Tab related
-
+/*
 void Guild::DisplayGuildBankTabsInfo(WorldSession *session)
 {
     // Time to load bank if not already done
@@ -1321,7 +1322,7 @@ bool Guild::MemberItemWithdraw(uint8 TabId, uint32 LowGuid)
     }
     return true;
 }
-
+/*
 bool Guild::IsMemberHaveRights(uint32 LowGuid, uint8 TabId, uint32 rights) const
 {
     MemberList::const_iterator itr = members.find(LowGuid);
@@ -1561,7 +1562,7 @@ void Guild::UnloadGuildBankEventLog()
         }
     }
 }
-
+/*
 void Guild::DisplayGuildBankLogs(WorldSession *session, uint8 TabId)
 {
     if (TabId > GUILD_BANK_MAX_TABS)
@@ -1959,4 +1960,4 @@ bool GuildItemPosCount::isContainedIn(GuildItemPosCountVec const &vec) const
             return true;
 
     return false;
-}
+}*/

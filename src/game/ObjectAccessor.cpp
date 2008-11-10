@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "ObjectAccessor.h"
 #include "ObjectMgr.h"
+#include "ObjectAccessor.h"
 #include "Policies/SingletonImp.h"
 #include "Player.h"
 #include "Creature.h"

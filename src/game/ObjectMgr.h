@@ -16,8 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _OBJECTMGR_H
-#define _OBJECTMGR_H
+#ifndef MANGOSSERVER_OBJECTMGR_H
+#define MANGOSSERVER_OBJECTMGR_H
+
+#include "Common.h"
 
 #include "Log.h"
 #include "Object.h"
@@ -303,12 +305,12 @@ class ObjectMgr
         std::string GetGuildNameById(const uint32 GuildId) const;
         void AddGuild(Guild* guild) { mGuildSet.insert( guild ); }
         void RemoveGuild(Guild* guild) { mGuildSet.erase( guild ); }
-
+/*
         ArenaTeam* GetArenaTeamById(const uint32 ArenaTeamId) const;
         ArenaTeam* GetArenaTeamByName(std::string ArenaTeamName) const;
         ArenaTeam* GetArenaTeamByCapitan(uint64 const& guid) const;
         void AddArenaTeam(ArenaTeam* arenateam) { mArenaTeamSet.insert( arenateam ); }
-        void RemoveArenaTeam(ArenaTeam* arenateam) { mArenaTeamSet.erase( arenateam ); }
+        void RemoveArenaTeam(ArenaTeam* arenateam) { mArenaTeamSet.erase( arenateam ); }*/
 
         static CreatureInfo const *GetCreatureTemplate( uint32 id );
         CreatureModelInfo const *GetCreatureModelInfo( uint32 modelid );
@@ -470,7 +472,7 @@ class ObjectMgr
         }
 
         void LoadGuilds();
-        void LoadArenaTeams();
+//      void LoadArenaTeams();
         void LoadGroups();
         void LoadQuests();
         void LoadQuestRelations()

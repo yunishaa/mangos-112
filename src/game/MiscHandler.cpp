@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Language.h"
 #include "Database/DatabaseEnv.h"
 #include "WorldPacket.h"
@@ -24,7 +24,6 @@
 #include "Log.h"
 #include "Player.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "WorldSession.h"
 #include "Auth/BigNumber.h"
 #include "Auth/Sha1.h"
@@ -1291,7 +1290,7 @@ void WorldSession::HandleInspectOpcode(WorldPacket& recv_data)
 
     uint32 talent_points = 0x3D;
     uint32 guid_size = plr->GetPackGUID().size();
-    WorldPacket data(SMSG_INSPECT_TALENT, 4+talent_points);
+    WorldPacket data(SMSG_INSPECT, 4+talent_points);
     data.append(plr->GetPackGUID());
     data << uint32(talent_points);
 
@@ -1485,7 +1484,7 @@ void WorldSession::HandleWhoisOpcode(WorldPacket& recv_data)
 
     sLog.outDebug("Received whois command from player %s for character %s", GetPlayer()->GetName(), charname.c_str());
 }
-
+/*
 void WorldSession::HandleReportSpamOpcode( WorldPacket & recv_data )
 {
     CHECK_PACKET_SIZE(recv_data, 1+8);
@@ -1548,7 +1547,7 @@ void WorldSession::HandleRealmStateRequestOpcode( WorldPacket & recv_data )
     SendPacket(&data);
     //sLog.outDebug("response sent %u", unk);
 }
-
+*/
 void WorldSession::HandleFarSightOpcode( WorldPacket & recv_data )
 {
     CHECK_PACKET_SIZE(recv_data, 1);

@@ -16,12 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "ObjectMgr.h"
+#include "BattleGround.h"
+#include "Common.h"
 #include "Object.h"
 #include "Player.h"
-#include "BattleGround.h"
 #include "BattleGroundNA.h"
 #include "Creature.h"
-#include "ObjectMgr.h"
 #include "MapManager.h"
 #include "Language.h"
 

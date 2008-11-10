@@ -16,13 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Log.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
 #include "Opcodes.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "Player.h"
 #include "GossipDef.h"
 #include "QuestDef.h"
@@ -599,8 +598,8 @@ uint32 WorldSession::getDialogStatus(Player *pPlayer, Object* questgiver, uint32
 
     return result;
 }
-
-void WorldSession::HandleQuestgiverStatusQueryMultipleOpcode(WorldPacket& /*recvPacket*/)
+/*
+void WorldSession::HandleQuestgiverStatusQueryMultipleOpcode(WorldPacket&)
 {
     sLog.outDebug("WORLD: Received CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY");
 
@@ -648,4 +647,4 @@ void WorldSession::HandleQuestgiverStatusQueryMultipleOpcode(WorldPacket& /*recv
 
     data.put<uint32>(0, count);                             // write real count
     SendPacket(&data);
-}
+}*/

@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Database/DatabaseEnv.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
@@ -24,7 +24,6 @@
 #include "Log.h"
 #include "UpdateMask.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "SpellMgr.h"
 #include "Player.h"
 #include "Unit.h"
@@ -251,7 +250,7 @@ pAuraHandler AuraHandler[TOTAL_AURAS]=
     &Aura::HandleUnused,                                    //198 SPELL_AURA_MOD_ALL_WEAPON_SKILLS
     &Aura::HandleNoImmediateEffect,                         //199 SPELL_AURA_MOD_INCREASES_SPELL_PCT_TO_HIT  implemented in Unit::MagicSpellHitResult
     &Aura::HandleNoImmediateEffect,                         //200 SPELL_AURA_MOD_XP_PCT implemented in Player::GiveXP
-    &Aura::HandleAuraAllowFlight,                           //201 SPELL_AURA_FLY                             this aura enable flight mode...
+//  &Aura::HandleAuraAllowFlight,                           //201 SPELL_AURA_FLY                             this aura enable flight mode...
     &Aura::HandleNoImmediateEffect,                         //202 SPELL_AURA_CANNOT_BE_DODGED                implemented in Unit::RollPhysicalOutcomeAgainst
     &Aura::HandleNoImmediateEffect,                         //203 SPELL_AURA_MOD_ATTACKER_MELEE_CRIT_DAMAGE  implemented in Unit::DoAttackDamage
     &Aura::HandleNoImmediateEffect,                         //204 SPELL_AURA_MOD_ATTACKER_RANGED_CRIT_DAMAGE implemented in Unit::DoAttackDamage
@@ -819,14 +818,14 @@ void Aura::UpdateAuraDuration()
         WorldPacket data(SMSG_UPDATE_AURA_DURATION, 5);
         data << (uint8)m_auraSlot << (uint32)m_duration;
         ((Player*)m_target)->SendDirectMessage(&data);
-
+/*
         data.Initialize(SMSG_SET_EXTRA_AURA_INFO, (8+1+4+4+4));
         data.append(m_target->GetPackGUID());
         data << uint8(m_auraSlot);
         data << uint32(GetId());
         data << uint32(GetAuraMaxDuration());
         data << uint32(GetAuraDuration());
-        ((Player*)m_target)->SendDirectMessage(&data);
+        ((Player*)m_target)->SendDirectMessage(&data);*/
     }
 
     // not send in case player loading (will not work anyway until player not added to map), sent in visibility change code
@@ -840,14 +839,14 @@ void Aura::UpdateAuraDuration()
 }
 
 void Aura::SendAuraDurationForCaster(Player* caster)
-{
+{/*
     WorldPacket data(SMSG_SET_EXTRA_AURA_INFO_NEED_UPDATE, (8+1+4+4+4));
     data.append(m_target->GetPackGUID());
     data << uint8(m_auraSlot);
     data << uint32(GetId());
     data << uint32(GetAuraMaxDuration());                   // full
     data << uint32(GetAuraDuration());                      // remain
-    caster->GetSession()->SendPacket(&data);
+    caster->GetSession()->SendPacket(&data);*/
 }
 
 void Aura::_AddAura()
@@ -3120,7 +3119,7 @@ void Aura::HandleFeignDeath(bool apply, bool Real)
                                                             // blizz like 2.0.x
         m_target->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_UNKNOWN6);
                                                             // blizz like 2.0.x
-        m_target->SetFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);
+//      m_target->SetFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);
                                                             // blizz like 2.0.x
         m_target->SetFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
 
@@ -3144,7 +3143,7 @@ void Aura::HandleFeignDeath(bool apply, bool Real)
                                                             // blizz like 2.0.x
         m_target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_UNKNOWN6);
                                                             // blizz like 2.0.x
-        m_target->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);
+//      m_target->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);
                                                             // blizz like 2.0.x
         m_target->RemoveFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
 
@@ -3630,7 +3629,7 @@ void Aura::HandleAuraModIncreaseMountedSpeed(bool apply, bool Real)
 }
 
 void Aura::HandleAuraModIncreaseFlightSpeed(bool apply, bool Real)
-{
+{/*
     // all applied/removed only at real aura add/remove
     if(!Real)
         return;
@@ -3656,7 +3655,7 @@ void Aura::HandleAuraModIncreaseFlightSpeed(bool apply, bool Real)
             m_target->SetUInt32Value(UNIT_FIELD_MOUNTDISPLAYID,16314);
     }
 
-    m_target->UpdateSpeed(MOVE_FLY, true);
+    m_target->UpdateSpeed(MOVE_FLY, true);*/
 }
 
 void Aura::HandleAuraModIncreaseSwimSpeed(bool apply, bool Real)
@@ -3809,13 +3808,13 @@ void Aura::HandleAuraModEffectImmunity(bool apply, bool Real)
                         case BATTLEGROUND_AB:
                         {
                             break;
-                        }
+                        }/*
                         case BATTLEGROUND_EY:
                         {
                            if(GetId() == 34976)
                                 bg->EventPlayerDroppedFlag(((Player*)m_target));
                             break;
-                        }
+                        }*/
                     }
                 }
             }
@@ -4618,10 +4617,10 @@ void Aura::HandleModManaRegen(bool apply, bool Real)
 
 void Aura::HandleComprehendLanguage(bool apply, bool Real)
 {
-    if(apply)
+/*  if(apply)
         m_target->SetFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_COMPREHEND_LANG);
     else
-        m_target->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_COMPREHEND_LANG);
+        m_target->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_COMPREHEND_LANG);*/
 }
 
 void Aura::HandleAuraModIncreaseHealth(bool apply, bool Real)
@@ -5320,7 +5319,7 @@ void Aura::HandleAuraGhost(bool apply, bool Real)
         m_target->RemoveFlag(PLAYER_FLAGS, PLAYER_FLAGS_GHOST);
     }
 }
-
+/*
 void Aura::HandleAuraAllowFlight(bool apply, bool Real)
 {
     // all applied/removed only at real aura add/remove
@@ -5337,7 +5336,7 @@ void Aura::HandleAuraAllowFlight(bool apply, bool Real)
     data << uint32(0);                                      // unk
     m_target->SendMessageToSet(&data, true);
 }
-
+*/
 void Aura::HandleModRating(bool apply, bool Real)
 {
     // spells required only Real aura add/remove
@@ -5356,10 +5355,10 @@ void Aura::HandleForceMoveForward(bool apply, bool Real)
 {
     if(!Real || m_target->GetTypeId() != TYPEID_PLAYER)
         return;
-    if(apply)
+/*  if(apply)
         m_target->SetFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FORCE_MOVE);
     else
-        m_target->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FORCE_MOVE);
+        m_target->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FORCE_MOVE);*/
 }
 
 void Aura::HandleAuraModExpertise(bool apply, bool Real)

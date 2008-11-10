@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "SharedDefines.h"
 #include "Database/DatabaseEnv.h"
 #include "WorldPacket.h"
@@ -25,7 +25,6 @@
 #include "Log.h"
 #include "UpdateMask.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "SpellMgr.h"
 #include "Player.h"
 #include "SkillExtraItems.h"
@@ -46,7 +45,7 @@
 #include "Totem.h"
 #include "CreatureAI.h"
 #include "BattleGround.h"
-#include "BattleGroundEY.h"
+//#include "BattleGroundEY.h"
 #include "BattleGroundWS.h"
 #include "VMapFactory.h"
 #include "Language.h"
@@ -835,7 +834,7 @@ void Spell::EffectDummy(uint32 i)
                     DEBUG_LOG("AddObject at SpellEfects.cpp EffectDummy\n");
                     map->Add(pGameObj);
 
-                    WorldPacket data(SMSG_GAMEOBJECT_SPAWN_ANIM_OBSOLETE, 8);
+                    WorldPacket data(SMSG_GAMEOBJECT_SPAWN_ANIM, 8);
                     data << uint64(pGameObj->GetGUID());
                     m_caster->SendMessageToSet(&data,true);
 
@@ -2850,15 +2849,15 @@ void Spell::EffectOpenLock(uint32 /*i*/)
             }
         }
         else if (goInfo->type == GAMEOBJECT_TYPE_FLAGSTAND)
-        {
+        {/*
             //isAllowUseBattleGroundObject() already called in CanCast()
             // in battleground check
             if(BattleGround *bg = player->GetBattleGround())
             {
                 if(bg->GetTypeID() == BATTLEGROUND_EY)
-                    bg->EventPlayerClickedOnFlag(player, gameObjTarget);
+                    bg->EventPlayerClickedOnFlag(player, gameObjTarget);*/
                 return;
-            }
+          //}
         }
         lockId = gameObjTarget->GetLockId();
         guid = gameObjTarget->GetGUID();
@@ -4504,7 +4503,7 @@ void Spell::EffectSummonObjectWild(uint32 i)
             }
         }
     }
-
+/*
     if(pGameObj->GetMapId() == 566 && pGameObj->GetGoType() == GAMEOBJECT_TYPE_FLAGDROP)  //EY
     {
         if(m_caster->GetTypeId() == TYPEID_PLAYER)
@@ -4516,7 +4515,7 @@ void Spell::EffectSummonObjectWild(uint32 i)
             }
         }
     }
-
+*/
     if(uint32 linkedEntry = pGameObj->GetLinkedGameObjectEntry())
     {
         GameObject* linkedGO = new GameObject;
@@ -5163,7 +5162,7 @@ void Spell::EffectSummonTotem(uint32 i)
     pTotem->ApplySpellImmune(m_spellInfo->Id,IMMUNITY_STATE,SPELL_AURA_TRANSFORM,true);
 
     pTotem->Summon(m_caster);
-
+/*
     if(slot < MAX_TOTEM && m_caster->GetTypeId() == TYPEID_PLAYER)
     {
         WorldPacket data(SMSG_TOTEM_CREATED, 1+8+4+4);
@@ -5172,7 +5171,7 @@ void Spell::EffectSummonTotem(uint32 i)
         data << uint32(duration);
         data << uint32(m_spellInfo->Id);
         ((Player*)m_caster)->SendDirectMessage(&data);
-    }
+    }*/
 }
 
 void Spell::EffectEnchantHeldItem(uint32 i)
@@ -5346,7 +5345,7 @@ void Spell::EffectSummonObject(uint32 i)
     m_caster->AddGameObject(pGameObj);
 
     map->Add(pGameObj);
-    WorldPacket data(SMSG_GAMEOBJECT_SPAWN_ANIM_OBSOLETE, 8);
+    WorldPacket data(SMSG_GAMEOBJECT_SPAWN_ANIM, 8);
     data << pGameObj->GetGUID();
     m_caster->SendMessageToSet(&data,true);
 
@@ -5990,7 +5989,7 @@ void Spell::EffectTransmitted(uint32 effIndex)
 
     cMap->Add(pGameObj);
 
-    WorldPacket data(SMSG_GAMEOBJECT_SPAWN_ANIM_OBSOLETE, 8);
+    WorldPacket data(SMSG_GAMEOBJECT_SPAWN_ANIM, 8);
     data << uint64(pGameObj->GetGUID());
     m_caster->SendMessageToSet(&data,true);
 

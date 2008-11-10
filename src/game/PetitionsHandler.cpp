@@ -16,16 +16,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Language.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "Log.h"
 #include "Opcodes.h"
 #include "Guild.h"
-#include "ArenaTeam.h"
+//#include "ArenaTeam.h"
 #include "MapManager.h"
 #include "GossipDef.h"
 #include "SocialMgr.h"
@@ -105,7 +104,7 @@ void WorldSession::HandlePetitionBuyOpcode(WorldPacket & recv_data)
         charterid = GUILD_CHARTER;
         cost = GUILD_CHARTER_COST;
         type = 9;
-    }
+    }/*
     else
     {
         // TODO: find correct opcode
@@ -144,7 +143,7 @@ void WorldSession::HandlePetitionBuyOpcode(WorldPacket & recv_data)
                 sLog.outDebug("unknown selection at buy petition: %u", unk10);
                 return;
         }
-    }
+    }*/
 
     if(type == 9)
     {
@@ -163,7 +162,7 @@ void WorldSession::HandlePetitionBuyOpcode(WorldPacket & recv_data)
             SendGuildCommandResult(GUILD_CREATE_S, name, GUILD_NAME_INVALID);
             return;
         }
-    }
+    }/*
     else
     {
         if(objmgr.GetArenaTeamByName(name))
@@ -181,7 +180,7 @@ void WorldSession::HandlePetitionBuyOpcode(WorldPacket & recv_data)
             SendArenaTeamCommandResult(ERR_ARENA_TEAM_CREATE_S, name, "", ERR_ARENA_TEAM_NAME_INVALID);
             return;
         }
-    }
+    }*/
 
     ItemPrototype const *pProto = objmgr.GetItemPrototype(charterid);
     if(!pProto)
@@ -439,7 +438,7 @@ void WorldSession::HandlePetitionRenameOpcode(WorldPacket & recv_data)
             SendGuildCommandResult(GUILD_CREATE_S, newname, GUILD_NAME_INVALID);
             return;
         }
-    }
+    }/*
     else
     {
         if(objmgr.GetArenaTeamByName(newname))
@@ -457,7 +456,7 @@ void WorldSession::HandlePetitionRenameOpcode(WorldPacket & recv_data)
             SendArenaTeamCommandResult(ERR_ARENA_TEAM_CREATE_S, newname, "", ERR_ARENA_TEAM_NAME_INVALID);
             return;
         }
-    }
+    }*/
 
     std::string db_newname = newname;
     CharacterDatabase.escape_string(db_newname);
@@ -712,7 +711,7 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket & recv_data)
             _player->GetSession()->SendPacket(&data);
             return;
         }
-    }
+    }/*
     else
     {
         uint8 slot = ArenaTeam::GetSlotByType(type);
@@ -728,7 +727,7 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket & recv_data)
             return;
         }
     }
-
+*/
     if(_player->GetGUIDLow() != ownerguidlo)
         return;
 
@@ -763,7 +762,7 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket & recv_data)
             delete result;
             return;
         }
-    }
+    }/*
     else
     {
         if(objmgr.GetArenaTeamByName(name))
@@ -772,7 +771,7 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket & recv_data)
             delete result;
             return;
         }
-    }
+    }*/
 
     // and at last charter item check
     Item *item = _player->GetItemByGuid(petitionguid);
@@ -807,7 +806,7 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket & recv_data)
             guild->AddMember(fields[0].GetUInt64(), guild->GetLowestRank());
             result->NextRow();
         }
-    }
+    }/*
     else                                                    // or arena team
     {
         ArenaTeam* at = new ArenaTeam;
@@ -837,7 +836,7 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket & recv_data)
             at->AddMember(fields[0].GetUInt64());
             result->NextRow();
         }
-    }
+    }*/
 
     delete result;
 

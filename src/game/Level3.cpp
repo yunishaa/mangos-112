@@ -16,12 +16,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Database/DatabaseEnv.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "PlayerDump.h"
 #include "SpellMgr.h"
 #include "Player.h"
@@ -3173,7 +3172,7 @@ bool ChatHandler::HandleDamageCommand(const char * args)
     m_session->GetPlayer()->SpellNonMeleeDamageLog(target, spellid, damage, false);
     return true;
 }
-
+/*
 bool ChatHandler::HandleModifyArenaCommand(const char * args)
 {
     if (!*args)
@@ -3195,7 +3194,7 @@ bool ChatHandler::HandleModifyArenaCommand(const char * args)
 
     return true;
 }
-
+*/
 bool ChatHandler::HandleReviveCommand(const char* args)
 {
     Player* SelectedPlayer = NULL;
@@ -4927,7 +4926,7 @@ bool ChatHandler::HandleRespawnCommand(const char* /*args*/)
 
     return true;
 }
-
+/*
 bool ChatHandler::HandleFlyModeCommand(const char* args)
 {
     if(!args)
@@ -4953,7 +4952,7 @@ bool ChatHandler::HandleFlyModeCommand(const char* args)
     PSendSysMessage(LANG_COMMAND_FLYMODE_STATUS, unit->GetName(), args);
     return true;
 }
-
+*/
 bool ChatHandler::HandleLoadPDumpCommand(const char *args)
 {
     if(!args)

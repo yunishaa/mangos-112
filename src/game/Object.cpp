@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "SharedDefines.h"
 #include "WorldPacket.h"
 #include "Opcodes.h"
@@ -25,7 +25,6 @@
 #include "Object.h"
 #include "Creature.h"
 #include "Player.h"
-#include "ObjectMgr.h"
 #include "WorldSession.h"
 #include "UpdateData.h"
 #include "UpdateMask.h"
@@ -1125,7 +1124,7 @@ void WorldObject::UpdateGroundPositionZ(float x, float y, float &z) const
 {
     float new_z = MapManager::Instance().GetBaseMap(GetMapId())->GetHeight(x,y,z,true);
     if(new_z > INVALID_HEIGHT)
-        z = new_z+ 0.05f;                                   // just to be sure that we are not a few pixel under the surface
+        z = new_z; //+ 0.05f;                                   // just to be sure that we are not a few pixel under the surface
 }
 
 bool WorldObject::IsPositionValid() const

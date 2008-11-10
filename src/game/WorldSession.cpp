@@ -20,8 +20,8 @@
     \ingroup u2w
 */
 
+#include "ObjectMgr.h"
 #include "WorldSocket.h"
-#include "Common.h"
 #include "Database/DatabaseEnv.h"
 #include "Log.h"
 #include "Opcodes.h"
@@ -29,7 +29,6 @@
 #include "WorldPacket.h"
 #include "WorldSession.h"
 #include "Player.h"
-#include "ObjectMgr.h"
 #include "Group.h"
 #include "Guild.h"
 #include "World.h"

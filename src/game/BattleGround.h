@@ -19,13 +19,13 @@
 #ifndef __BATTLEGROUND_H
 #define __BATTLEGROUND_H
 
-#include "Common.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
 #include "Opcodes.h"
 #include "ObjectMgr.h"
 #include "BattleGroundMgr.h"
 #include "SharedDefines.h"
+#include "Language.h"
 
 enum BattleGroundSounds
 {
@@ -133,14 +133,15 @@ struct BattleGroundObjectInfo
 
 enum BattleGroundTypeId
 {
-    BATTLEGROUND_AV     = 1,
-    BATTLEGROUND_WS     = 2,
-    BATTLEGROUND_AB     = 3,
-    BATTLEGROUND_NA     = 4,
-    BATTLEGROUND_BE     = 5,
-    BATTLEGROUND_AA     = 6,
-    BATTLEGROUND_EY     = 7,
-    BATTLEGROUND_RL     = 8
+    BATTLEGROUND_AV     = 1, // Alterac Valley (30)
+    BATTLEGROUND_WS     = 2, // Warsong Gulch (489)
+    BATTLEGROUND_AB     = 3  // Arathi Basin (529)
+	/*
+    BATTLEGROUND_NA     = 4, // Nagrand Arena (559)
+    BATTLEGROUND_BE     = 5, // Blade's Edge Arena (562)
+    BATTLEGROUND_AA     = 6, // ??
+    BATTLEGROUND_EY     = 7, // Eye of the Storm (566)
+    BATTLEGROUND_RL     = 8  // Ruins of Lordaeron (572)*/
 };
 
 enum ScoreType
@@ -178,8 +179,8 @@ enum ArenaType
 
 enum BattleGroundType
 {
-    TYPE_BATTLEGROUND     = 3,
-    TYPE_ARENA            = 4
+    TYPE_BATTLEGROUND     = 3 /*,
+    TYPE_ARENA            = 4*/
 };
 
 enum BattleGroundWinner

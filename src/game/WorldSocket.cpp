@@ -609,13 +609,13 @@ int WorldSocket::ProcessIncoming (WorldPacket* new_pct)
         }
 
         return HandleAuthSession (*new_pct);
-    }
+    }/*
     else if (opcode == CMSG_KEEP_ALIVE)
     {
         DEBUG_LOG ("CMSG_KEEP_ALIVE ,size: %d", new_pct->size ());
 
         return 0;
-    }
+    }*/
     else
     {
         ACE_GUARD_RETURN (LockType, Guard, m_SessionLock, -1);
@@ -796,7 +796,7 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
     locale = LocaleConstant (fields[10].GetUInt8 ());
     if (locale >= MAX_LOCALE)
         locale = LOCALE_enUS;
-
+    sLog.outDebug("Found locale %u",locale);
     delete result;
 
     // Re-check account ban (same check as in realmd) 

@@ -20,6 +20,7 @@
     \ingroup world
 */
 
+#include "Common.h"
 #include "Log.h"
 #include "Database/DatabaseEnv.h"
 #include "Platform/Define.h"

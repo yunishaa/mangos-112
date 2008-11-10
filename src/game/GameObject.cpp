@@ -16,10 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "QuestDef.h"
 #include "GameObject.h"
-#include "ObjectMgr.h"
 #include "SpellMgr.h"
 #include "Spell.h"
 #include "UpdateMask.h"
@@ -1209,11 +1208,11 @@ void GameObject::Use(Unit* user)
                         case 179786:                        // Warsong Flag
                             if(bg->GetTypeID() == BATTLEGROUND_WS)
                                 bg->EventPlayerClickedOnFlag(player, this);
-                            break;
+                            break;/*
                         case 184142:                        // Netherstorm Flag
                             if(bg->GetTypeID() == BATTLEGROUND_EY)
                                 bg->EventPlayerClickedOnFlag(player, this);
-                            break;
+                            break;*/
                     }
                 }
                 //this cause to call return, all flags must be deleted here!!

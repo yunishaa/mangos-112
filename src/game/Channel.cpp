@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Channel.h"
 #include "ObjectMgr.h"
+#include "Channel.h"
 #include "World.h"
 #include "SocialMgr.h"
 
@@ -112,7 +112,7 @@ void Channel::Join(uint64 p, const char *pass)
     MakeYouJoined(&data);
     SendToOne(&data, p);
 
-    JoinNotify(p);
+//  JoinNotify(p);
 
     // if no owner first logged will become
     if(!IsConstant() && !m_ownerGUID)
@@ -157,7 +157,7 @@ void Channel::Leave(uint64 p, bool send)
             SendToAll(&data);
         }
 
-        LeaveNotify(p);
+//      LeaveNotify(p);
 
         if(changeowner)
         {
@@ -965,7 +965,7 @@ void Channel::MakeVoiceOff(WorldPacket *data, uint64 guid)
     MakeNotifyPacket(data, CHAT_VOICE_OFF_NOTICE);
     *data << uint64(guid);
 }
-
+/*
 void Channel::JoinNotify(uint64 guid)
 {
     WorldPacket data;
@@ -981,8 +981,8 @@ void Channel::JoinNotify(uint64 guid)
     data << uint32(GetNumPlayers());
     data << GetName();
     SendToAll(&data);
-}
-
+}*/
+/*
 void Channel::LeaveNotify(uint64 guid)
 {
     WorldPacket data(SMSG_USERLIST_REMOVE, 8+1+4+GetName().size()+1);
@@ -991,4 +991,4 @@ void Channel::LeaveNotify(uint64 guid)
     data << uint32(GetNumPlayers());
     data << GetName();
     SendToAll(&data);
-}
+}*/

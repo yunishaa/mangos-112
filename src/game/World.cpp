@@ -20,7 +20,7 @@
     \ingroup world
 */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 //#include "WorldSocket.h"
 #include "Database/DatabaseEnv.h"
 #include "Config/ConfigEnv.h"
@@ -34,7 +34,6 @@
 #include "SkillExtraItems.h"
 #include "SkillDiscovery.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "SpellMgr.h"
 #include "Chat.h"
 #include "Database/DBCStores.h"
@@ -220,12 +219,12 @@ World::AddSession_ (WorldSession* s)
       return;
     }
   
-  WorldPacket packet(SMSG_AUTH_RESPONSE, 1 + 4 + 1 + 4 + 1);
+  WorldPacket packet(SMSG_AUTH_RESPONSE, 1 /*+ 4 + 1 + 4 + 1*/);
   packet << uint8 (AUTH_OK);
-  packet << uint32 (0); // unknown random value...
-  packet << uint8 (0);
-  packet << uint32 (0);
-  packet << uint8 (s->Expansion()); // 0 - normal, 1 - TBC, must be set in database manually for each account
+  //packet << uint32 (0); // unknown random value...
+  //packet << uint8 (0);
+  //packet << uint32 (0);
+  //packet << uint8 (s->Expansion()); // 0 - normal, 1 - TBC, must be set in database manually for each account
   s->SendPacket (&packet);
 
   UpdateMaxSessionCounters ();
@@ -895,9 +894,7 @@ void World::SetInitialWorldSettings()
         ||!MapManager::ExistMapAndVMap(1,-618.518f,-4251.67f)
         ||!MapManager::ExistMapAndVMap(0, 1676.35f, 1677.45f)
         ||!MapManager::ExistMapAndVMap(1, 10311.3f, 832.463f)
-        ||!MapManager::ExistMapAndVMap(1,-2917.58f,-257.98f)
-        ||m_configs[CONFIG_EXPANSION] && (
-        !MapManager::ExistMapAndVMap(530,10349.6f,-6357.29f) || !MapManager::ExistMapAndVMap(530,-3961.64f,-13931.2f) ) )
+        ||!MapManager::ExistMapAndVMap(1,-2917.58f,-257.98f) )
     {
         sLog.outError("Correct *.map files not found in path '%smaps' or *.vmap/*vmdir files in '%svmaps'. Please place *.map/*.vmap/*.vmdir files in appropriate directories or correct the DataDir value in the mangosd.conf file.",m_dataPath.c_str(),m_dataPath.c_str());
         exit(1);
@@ -1089,10 +1086,10 @@ void World::SetInitialWorldSettings()
 
     sLog.outString( "Loading Guilds..." );
     objmgr.LoadGuilds();
-
+/*
     sLog.outString( "Loading ArenaTeams..." );
     objmgr.LoadArenaTeams();
-
+*/
     sLog.outString( "Loading Groups..." );
     objmgr.LoadGroups();
 

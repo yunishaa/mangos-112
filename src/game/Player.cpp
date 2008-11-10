@@ -16,12 +16,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Language.h"
 #include "Database/DatabaseEnv.h"
 #include "Log.h"
 #include "Opcodes.h"
-#include "ObjectMgr.h"
 #include "SpellMgr.h"
 #include "World.h"
 #include "WorldPacket.h"
@@ -53,7 +52,7 @@
 #include "Weather.h"
 #include "BattleGround.h"
 #include "BattleGroundMgr.h"
-#include "ArenaTeam.h"
+//#include "ArenaTeam.h"
 #include "Chat.h"
 #include "Database/DatabaseImpl.h"
 #include "Spell.h"
@@ -902,13 +901,13 @@ void Player::SetDrunkValue(uint16 newDrunkenValue, uint32 itemId)
 
     if(newDrunkenState == oldDrunkenState)
         return;
-
+/*
     WorldPacket data(SMSG_CROSSED_INEBRIATION_THRESHOLD, (8+4+4));
     data << GetGUID();
     data << uint32(newDrunkenState);
     data << uint32(itemId);
 
-    SendMessageToSet(&data, true);
+    SendMessageToSet(&data, true);*/
 }
 
 void Player::Update( uint32 p_time )
@@ -3229,7 +3228,7 @@ void Player::InitVisibleBits()
     updateVisualBits.SetBit(UNIT_FIELD_FACTIONTEMPLATE);
     updateVisualBits.SetBit(UNIT_FIELD_BYTES_0);
     updateVisualBits.SetBit(UNIT_FIELD_FLAGS);
-    updateVisualBits.SetBit(UNIT_FIELD_FLAGS_2);
+//    updateVisualBits.SetBit(UNIT_FIELD_FLAGS_2);
     for(uint16 i = UNIT_FIELD_AURA; i < UNIT_FIELD_AURASTATE; ++i)
         updateVisualBits.SetBit(i);
     updateVisualBits.SetBit(UNIT_FIELD_AURASTATE);
@@ -3262,7 +3261,7 @@ void Player::InitVisibleBits()
     updateVisualBits.SetBit(PLAYER_DUEL_ARBITER+1);
 
     // PLAYER_QUEST_LOG_x also visible bit on official (but only on party/raid)...
-    for(uint16 i = PLAYER_QUEST_LOG_1_1; i < PLAYER_QUEST_LOG_25_2; i+=4)
+    for(uint16 i = PLAYER_QUEST_LOG_1_1; i < PLAYER_QUEST_LOG_20_2; i+=3)
         updateVisualBits.SetBit(i);
 
     //Players visible items are not inventory stuff
@@ -3644,13 +3643,13 @@ void Player::SendDelayResponse(const uint32 ml_seconds)
 }
 
 void Player::ResurrectPlayer(float restore_percent, bool updateToWorld, bool applySickness)
-{
+{/*
     WorldPacket data(SMSG_DEATH_RELEASE_LOC, 4*4);          // remove spirit healer position
     data << uint32(-1);
     data << float(0);
     data << float(0);
     data << float(0);
-    GetSession()->SendPacket(&data);
+    GetSession()->SendPacket(&data);*/
 
     // speed change, land walk
 
@@ -3987,7 +3986,7 @@ uint32 Player::DurabilityRepair(uint16 pos, bool cost, float discountMod, bool g
 
             if (costs==0)                                   //fix for ITEM_QUALITY_ARTIFACT
                 costs = 1;
-
+/*
             if (guildBank)
             {
                 if (GetGuildId()==0)
@@ -4021,7 +4020,7 @@ uint32 Player::DurabilityRepair(uint16 pos, bool cost, float discountMod, bool g
                 pGuild->MemberMoneyWithdraw(costs, GetGUIDLow());
                 TotalCost = costs;
             }
-            else if (GetMoney() < costs)
+            else*/ if (GetMoney() < costs)
             {
                 DEBUG_LOG("You do not have enough money");
                 return TotalCost;
@@ -4059,7 +4058,7 @@ void Player::RepopAtGraveyard()
     // Special handle for battleground maps
     BattleGround *bg = sBattleGroundMgr.GetBattleGround(GetBattleGroundId());
 
-    if(bg && (bg->GetTypeID() == BATTLEGROUND_AB || bg->GetTypeID() == BATTLEGROUND_EY))
+    if(bg && (bg->GetTypeID() == BATTLEGROUND_AB ))//|| bg->GetTypeID() == BATTLEGROUND_EY))
         ClosestGrave = bg->GetClosestGraveYard(GetPositionX(), GetPositionY(), GetPositionZ(), GetTeam());
     else
         ClosestGrave = objmgr.GetClosestGraveYard( GetPositionX(), GetPositionY(), GetPositionZ(), GetMapId(), GetTeam() );
@@ -4072,7 +4071,7 @@ void Player::RepopAtGraveyard()
     if(ClosestGrave)
     {
         TeleportTo(ClosestGrave->map_id, ClosestGrave->x, ClosestGrave->y, ClosestGrave->z, GetOrientation());
-        if(isDead())                                        // not send if alive, because it used in TeleportTo()
+/*      if(isDead())                                        // not send if alive, because it used in TeleportTo()
         {
             WorldPacket data(SMSG_DEATH_RELEASE_LOC, 4*4);  // show spirit healer position on minimap
             data << ClosestGrave->map_id;
@@ -4080,7 +4079,7 @@ void Player::RepopAtGraveyard()
             data << ClosestGrave->y;
             data << ClosestGrave->z;
             GetSession()->SendPacket(&data);
-        }
+        }*/
     }
 }
 
@@ -5812,12 +5811,12 @@ void Player::RewardReputation(Quest const *pQuest)
 
     // TODO: implement reputation spillover
 }
-
+/*
 void Player::UpdateArenaFields(void)
 {
-    /* arena calcs go here */
+    /* arena calcs go here
 }
-
+*/
 void Player::UpdateHonorFields()
 {
     /// called when rewarding honor and at each save
@@ -5983,7 +5982,7 @@ void Player::ModifyHonorPoints( int32 value )
     else
         SetUInt32Value(PLAYER_FIELD_HONOR_CURRENCY, GetHonorPoints() < sWorld.getConfig(CONFIG_MAX_HONOR_POINTS) - value ? GetHonorPoints() + value : sWorld.getConfig(CONFIG_MAX_HONOR_POINTS));
 }
-
+/*
 void Player::ModifyArenaPoints( int32 value )
 {
     if(value < 0)
@@ -5996,7 +5995,7 @@ void Player::ModifyArenaPoints( int32 value )
     else
         SetUInt32Value(PLAYER_FIELD_ARENA_CURRENCY, GetArenaPoints() < sWorld.getConfig(CONFIG_MAX_ARENA_POINTS) - value ? GetArenaPoints() + value : sWorld.getConfig(CONFIG_MAX_ARENA_POINTS));
 }
-
+*/
 uint32 Player::GetGuildIdFromDB(uint64 guid)
 {
     std::ostringstream ss;
@@ -6026,7 +6025,7 @@ uint32 Player::GetRankFromDB(uint64 guid)
     else
         return 0;
 }
-
+/*
 uint32 Player::GetArenaTeamIdFromDB(uint64 guid, uint8 type)
 {
     // need fix it!
@@ -6056,7 +6055,7 @@ uint32 Player::GetArenaTeamIdFromDB(uint64 guid, uint8 type)
     // no arenateam for the specified guid, return 0
     return 0;
 }
-
+*/
 uint32 Player::GetZoneIdFromDB(uint64 guid)
 {
     std::ostringstream ss;
@@ -7580,10 +7579,10 @@ void Player::SendInitWorldStates()
             }
             break;
         case 3820:                                          // EY
-            if (bg && bg->GetTypeID() == BATTLEGROUND_EY)
+            /*if (bg && bg->GetTypeID() == BATTLEGROUND_EY)
                 bg->FillInitialWorldStates(data);
             else
-            {
+            {*/
                 data << uint32(0xac1) << uint32(0x0);       // 7  2753 Horde Bases
                 data << uint32(0xac0) << uint32(0x0);       // 8  2752 Alliance Bases
                 data << uint32(0xab6) << uint32(0x0);       // 9  2742 Mage Tower - Horde conflict
@@ -7617,8 +7616,8 @@ void Player::SendInitWorldStates()
                 data << uint32(0xa9e) << uint32(0x0);       // 37 2718 Capturing progress-bar (1 - show, 0 - hide)
                 data << uint32(0xc0d) << uint32(0x17b);     // 38 3085 unk
                 // and some more ... unknown
-            }
-            break;
+            //}
+            break;/*
         case 3483:                                          // Hellfire Peninsula
             data << uint32(0x9ba) << uint32(0x1);           // 10
             data << uint32(0x9b9) << uint32(0x1);           // 11
@@ -7713,7 +7712,7 @@ void Player::SendInitWorldStates()
             data << uint32(0x913) << uint32(0x0);           // 8
             data << uint32(0x912) << uint32(0x0);           // 9
             data << uint32(0x915) << uint32(0x0);           // 10
-            break;
+            break;*/
     }
     GetSession()->SendPacket(&data);
 }
@@ -13413,7 +13412,7 @@ bool Player::LoadFromDB( uint32 guid, SqlQueryHolder *holder )
 
     _LoadGroup(holder->GetResult(PLAYER_LOGIN_QUERY_LOADGROUP));
 
-    // check arena teams integrity
+    /* check arena teams integrity
     for(uint32 arena_slot = 0; arena_slot < MAX_ARENA_SLOT; ++arena_slot)
     {
         uint32 arena_team_id = GetArenaTeamId(arena_slot);
@@ -13427,7 +13426,7 @@ bool Player::LoadFromDB( uint32 guid, SqlQueryHolder *holder )
         // arena team not exist or not member, cleanup fields
         for(int j =0; j < 6; ++j)
             SetUInt32Value(PLAYER_FIELD_ARENA_TEAM_INFO_1_1 + arena_slot * 6 + j, 0);
-    }
+    }*/
 
     _LoadBoundInstances(holder->GetResult(PLAYER_LOGIN_QUERY_LOADBOUNDINSTANCES));
 
@@ -15383,10 +15382,10 @@ void Player::SendDungeonDifficulty(bool IsInGroup)
 }
 
 void Player::SendResetFailedNotify(uint32 mapid)
-{
+{/*
     WorldPacket data(SMSG_RESET_FAILED_NOTIFY, 4);
     data << uint32(mapid);
-    GetSession()->SendPacket(&data);
+    GetSession()->SendPacket(&data);*/
 }
 
 /// Reset all solo instances and optionally send a message on success for each
@@ -16410,14 +16409,14 @@ bool Player::BuyItemFromVendor(uint64 vendorguid, uint32 item, uint8 count, uint
             SendEquipError(EQUIP_ERR_NOT_ENOUGH_HONOR_POINTS, NULL, NULL);
             return false;
         }
-
+/*
         // arena points price
         if(GetArenaPoints() < (iece->reqarenapoints * count))
         {
             SendEquipError(EQUIP_ERR_NOT_ENOUGH_ARENA_POINTS, NULL, NULL);
             return false;
         }
-
+*/
         // item base price
         for (uint8 i = 0; i < 5; ++i)
         {
@@ -16427,14 +16426,14 @@ bool Player::BuyItemFromVendor(uint64 vendorguid, uint32 item, uint8 count, uint
                 return false;
             }
         }
-
+/*
         // check for personal arena rating requirement
         if( GetMaxPersonalArenaRatingRequirement() < iece->reqpersonalarenarating )
         {
             // probably not the proper equip err
             SendEquipError(EQUIP_ERR_CANT_EQUIP_RANK,NULL,NULL);
             return false;
-        }
+        }*/
     }
 
     uint32 price  = pProto->BuyPrice * count;
@@ -16489,9 +16488,9 @@ bool Player::BuyItemFromVendor(uint64 vendorguid, uint32 item, uint8 count, uint
         {
             ItemExtendedCostEntry const* iece = sItemExtendedCostStore.LookupEntry(crItem->ExtendedCost);
             if(iece->reqhonorpoints)
-                ModifyHonorPoints( - int32(iece->reqhonorpoints * count));
+                ModifyHonorPoints( - int32(iece->reqhonorpoints * count));/*
             if(iece->reqarenapoints)
-                ModifyArenaPoints( - int32(iece->reqarenapoints * count));
+                ModifyArenaPoints( - int32(iece->reqarenapoints * count));*/
             for (uint8 i = 0; i < 5; ++i)
             {
                 if(iece->reqitem[i])
@@ -16528,9 +16527,9 @@ bool Player::BuyItemFromVendor(uint64 vendorguid, uint32 item, uint8 count, uint
         {
             ItemExtendedCostEntry const* iece = sItemExtendedCostStore.LookupEntry(crItem->ExtendedCost);
             if(iece->reqhonorpoints)
-                ModifyHonorPoints( - int32(iece->reqhonorpoints));
+                ModifyHonorPoints( - int32(iece->reqhonorpoints));/*
             if(iece->reqarenapoints)
-                ModifyArenaPoints( - int32(iece->reqarenapoints));
+                ModifyArenaPoints( - int32(iece->reqarenapoints));*/
             for (uint8 i = 0; i < 5; ++i)
             {
                 if(iece->reqitem[i])
@@ -16562,7 +16561,7 @@ bool Player::BuyItemFromVendor(uint64 vendorguid, uint32 item, uint8 count, uint
 
     return crItem->maxcount!=0;
 }
-
+/*
 uint32 Player::GetMaxPersonalArenaRatingRequirement()
 {
     // returns the maximal personal arena rating that can be used to purchase items requiring this condition
@@ -16582,7 +16581,7 @@ uint32 Player::GetMaxPersonalArenaRatingRequirement()
     }
     return max_personal_rating;
 }
-
+*/
 void Player::UpdateHomebindTime(uint32 time)
 {
     // GMs never get homebind timer online
@@ -17052,7 +17051,7 @@ void Player::InitPrimaryProffesions()
 }
 
 void Player::SendComboPoints()
-{
+{/*
     Unit *combotarget = ObjectAccessor::GetUnit(*this, m_comboTarget);
     if (combotarget)
     {
@@ -17060,7 +17059,7 @@ void Player::SendComboPoints()
         data.append(combotarget->GetPackGUID());
         data << uint8(m_comboPoints);
         GetSession()->SendPacket(&data);
-    }
+    }*/
 }
 
 void Player::AddComboPoints(Unit* target, int8 count)
@@ -17146,11 +17145,11 @@ void Player::SendInitialPacketsBeforeAddToMap()
     GetSession()->SendPacket(&data);
 
     SendInitialSpells();
-
+/*
     data.Initialize(SMSG_SEND_UNLEARN_SPELLS, 4);
     data << uint32(0);                                      // count, for(count) uint32;
     GetSession()->SendPacket(&data);
-
+*/
     SendInitialActionButtons();
     SendInitialReputations();
     UpdateZone(GetZoneId());

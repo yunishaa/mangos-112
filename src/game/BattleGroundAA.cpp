@@ -16,8 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Player.h"
+#include "Common.h"
 #include "BattleGround.h"
+#include "Player.h"
 #include "BattleGroundAA.h"
 
 BattleGroundAA::BattleGroundAA()

@@ -738,9 +738,9 @@ void WorldSession::HandleGuildRankOpcode(WorldPacket& recvPacket)
     Guild *guild;
     std::string rankname;
     uint32 rankId;
-    uint32 rights, MoneyPerDay;
+    uint32 rights; /*, MoneyPerDay;
     uint32 BankRights;
-    uint32 BankSlotPerDay;
+    uint32 BankSlotPerDay;*/
 
     //sLog.outDebug("WORLD: Received CMSG_GUILD_RANK");
 
@@ -759,7 +759,7 @@ void WorldSession::HandleGuildRankOpcode(WorldPacket& recvPacket)
 
     recvPacket >> rankId;
     recvPacket >> rights;
-    recvPacket >> rankname;
+    recvPacket >> rankname;/*
     recvPacket >> MoneyPerDay;
 
     for (int i = 0; i < GUILD_BANK_MAX_TABS; ++i)
@@ -770,7 +770,7 @@ void WorldSession::HandleGuildRankOpcode(WorldPacket& recvPacket)
     }
     sLog.outDebug("WORLD: Changed RankName to %s , Rights to 0x%.4X", rankname.c_str(), rights);
 
-    guild->SetBankMoneyPerDay(rankId, MoneyPerDay);
+    guild->SetBankMoneyPerDay(rankId, MoneyPerDay);*/
     guild->SetRankName(rankId, rankname);
 
     if(rankId==GR_GUILDMASTER)                              // prevent loss leader rights
@@ -943,8 +943,8 @@ void WorldSession::HandleGuildSaveEmblemOpcode(WorldPacket& recvPacket)
 
     guild->Query(this);
 }
-
-void WorldSession::HandleGuildEventLogOpcode(WorldPacket& /* recvPacket */)
+/*
+void WorldSession::HandleGuildEventLogOpcode(WorldPacket&)
 {
                                                             // empty
     sLog.outDebug("WORLD: Received (MSG_GUILD_EVENT_LOG_QUERY)");
@@ -960,10 +960,10 @@ void WorldSession::HandleGuildEventLogOpcode(WorldPacket& /* recvPacket */)
 
     pGuild->DisplayGuildEventlog(this);
 }
-
+*/
 /******  GUILD BANK  *******/
-
-void WorldSession::HandleGuildBankGetMoneyAmount( WorldPacket & /* recv_data */ )
+/*
+void WorldSession::HandleGuildBankGetMoneyAmount( WorldPacket & )
 {
     sLog.outDebug("WORLD: Received (MSG_GUILD_BANK_MONEY_WITHDRAWN)");
     //recv_data.hexlike();
@@ -977,9 +977,9 @@ void WorldSession::HandleGuildBankGetMoneyAmount( WorldPacket & /* recv_data */ 
         return;
 
     pGuild->SendMoneyInfo(this, GetPlayer()->GetGUIDLow());
-}
-
-void WorldSession::HandleGuildBankGetRights( WorldPacket& /* recv_data */ )
+}*/
+/*
+void WorldSession::HandleGuildBankGetRights( WorldPacket& )
 {
     sLog.outDebug("WORLD: Received (MSG_GUILD_PERMISSIONS)");
 
@@ -1007,8 +1007,8 @@ void WorldSession::HandleGuildBankGetRights( WorldPacket& /* recv_data */ )
     SendPacket(&data);
     sLog.outDebug("WORLD: Sent (MSG_GUILD_PERMISSIONS)");
 }
-
-/* Called when clicking on Guild bank gameobject */
+/*
+/* Called when clicking on Guild bank gameobject
 void WorldSession::HandleGuildBankQuery( WorldPacket & recv_data )
 {
     sLog.outDebug("WORLD: Received (CMSG_GUILD_BANKER_ACTIVATE)");
@@ -1031,8 +1031,8 @@ void WorldSession::HandleGuildBankQuery( WorldPacket & recv_data )
 
     SendGuildCommandResult(GUILD_BANK_S, "", GUILD_PLAYER_NOT_IN_GUILD);
 }
-
-/* Called when opening guild bank tab only (first one) */
+*/
+/* Called when opening guild bank tab only (first one)
 void WorldSession::HandleGuildBankTabColon( WorldPacket & recv_data )
 {
     sLog.outDebug("WORLD: Received (CMSG_GUILD_BANK_QUERY_TAB)");
@@ -1057,8 +1057,8 @@ void WorldSession::HandleGuildBankTabColon( WorldPacket & recv_data )
     pGuild->SendMoneyInfo(this, GetPlayer()->GetGUIDLow());
 
     pGuild->DisplayGuildBankContent(this, TabId);
-}
-
+}*/
+/*
 void WorldSession::HandleGuildBankDeposit( WorldPacket & recv_data )
 {
     sLog.outDebug("WORLD: Received (CMSG_GUILD_BANK_DEPOSIT_MONEY)");
@@ -1806,7 +1806,7 @@ void WorldSession::HandleGuildBankSetTabText(WorldPacket &recv_data)
 
     pGuild->SetGuildBankTabText(TabId, Text);
 }
-
+*/
 void WorldSession::SendSaveGuildEmblem( uint32 msg )
 {
     WorldPacket data(MSG_SAVE_GUILD_EMBLEM, 4);

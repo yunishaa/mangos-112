@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "Common.h"
 #include "AddonHandler.h"
 #include "Database/DatabaseEnv.h"
 #include "Opcodes.h"
@@ -88,13 +89,19 @@ bool AddonHandler::BuildAddonPacket(WorldPacket *Source, WorldPacket *Target)
 
             // check next addon data format correctness
             if(AddOnPacked.rpos()+1+4+4+1 > AddOnPacked.size())
+            {
+                sLog.outDebug("Exit BuildAddonPacket because of check before AddonNames");
                 return false;
+            }
 
             AddOnPacked >> AddonNames;
 
             // recheck next addon data format correctness
             if(AddOnPacked.rpos()+4+4+1 > AddOnPacked.size())
+            {
+                sLog.outDebug("Exit BuildAddonPacket because of check after AddonNames and before crc");
                 return false;
+            }
 
             AddOnPacked >> crc >> unk7 >> unk6;
 

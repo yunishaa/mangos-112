@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "Common.h"
 #include "ObjectMgr.h"                                      // for normalizePlayerName
 #include "ChannelMgr.h"
 #include "Policies/SingletonImp.h"
@@ -351,7 +352,7 @@ void WorldSession::HandleChannelRosterQuery(WorldPacket &recvPacket)
         if(Channel *chn = cMgr->GetChannel(channelname, _player))
             chn->List(_player);
 }
-
+/*
 void WorldSession::HandleChannelInfoQuery(WorldPacket &recvPacket)
 {
     sLog.outDebug("Opcode %u", recvPacket.GetOpcode());
@@ -372,7 +373,7 @@ void WorldSession::HandleChannelInfoQuery(WorldPacket &recvPacket)
         }
     }
 }
-
+*/
 void WorldSession::HandleChannelJoinNotify(WorldPacket &recvPacket)
 {
     sLog.outDebug("Opcode %u", recvPacket.GetOpcode());

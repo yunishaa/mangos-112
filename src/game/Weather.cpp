@@ -20,13 +20,13 @@
     \ingroup world
 */
 
+#include "ObjectMgr.h"
 #include "Weather.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
 #include "Player.h"
 #include "World.h"
 #include "Log.h"
-#include "ObjectMgr.h"
 #include "Util.h"
 
 /// Create the Weather object

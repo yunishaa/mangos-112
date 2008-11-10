@@ -16,9 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "ObjectMgr.h"
 #include "QuestDef.h"
 #include "GossipDef.h"
-#include "ObjectMgr.h"
 #include "Opcodes.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"

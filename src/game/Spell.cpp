@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Database/DatabaseEnv.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
@@ -26,7 +26,6 @@
 #include "Log.h"
 #include "UpdateMask.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "SpellMgr.h"
 #include "Player.h"
 #include "Pet.h"
@@ -2576,14 +2575,14 @@ void Spell::SendCastResult(uint8 result)
                 break;
         }
         ((Player*)m_caster)->GetSession()->SendPacket(&data);
-    }
+    }/*
     else
     {
         WorldPacket data(SMSG_CLEAR_EXTRA_AURA_INFO, (8+4));
         data.append(m_caster->GetPackGUID());
         data << uint32(m_spellInfo->Id);
         ((Player*)m_caster)->GetSession()->SendPacket(&data);
-    }
+    }*/
 }
 
 void Spell::SendSpellStart()

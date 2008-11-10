@@ -332,60 +332,60 @@ class Guild
         // Guild eventlog
         void   LoadGuildEventLogFromDB();
         void   UnloadGuildEventlog();
-        void   DisplayGuildEventlog(WorldSession *session);
+//      void   DisplayGuildEventlog(WorldSession *session);
         void   LogGuildEvent(uint8 EventType, uint32 PlayerGuid1, uint32 PlayerGuid2, uint8 NewRank);
         void   RenumGuildEventlog();
 
         // ** Guild bank **
         // Content & item deposit/withdraw
-        void   DisplayGuildBankContent(WorldSession *session, uint8 TabId);
-        void   DisplayGuildBankContentUpdate(uint8 TabId, int32 slot1, int32 slot2 = -1);
-        void   DisplayGuildBankContentUpdate(uint8 TabId, GuildItemPosCountVec const& slots);
-        void   DisplayGuildBankMoneyUpdate();
+//      void   DisplayGuildBankContent(WorldSession *session, uint8 TabId);
+//      void   DisplayGuildBankContentUpdate(uint8 TabId, int32 slot1, int32 slot2 = -1);
+//      void   DisplayGuildBankContentUpdate(uint8 TabId, GuildItemPosCountVec const& slots);
+//      void   DisplayGuildBankMoneyUpdate();
 
-        Item*  GetItem(uint8 TabId, uint8 SlotId);
-        uint8  CanStoreItem( uint8 tab, uint8 slot, GuildItemPosCountVec& dest, uint32 count, Item *pItem, bool swap = false) const;
-        Item*  StoreItem( uint8 tab, GuildItemPosCountVec const& pos, Item *pItem );
-        void   RemoveItem(uint8 tab, uint8 slot );
+//      Item*  GetItem(uint8 TabId, uint8 SlotId);
+//      uint8  CanStoreItem( uint8 tab, uint8 slot, GuildItemPosCountVec& dest, uint32 count, Item *pItem, bool swap = false) const;
+//      Item*  StoreItem( uint8 tab, GuildItemPosCountVec const& pos, Item *pItem );
+//      void   RemoveItem(uint8 tab, uint8 slot );
 
         // Tabs
-        void   DisplayGuildBankTabsInfo(WorldSession *session);
-        void   CreateNewBankTab();
-        void   SetGuildBankTabText(uint8 TabId, std::string text);
-        void   SendGuildBankTabText(WorldSession *session, uint8 TabId);
-        void   SetGuildBankTabInfo(uint8 TabId, std::string name, std::string icon);
-        void   CreateBankRightForTab(uint32 rankid, uint8 TabId);
-        const  GuildBankTab *GetBankTab(uint8 index) { if(index >= m_TabListMap.size()) return NULL; return m_TabListMap[index]; }
-        const  uint8 GetPurchasedTabs() const { return purchased_tabs; }
-        uint32 GetBankRights(uint32 rankId, uint8 TabId) const;
-        bool   IsMemberHaveRights(uint32 LowGuid, uint8 TabId,uint32 rights) const;
-        bool   CanMemberViewTab(uint32 LowGuid, uint8 TabId) const;
+//      void   DisplayGuildBankTabsInfo(WorldSession *session);
+//      void   CreateNewBankTab();
+//      void   SetGuildBankTabText(uint8 TabId, std::string text);
+//      void   SendGuildBankTabText(WorldSession *session, uint8 TabId);
+//      void   SetGuildBankTabInfo(uint8 TabId, std::string name, std::string icon);
+//      void   CreateBankRightForTab(uint32 rankid, uint8 TabId);
+//      const  GuildBankTab *GetBankTab(uint8 index) { if(index >= m_TabListMap.size()) return NULL; return m_TabListMap[index]; }
+//      const  uint8 GetPurchasedTabs() const { return purchased_tabs; }
+//      uint32 GetBankRights(uint32 rankId, uint8 TabId) const;
+//      bool   IsMemberHaveRights(uint32 LowGuid, uint8 TabId,uint32 rights) const;
+//      bool   CanMemberViewTab(uint32 LowGuid, uint8 TabId) const;
         // Load/unload
-        void   LoadGuildBankFromDB();
-        void   UnloadGuildBank();
-        void   IncOnlineMemberCount() { ++m_onlinemembers; }
+//      void   LoadGuildBankFromDB();
+//      void   UnloadGuildBank();
+//      void   IncOnlineMemberCount() { ++m_onlinemembers; }
         // Money deposit/withdraw
-        void   SendMoneyInfo(WorldSession *session, uint32 LowGuid);
-        bool   MemberMoneyWithdraw(uint32 amount, uint32 LowGuid);
-        uint64 GetGuildBankMoney() { return guildbank_money; }
-        void   SetBankMoney(int64 money);
+//      void   SendMoneyInfo(WorldSession *session, uint32 LowGuid);
+//      bool   MemberMoneyWithdraw(uint32 amount, uint32 LowGuid);
+//      uint64 GetGuildBankMoney() { return guildbank_money; }
+//      void   SetBankMoney(int64 money);
         // per days
-        bool   MemberItemWithdraw(uint8 TabId, uint32 LowGuid);
-        uint32 GetMemberSlotWithdrawRem(uint32 LowGuid, uint8 TabId);
-        uint32 GetMemberMoneyWithdrawRem(uint32 LowGuid);
-        void   SetBankMoneyPerDay(uint32 rankId, uint32 money);
-        void   SetBankRightsAndSlots(uint32 rankId, uint8 TabId, uint32 right, uint32 SlotPerDay, bool db);
-        uint32 GetBankMoneyPerDay(uint32 rankId);
-        uint32 GetBankSlotPerDay(uint32 rankId, uint8 TabId);
+//      bool   MemberItemWithdraw(uint8 TabId, uint32 LowGuid);
+//      uint32 GetMemberSlotWithdrawRem(uint32 LowGuid, uint8 TabId);
+//      uint32 GetMemberMoneyWithdrawRem(uint32 LowGuid);
+//      void   SetBankMoneyPerDay(uint32 rankId, uint32 money);
+//      void   SetBankRightsAndSlots(uint32 rankId, uint8 TabId, uint32 right, uint32 SlotPerDay, bool db);
+//      uint32 GetBankMoneyPerDay(uint32 rankId);
+//      uint32 GetBankSlotPerDay(uint32 rankId, uint8 TabId);
         // rights per day
-        void   LoadBankRightsFromDB(uint32 GuildId);
+//      void   LoadBankRightsFromDB(uint32 GuildId);
         // logs
-        void   LoadGuildBankEventLogFromDB();
-        void   UnloadGuildBankEventLog();
-        void   DisplayGuildBankLogs(WorldSession *session, uint8 TabId);
-        void   LogBankEvent(uint8 LogEntry, uint8 TabId, uint32 PlayerGuidLow, uint32 ItemOrMoney, uint8 ItemStackCount=0, uint8 DestTabId=0);
-        void   RenumBankLogs();
-        bool   AddGBankItemToDB(uint32 GuildId, uint32 BankTab , uint32 BankTabSlot , uint32 GUIDLow, uint32 Entry );
+//      void   LoadGuildBankEventLogFromDB();
+//      void   UnloadGuildBankEventLog();
+//      void   DisplayGuildBankLogs(WorldSession *session, uint8 TabId);
+//      void   LogBankEvent(uint8 LogEntry, uint8 TabId, uint32 PlayerGuidLow, uint32 ItemOrMoney, uint8 ItemStackCount=0, uint8 DestTabId=0);
+//      void   RenumBankLogs();
+//      bool   AddGBankItemToDB(uint32 GuildId, uint32 BankTab , uint32 BankTabSlot , uint32 GUIDLow, uint32 Entry );
 
     protected:
         void AddRank(std::string name,uint32 rights,uint32 money);

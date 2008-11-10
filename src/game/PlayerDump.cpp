@@ -16,12 +16,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "PlayerDump.h"
 #include "Database/DatabaseEnv.h"
 #include "Database/SQLStorage.h"
 #include "UpdateFields.h"
-#include "ObjectMgr.h"
 
 // Character Dump tables
 #define DUMP_TABLE_COUNT 20

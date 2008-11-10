@@ -16,13 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "ObjectMgr.h"
 #include "Totem.h"
 #include "WorldPacket.h"
 #include "MapManager.h"
 #include "Log.h"
 #include "Group.h"
 #include "Player.h"
-#include "ObjectMgr.h"
 #include "SpellMgr.h"
 
 Totem::Totem() : Creature()
@@ -69,7 +69,7 @@ void Totem::Summon(Unit* owner)
             SetDisplayId(cinfo->DisplayID_A);
     }
 
-    WorldPacket data(SMSG_GAMEOBJECT_SPAWN_ANIM_OBSOLETE, 8);
+    WorldPacket data(SMSG_GAMEOBJECT_SPAWN_ANIM, 8);
     data << GetGUID();
     SendMessageToSet(&data,true);
 

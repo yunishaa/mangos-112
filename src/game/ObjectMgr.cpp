@@ -15,21 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Database/DatabaseEnv.h"
 #include "Database/SQLStorage.h"
 
 #include "Log.h"
 #include "MapManager.h"
-#include "ObjectMgr.h"
 #include "SpellMgr.h"
 #include "UpdateMask.h"
 #include "World.h"
 #include "WorldSession.h"
 #include "Group.h"
 #include "Guild.h"
-#include "ArenaTeam.h"
+//#include "ArenaTeam.h"
 #include "Transports.h"
 #include "ProgressBar.h"
 #include "Policies/SingletonImp.h"
@@ -218,7 +216,7 @@ Guild* ObjectMgr::GetGuildByLeader(const uint64 &guid) const
 
     return NULL;
 }
-
+/*
 ArenaTeam* ObjectMgr::GetArenaTeamById(const uint32 ArenaTeamId) const
 {
     for(ArenaTeamSet::const_iterator itr = mArenaTeamSet.begin(); itr != mArenaTeamSet.end(); itr++)
@@ -245,7 +243,7 @@ ArenaTeam* ObjectMgr::GetArenaTeamByCapitan(uint64 const& guid) const
 
     return NULL;
 }
-
+*/
 AuctionHouseObject * ObjectMgr::GetAuctionsMap( uint32 location )
 {
     switch ( location )
@@ -2523,7 +2521,7 @@ void ObjectMgr::LoadGuilds()
         ++count;
 
         newguild = new Guild;
-        if(!newguild->LoadGuildFromDB(fields[0].GetUInt32()))
+         if(!newguild->LoadGuildFromDB(fields[0].GetUInt32()))
         {
             newguild->Disband();
             delete newguild;
@@ -2538,7 +2536,7 @@ void ObjectMgr::LoadGuilds()
     sLog.outString();
     sLog.outString( ">> Loaded %u guild definitions", count );
 }
-
+/*
 void ObjectMgr::LoadArenaTeams()
 {
     uint32 count = 0;
@@ -2580,7 +2578,7 @@ void ObjectMgr::LoadArenaTeams()
     sLog.outString();
     sLog.outString( ">> Loaded %u arenateam definitions", count );
 }
-
+*/
 void ObjectMgr::LoadGroups()
 {
     // -- loading groups --

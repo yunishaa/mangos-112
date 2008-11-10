@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Language.h"
 #include "Database/DatabaseEnv.h"
 #include "WorldPacket.h"
@@ -24,7 +24,6 @@
 #include "Opcodes.h"
 #include "Log.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "Player.h"
 #include "UpdateMask.h"
 #include "Chat.h"
@@ -67,7 +66,7 @@ ChatCommand * ChatHandler::getCommandTable()
         { "mount",          SEC_MODERATOR,      &ChatHandler::HandleModifyMountCommand,         "", NULL },
         { "honor",          SEC_MODERATOR,      &ChatHandler::HandleModifyHonorCommand,         "", NULL },
         { "rep",            SEC_MODERATOR,      &ChatHandler::HandleModifyRepCommand,           "", NULL },
-        { "arena",          SEC_MODERATOR,      &ChatHandler::HandleModifyArenaCommand,         "", NULL },
+//      { "arena",          SEC_MODERATOR,      &ChatHandler::HandleModifyArenaCommand,         "", NULL },
         { "drunk",          SEC_MODERATOR,      &ChatHandler::HandleDrunkCommand,               "", NULL },
         { "standstate",     SEC_GAMEMASTER,     &ChatHandler::HandleStandStateCommand,          "", NULL },
         { "morph",          SEC_GAMEMASTER,     &ChatHandler::HandleMorphCommand,               "", NULL },
@@ -363,7 +362,7 @@ ChatCommand * ChatHandler::getCommandTable()
         { "chat",           SEC_MODERATOR,      &ChatHandler::HandleGMChatCommand,              "", NULL },
         { "list",           SEC_PLAYER,         &ChatHandler::HandleGMListCommand,              "", NULL },
         { "visible",        SEC_MODERATOR,      &ChatHandler::HandleVisibleCommand,             "", NULL },
-        { "fly",            SEC_ADMINISTRATOR,  &ChatHandler::HandleFlyModeCommand,             "", NULL },
+//      { "fly",            SEC_ADMINISTRATOR,  &ChatHandler::HandleFlyModeCommand,             "", NULL },
         { "",               SEC_MODERATOR,      &ChatHandler::HandleGMmodeCommand,              "", NULL },
         { NULL,             0,                  NULL,                                           "", NULL }
     };

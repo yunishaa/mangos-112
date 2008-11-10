@@ -16,9 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "Common.h"
+#include "BattleGround.h"
 #include "Object.h"
 #include "Player.h"
-#include "BattleGround.h"
 #include "Creature.h"
 #include "MapManager.h"
 #include "Language.h"
@@ -421,9 +422,9 @@ uint32 BattleGround::GetBattlemasterEntry() const
     {
         case BATTLEGROUND_AV: return 15972;
         case BATTLEGROUND_WS: return 14623;
-        case BATTLEGROUND_AB: return 14879;
+        case BATTLEGROUND_AB: return 14879;/*
         case BATTLEGROUND_EY: return 22516;
-        case BATTLEGROUND_NA: return 20200;
+        case BATTLEGROUND_NA: return 20200;*/
         default:              return 0;
     }
 }
@@ -458,11 +459,11 @@ void BattleGround::RewardMark(Player *plr,uint32 count)
                 mark = SPELL_AB_MARK_WINNER;
             else
                 mark = SPELL_AB_MARK_LOSER;
-            break;
+            break;/*
         case BATTLEGROUND_EY:
             IsSpell = false;
             mark = ITEM_EY_MARK_OF_HONOR;
-            break;
+            break;*/
         default:
             return;
     }
@@ -540,10 +541,10 @@ void BattleGround::RewardQuest(Player *plr)
             break;
         case BATTLEGROUND_AB:
             quest = SPELL_AB_QUEST_REWARD;
-            break;
+            break;/*
         case BATTLEGROUND_EY:
             quest = SPELL_EY_QUEST_REWARD;
-            break;
+            break;*/
         default:
             return;
     }

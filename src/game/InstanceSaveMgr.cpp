@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "ObjectMgr.h"
 #include "InstanceSaveMgr.h"
-#include "Common.h"
 #include "Database/SQLStorage.h"
 
 #include "Player.h"
@@ -35,7 +35,6 @@
 #include "Config/ConfigEnv.h"
 #include "Transports.h"
 #include "ObjectAccessor.h"
-#include "ObjectMgr.h"
 #include "World.h"
 #include "Group.h"
 #include "InstanceData.h"

@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Database/DatabaseEnv.h"
 #include "WorldPacket.h"
 #include "SharedDefines.h"
@@ -24,7 +24,6 @@
 #include "Opcodes.h"
 #include "Log.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "Player.h"
 #include "Guild.h"
 #include "UpdateMask.h"
@@ -37,6 +36,7 @@
 #include "SocialMgr.h"
 #include "Util.h"
 #include "Language.h"
+#include "Chat.h"
 
 class LoginQueryHolder : public SqlQueryHolder
 {
@@ -406,7 +406,7 @@ void WorldSession::HandleCharDeleteOpcode( WorldPacket & recv_data )
         SendPacket( &data );
         return;
     }
-
+/*
     // is arena team captain
     if(objmgr.GetArenaTeamByCapitan(guid))
     {
@@ -415,7 +415,7 @@ void WorldSession::HandleCharDeleteOpcode( WorldPacket & recv_data )
         SendPacket( &data );
         return;
     }
-
+*/
     QueryResult *result = CharacterDatabase.PQuery("SELECT account,name FROM characters WHERE guid='%u'", GUID_LOPART(guid));
     if(result)
     {
@@ -501,14 +501,16 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder * holder)
     for(int i = 0; i < 32; i++)
         data << uint32(0);
     SendPacket(&data);
-
+/*
     data.Initialize(SMSG_FEATURE_SYSTEM_STATUS, 2);         // added in 2.2.0
     data << uint8(2);                                       // unknown value
     data << uint8(0);                                       // enable(1)/disable(0) voice chat interface in client
     SendPacket(&data);
-
+*/
     // Send MOTD
-    {
+    ChatHandler(this).SendSysMessage(sWorld.GetMotd());
+
+/*  {
         data.Initialize(SMSG_MOTD, 50);                     // new in 2.0.1
         data << (uint32)0;
 
@@ -537,7 +539,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder * holder)
 
         SendPacket( &data );
         DEBUG_LOG( "WORLD: Sent motd (SMSG_MOTD)" );
-    }
+    }*/
 
     if(pCurrChar->GetGuildId() != 0)
     {
@@ -560,7 +562,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder * holder)
             DEBUG_LOG( "WORLD: Sent guild-signed-on (SMSG_GUILD_EVENT)" );
 
             // Increment online members of the guild
-            guild->IncOnlineMemberCount();
+//          guild->IncOnlineMemberCount();
         }
         else
         {
@@ -988,7 +990,7 @@ void WorldSession::HandleChangePlayerNameOpcode(WorldPacket& recv_data)
     data << newname;
     SendPacket(&data);
 }
-
+/*
 void WorldSession::HandleDeclinedPlayerNameOpcode(WorldPacket& recv_data)
 {
     uint64 guid;
@@ -1078,3 +1080,4 @@ void WorldSession::HandleDeclinedPlayerNameOpcode(WorldPacket& recv_data)
     data << uint64(guid);
     SendPacket(&data);
 }
+*/

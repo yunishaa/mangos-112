@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
 #include "Language.h"
 #include "Database/DatabaseEnv.h"
 #include "WorldPacket.h"
@@ -24,7 +24,6 @@
 #include "Opcodes.h"
 #include "Log.h"
 #include "World.h"
-#include "ObjectMgr.h"
 #include "SpellMgr.h"
 #include "Player.h"
 #include "GossipDef.h"
@@ -812,7 +811,7 @@ void WorldSession::HandleRepairItemOpcode( WorldPacket & recv_data )
 
         TotalCost = _player->DurabilityRepairAll(true,discountMod,guildBank>0?true:false);
     }
-    if (guildBank)
+/*  if (guildBank)
     {
         uint32 GuildId = _player->GetGuildId();
         if (!GuildId)
@@ -822,5 +821,5 @@ void WorldSession::HandleRepairItemOpcode( WorldPacket & recv_data )
             return;
         pGuild->LogBankEvent(GUILD_BANK_LOG_REPAIR_MONEY, 0, _player->GetGUIDLow(), TotalCost);
         pGuild->SendMoneyInfo(this, _player->GetGUIDLow());
-    }
+    }*/
 }

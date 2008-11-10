@@ -16,19 +16,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "Common.h"
+#include "ObjectMgr.h"
+#include "BattleGround.h"
 #include "WorldPacket.h"
 #include "Opcodes.h"
 #include "Log.h"
 #include "Player.h"
-#include "ObjectMgr.h"
 #include "WorldSession.h"
 #include "MapManager.h"
 #include "ObjectAccessor.h"
 #include "Object.h"
 #include "BattleGroundMgr.h"
 #include "BattleGroundWS.h"
-#include "BattleGround.h"
 #include "Language.h"
 
 void WorldSession::HandleBattleGroundHelloOpcode( WorldPacket & recv_data )
@@ -468,7 +467,7 @@ void WorldSession::HandleAreaSpiritHealerQueueOpcode( WorldPacket & recv_data )
 
     bg->AddPlayerToResurrectQueue(guid, _player->GetGUID());
 }
-
+/*
 void WorldSession::HandleBattleGroundArenaJoin( WorldPacket & recv_data )
 {
     CHECK_PACKET_SIZE(recv_data, 8+1+1+1);
@@ -544,7 +543,7 @@ void WorldSession::HandleBattleGroundArenaJoin( WorldPacket & recv_data )
 
             /*if (!member->CanJoinToBattleground())
                 //player has deserter aura .. do nothing
-            */
+
 
             if (member->InBattleGroundQueueForBattleGroundType(BATTLEGROUND_AA))
                 //player is already in this queue
@@ -576,7 +575,7 @@ void WorldSession::HandleBattleGroundArenaJoin( WorldPacket & recv_data )
     {
         /*if (!member->CanJoinToBattleground())
             //player has deserter aura .. do nothing
-        */
+
 
         if (_player->InBattleGroundQueueForBattleGroundType(BATTLEGROUND_AA))
             //player is already in this queue
@@ -601,7 +600,7 @@ void WorldSession::HandleBattleGroundArenaJoin( WorldPacket & recv_data )
         sBattleGroundMgr.m_BattleGroundQueues[BATTLEGROUND_AA].AddPlayer(_player, BATTLEGROUND_AA);
     }
 }
-
+*/
 void WorldSession::HandleBattleGroundReportAFK( WorldPacket & recv_data )
 {
     CHECK_PACKET_SIZE(recv_data, 8);

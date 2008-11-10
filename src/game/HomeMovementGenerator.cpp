@@ -16,13 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "ObjectMgr.h"
 #include "HomeMovementGenerator.h"
 #include "Creature.h"
 #include "Traveller.h"
 #include "MapManager.h"
 #include "ObjectAccessor.h"
 #include "DestinationHolderImp.h"
-#include "ObjectMgr.h"
 #include "WorldPacket.h"
 
 void
