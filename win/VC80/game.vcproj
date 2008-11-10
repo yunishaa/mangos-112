@@ -53,8 +53,9 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\game.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="Common.h"
+				PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\common.pch"
 				AssemblerListingLocation=".\game__$(PlatformName)_$(ConfigurationName)\"
 				ObjectFile=".\game__$(PlatformName)_$(ConfigurationName)\"
 				ProgramDataBaseFileName=".\game__$(PlatformName)_$(ConfigurationName)\"
@@ -134,8 +135,9 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\game.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="Common.h"
+				PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\common.pch"
 				AssemblerListingLocation=".\game__$(PlatformName)_$(ConfigurationName)\"
 				ObjectFile=".\game__$(PlatformName)_$(ConfigurationName)\"
 				ProgramDataBaseFileName=".\game__$(PlatformName)_$(ConfigurationName)\"
@@ -214,8 +216,9 @@
 				EnableFunctionLevelLinking="true"
 				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\game.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="Common.h"
+				PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\common.pch"
 				AssemblerListingLocation=".\game__$(PlatformName)_$(ConfigurationName)\"
 				ObjectFile=".\game__$(PlatformName)_$(ConfigurationName)\"
 				ProgramDataBaseFileName=".\game__$(PlatformName)_$(ConfigurationName)\"
@@ -295,8 +298,9 @@
 				EnableFunctionLevelLinking="true"
 				EnableEnhancedInstructionSet="0"
 				RuntimeTypeInfo="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\game.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="Common.h"
+				PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\common.pch"
 				AssemblerListingLocation=".\game__$(PlatformName)_$(ConfigurationName)\"
 				ObjectFile=".\game__$(PlatformName)_$(ConfigurationName)\"
 				ProgramDataBaseFileName=".\game__$(PlatformName)_$(ConfigurationName)\"
@@ -349,6 +353,46 @@
 			<File
 				RelativePath="..\..\src\game\AccountMgr.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\AccountMgr.h"
@@ -363,12 +407,44 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\game\ArenaTeamHandler.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\game\AuctionHouse.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\BattleGround.cpp"
@@ -379,16 +455,44 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\game\BattleGroundAA.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\game\BattleGroundAA.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\game\BattleGroundAB.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\BattleGroundAB.h"
@@ -403,47 +507,87 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\game\BattleGroundBE.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\game\BattleGroundBE.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\game\BattleGroundEY.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\game\BattleGroundEY.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\game\BattleGroundHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\BattleGroundMgr.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\BattleGroundMgr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\game\BattleGroundNA.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\game\BattleGroundNA.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\game\BattleGroundRL.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\game\BattleGroundRL.h"
 				>
 			</File>
 			<File
@@ -465,6 +609,42 @@
 			<File
 				RelativePath="..\..\src\game\Channel.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Channel.h"
@@ -481,10 +661,82 @@
 			<File
 				RelativePath="..\..\src\game\CharacterHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Chat.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Chat.h"
@@ -493,6 +745,42 @@
 			<File
 				RelativePath="..\..\src\game\ChatHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\CombatHandler.cpp"
@@ -505,6 +793,42 @@
 			<File
 				RelativePath="..\..\src\game\GameEvent.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\GameEvent.h"
@@ -513,6 +837,42 @@
 			<File
 				RelativePath="..\..\src\game\GossipDef.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\GossipDef.h"
@@ -545,6 +905,42 @@
 			<File
 				RelativePath="..\..\src\game\Group.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Group.h"
@@ -553,6 +949,42 @@
 			<File
 				RelativePath="..\..\src\game\GroupHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\GuildHandler.cpp"
@@ -569,6 +1001,42 @@
 			<File
 				RelativePath="..\..\src\game\InstanceSaveMgr.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\InstanceSaveMgr.h"
@@ -577,10 +1045,82 @@
 			<File
 				RelativePath="..\..\src\game\ItemHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\LFGHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\LootHandler.cpp"
@@ -589,6 +1129,42 @@
 			<File
 				RelativePath="..\..\src\game\Mail.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Mail.h"
@@ -597,6 +1173,42 @@
 			<File
 				RelativePath="..\..\src\game\Map.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Map.h"
@@ -605,6 +1217,42 @@
 			<File
 				RelativePath="..\..\src\game\MapInstanced.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\MapInstanced.h"
@@ -613,6 +1261,42 @@
 			<File
 				RelativePath="..\..\src\game\MapManager.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\MapManager.h"
@@ -621,6 +1305,42 @@
 			<File
 				RelativePath="..\..\src\game\MiscHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\MovementHandler.cpp"
@@ -629,6 +1349,42 @@
 			<File
 				RelativePath="..\..\src\game\NPCHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\NPCHandler.h"
@@ -637,6 +1393,42 @@
 			<File
 				RelativePath="..\..\src\game\ObjectGridLoader.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\ObjectGridLoader.h"
@@ -649,14 +1441,122 @@
 			<File
 				RelativePath="..\..\src\game\PetHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\PetitionsHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\QueryHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\QuestDef.cpp"
@@ -669,6 +1569,42 @@
 			<File
 				RelativePath="..\..\src\game\QuestHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\ScriptCalls.cpp"
@@ -701,6 +1637,42 @@
 			<File
 				RelativePath="..\..\src\game\Spell.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Spell.h"
@@ -713,6 +1685,42 @@
 			<File
 				RelativePath="..\..\src\game\SpellAuras.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\SpellAuras.h"
@@ -721,14 +1729,122 @@
 			<File
 				RelativePath="..\..\src\game\SpellEffects.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\SpellHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\TaxiHandler.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\TradeHandler.cpp"
@@ -737,6 +1853,42 @@
 			<File
 				RelativePath="..\..\src\game\Transports.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Transports.h"
@@ -765,6 +1917,42 @@
 			<File
 				RelativePath="..\..\src\game\Weather.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Weather.h"
@@ -773,6 +1961,42 @@
 			<File
 				RelativePath="..\..\src\game\World.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\World.h"
@@ -795,20 +2019,48 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\game\ArenaTeam.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\game\ArenaTeam.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\game\AuctionHouseObject.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Bag.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Bag.h"
@@ -833,6 +2085,42 @@
 			<File
 				RelativePath="..\..\src\game\Creature.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Creature.h"
@@ -901,6 +2189,42 @@
 			<File
 				RelativePath="..\..\src\game\GameObject.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\GameObject.h"
@@ -917,6 +2241,42 @@
 			<File
 				RelativePath="..\..\src\game\Guild.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Guild.h"
@@ -929,6 +2289,42 @@
 			<File
 				RelativePath="..\..\src\game\HomeMovementGenerator.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\HomeMovementGenerator.h"
@@ -945,6 +2341,42 @@
 			<File
 				RelativePath="..\..\src\game\Item.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Item.h"
@@ -953,6 +2385,42 @@
 			<File
 				RelativePath="..\..\src\game\ItemEnchantmentMgr.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\ItemEnchantmentMgr.h"
@@ -965,6 +2433,42 @@
 			<File
 				RelativePath="..\..\src\game\LootMgr.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\LootMgr.h"
@@ -997,6 +2501,42 @@
 			<File
 				RelativePath="..\..\src\game\Object.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Object.h"
@@ -1005,6 +2545,42 @@
 			<File
 				RelativePath="..\..\src\game\ObjectAccessor.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\ObjectAccessor.h"
@@ -1017,6 +2593,42 @@
 			<File
 				RelativePath="..\..\src\game\ObjectMgr.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\ObjectMgr.h"
@@ -1033,6 +2645,42 @@
 			<File
 				RelativePath="..\..\src\game\Pet.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Pet.h"
@@ -1049,6 +2697,42 @@
 			<File
 				RelativePath="..\..\src\game\Player.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Player.h"
@@ -1081,6 +2765,42 @@
 			<File
 				RelativePath="..\..\src\game\SocialMgr.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\SocialMgr.h"
@@ -1089,6 +2809,42 @@
 			<File
 				RelativePath="..\..\src\game\SpellMgr.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\SpellMgr.h"
@@ -1117,6 +2873,42 @@
 			<File
 				RelativePath="..\..\src\game\Totem.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Totem.h"
@@ -1137,6 +2929,42 @@
 			<File
 				RelativePath="..\..\src\game\Unit.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Unit.h"
@@ -1157,6 +2985,42 @@
 			<File
 				RelativePath="..\..\src\game\WaypointMovementGenerator.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\WaypointMovementGenerator.h"
@@ -1197,6 +3061,42 @@
 			<File
 				RelativePath="..\..\src\game\WorldSession.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\WorldSession.h"
@@ -1233,19 +3133,131 @@
 			<File
 				RelativePath="..\..\src\game\Level1.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Level2.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Level3.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
 			Name="Tool"
 			>
+			<File
+				RelativePath="..\..\src\game\Common.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\src\game\Language.h"
 				>
@@ -1253,6 +3265,42 @@
 			<File
 				RelativePath="..\..\src\game\PlayerDump.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="ObjectMgr.h"
+						PrecompiledHeaderFile=".\game__$(PlatformName)_$(ConfigurationName)\objectmgr.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\PlayerDump.h"
@@ -1261,6 +3309,38 @@
 			<File
 				RelativePath="..\..\src\game\tools.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\game\Tools.h"

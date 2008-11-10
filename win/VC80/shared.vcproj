@@ -53,7 +53,8 @@
 				EnableFunctionLevelLinking="true"
 				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="true"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="Common.h"
 				PrecompiledHeaderFile=".\shared__$(PlatformName)_$(ConfigurationName)/shared.pch"
 				AssemblerListingLocation=".\shared__$(PlatformName)_$(ConfigurationName)\"
 				ObjectFile=".\shared__$(PlatformName)_$(ConfigurationName)\"
@@ -135,7 +136,8 @@
 				EnableFunctionLevelLinking="true"
 				EnableEnhancedInstructionSet="0"
 				RuntimeTypeInfo="true"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="Common.h"
 				PrecompiledHeaderFile=".\shared__$(PlatformName)_$(ConfigurationName)/shared.pch"
 				AssemblerListingLocation=".\shared__$(PlatformName)_$(ConfigurationName)\"
 				ObjectFile=".\shared__$(PlatformName)_$(ConfigurationName)\"
@@ -213,7 +215,8 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="Common.h"
 				PrecompiledHeaderFile=".\shared__$(PlatformName)_$(ConfigurationName)\shared.pch"
 				AssemblerListingLocation=".\shared__$(PlatformName)_$(ConfigurationName)\"
 				ObjectFile=".\shared__$(PlatformName)_$(ConfigurationName)\"
@@ -293,8 +296,9 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\shared__$(PlatformName)_$(ConfigurationName)\shared.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="Common.h"
+				PrecompiledHeaderFile=".\shared__$(PlatformName)_$(ConfigurationName)/shared.pch"
 				AssemblerListingLocation=".\shared__$(PlatformName)_$(ConfigurationName)\"
 				ObjectFile=".\shared__$(PlatformName)_$(ConfigurationName)\"
 				ProgramDataBaseFileName=".\shared__$(PlatformName)_$(ConfigurationName)\"
@@ -756,6 +760,38 @@
 		<File
 			RelativePath="..\..\src\shared\Common.cpp"
 			>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|x64"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|x64"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="..\..\src\shared\Common.h"
