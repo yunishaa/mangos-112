@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2005-2008 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,7 @@ using namespace G3D;
 namespace VMAP
 {
 
-    bool CommandFileRW::appendCmd(const Command& 
+    bool CommandFileRW::appendCmd(const Command&
 #ifdef _DEBUG
         pCommand
 #endif
@@ -54,7 +54,7 @@ namespace VMAP
 
     //=========================================================
 
-    bool CommandFileRW::appendCmds(const Array<Command>& 
+    bool CommandFileRW::appendCmds(const Array<Command>&
 #ifdef _DEBUG
         pCmdArray
 #endif

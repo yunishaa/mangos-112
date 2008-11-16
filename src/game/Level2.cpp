@@ -3911,7 +3911,7 @@ bool ChatHandler::HandleLearnAllRecipesCommand(const char* args)
 
 bool ChatHandler::HandleLookupPlayerIpCommand(const char* args)
 {
-  
+
     if(!*args)
         return false;
 
@@ -3947,7 +3947,7 @@ bool ChatHandler::HandleLookupPlayerAccountCommand(const char* args)
 
 bool ChatHandler::HandleLookupPlayerEmailCommand(const char* args)
 {
-  
+
     if(!*args)
         return false;
 
@@ -3977,7 +3977,7 @@ bool ChatHandler::LookupPlayerSearchCommand(QueryResult* result, int32 limit)
         Field* fields = result->Fetch();
         uint32 acc_id = fields[0].GetUInt32();
         std::string acc_name = fields[1].GetCppString();
-        
+
         QueryResult* chars = CharacterDatabase.PQuery("SELECT guid,name FROM characters WHERE account = '%u'", acc_id);
         if(chars)
         {

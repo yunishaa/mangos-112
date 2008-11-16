@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2005-2008 MaNGOS <http://getmangos.com/>
+/* 
+ * Copyright (C) 2005-2008 MaNGOS <http://www.mangosproject.org/>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,15 +16,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __MYSQLDELAYTHREAD_H
-#define __MYSQLDELAYTHREAD_H
+#ifndef CONFIG_H
+#define CONFIG_H
+#endif
+//#define WIN32
 
-#include "Database/SqlDelayThread.h"
-
-class MySQLDelayThread : public SqlDelayThread
-{
-    public:
-        MySQLDelayThread(Database* db) : SqlDelayThread(db) {}
-        void Stop() { SqlDelayThread::Stop(); }
-};
-#endif                                                      //__MYSQLDELAYTHREAD_H
+#ifdef WIN32
+//#include <windows.h>
+#define MANGOS_DLL_EXPORT extern "C" __declspec(dllexport)
+#elif defined( __GNUC__ )
+#define MANGOS_DLL_EXPORT extern "C"
+#else
+#define MANGOS_DLL_EXPORT extern "C" export
+#endif

@@ -63,7 +63,7 @@ WorldSession::~WorldSession()
     /// - If have unclosed socket, close it
   if (m_Socket)
     {
-      m_Socket->CloseSocket ();   
+      m_Socket->CloseSocket ();
       m_Socket->RemoveReference ();
       m_Socket = NULL;
     }
@@ -74,7 +74,7 @@ WorldSession::~WorldSession()
         WorldPacket *packet = _recvQueue.next();
         delete packet;
     }
-    
+
     sWorld.RemoveQueuedPlayer(this);
 }
 
@@ -155,11 +155,11 @@ bool WorldSession::Update(uint32 /*diff*/)
 {
   if (m_Socket)
     if (m_Socket->IsClosed ())
-      { 
+      {
         m_Socket->RemoveReference ();
         m_Socket = NULL;
       }
-  
+
     WorldPacket *packet;
 
     ///- Retrieve packets from the receive queue and call the appropriate handlers
@@ -506,5 +506,3 @@ void WorldSession::SendAuthWaitQue(uint32 position)
          SendPacket(&packet);
      }
  }
- 
-
