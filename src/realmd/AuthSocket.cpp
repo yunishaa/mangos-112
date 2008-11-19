@@ -441,43 +441,37 @@ bool AuthSocket::_HandleLogonChallenge()
                     }
                     else
                     {
-                        ///- If the user is already logged in, reject the logon attempt
-                        //if((*result)[4].GetUInt8() == 1)
-                        //{
-                        //    pkt << (uint8)REALM_AUTH_ACCOUNT_IN_USE;
-                        //}
-                        //else
-                        {
-                            ///- Get the password from the account table, upper it, and make the SRP6 calculation
-                            std::string password = (*result)[0].GetCppString();
-                            _SetVSFields(password);
+                        ///- Get the password from the account table, upper it, and make the SRP6 calculation
+                        std::string rI = (*result)[0].GetCppString();
+                        _SetVSFields(rI);
 
-                            b.SetRand(19 * 8);
-                            BigNumber gmod=g.ModExp(b, N);
-                            B = ((v * 3) + gmod) % N;
-                            ASSERT(gmod.GetNumBytes() <= 32);
+                        b.SetRand(19 * 8);
+                        BigNumber gmod=g.ModExp(b, N);
+                        B = ((v * 3) + gmod) % N;
 
-                            BigNumber unk3;
-                            unk3.SetRand(16*8);
+                        ASSERT(gmod.GetNumBytes() <= 32);
 
-                            ///- Fill the response packet with the result
-                            pkt << (uint8)REALM_AUTH_SUCCESS;
-                            pkt.append(B.AsByteArray(), 32);
-                            pkt << (uint8)1;
-                            pkt.append(g.AsByteArray(), 1);
-                            pkt << (uint8)32;
-                            pkt.append(N.AsByteArray(), 32);
-                            pkt.append(s.AsByteArray(), s.GetNumBytes());
-                            pkt.append(unk3.AsByteArray(), 16);
-                            pkt << (uint8)0;                // Added in 1.12.x client branch
+                        BigNumber unk3;
+                        unk3.SetRand(16*8);
 
-                            std::string localeName;
-                            localeName.resize(4);
-                            for(int i = 0; i <4; ++i)
-                                localeName[i] = ch->country[4-i-1];
-                            _localization = GetLocaleByName(localeName);
+                        ///- Fill the response packet with the result
+                        pkt << (uint8)REALM_AUTH_SUCCESS;
 
-                        }
+                        pkt.append(B.AsByteArray(), 32);
+                        pkt << (uint8)1;
+                        pkt.append(g.AsByteArray(), 1);
+                        pkt << (uint8)32;
+                        pkt.append(N.AsByteArray(), 32);
+                        pkt.append(s.AsByteArray(), s.GetNumBytes());
+                        pkt.append(unk3.AsByteArray(), 16);
+                        pkt << (uint8)0;                    // Added in 1.12.x client branch
+
+                        std::string localeName;
+                        localeName.resize(4);
+                        for(int i = 0; i <4; ++i)
+                            localeName[i] = ch->country[4-i-1];
+
+                        _localization = GetLocaleByName(localeName);
                     }
                 }
                 delete result;
