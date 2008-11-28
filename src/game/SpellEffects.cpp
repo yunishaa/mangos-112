@@ -4037,12 +4037,12 @@ void Spell::EffectSummonPet(uint32 i)
     NewSummon->setPetType(SUMMON_PET);
 
     uint32 faction = m_caster->getFaction();
-    if(m_caster->GetTypeId() == TYPEID_UNIT && ((Creature*)m_caster)->isTotem())
+    if(m_caster->GetTypeId() == TYPEID_UNIT)
     {
-        Unit* owner = ((Totem*)m_caster)->GetOwner();
-        if(owner)
-            faction = owner->getFaction();
-        NewSummon->GetCharmInfo()->SetReactState(REACT_AGGRESSIVE);
+        if ( ((Creature*)m_caster)->isTotem() )
+            NewSummon->GetCharmInfo()->SetReactState(REACT_AGGRESSIVE);
+        else
+            NewSummon->GetCharmInfo()->SetReactState(REACT_DEFENSIVE);
     }
 
     NewSummon->SetUInt64Value(UNIT_FIELD_SUMMONEDBY, m_caster->GetGUID());
@@ -4944,7 +4944,7 @@ void Spell::EffectDuel(uint32 i)
     Player *target = (Player*)unitTarget;
 
     // caster or target already have requested duel
-    if( caster->duel || target->duel || target->GetSocial()->HasIgnore(caster->GetGUIDLow()) )
+    if( caster->duel || target->duel || !target->GetSocial() || target->GetSocial()->HasIgnore(caster->GetGUIDLow()) )
         return;
 
     // Players can only fight a duel with each other outside (=not inside dungeons and not in capital cities)

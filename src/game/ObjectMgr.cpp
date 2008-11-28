@@ -35,6 +35,7 @@
 #include "GameEvent.h"
 #include "Spell.h"
 #include "Chat.h"
+#include "AccountMgr.h"
 #include "InstanceSaveMgr.h"
 #include "SpellAuras.h"
 #include "Util.h"
@@ -315,7 +316,7 @@ void ObjectMgr::SendAuctionWonMail( AuctionEntry *auction )
         else
         {
             bidder_accId = GetPlayerAccountIdByGUID(bidder_guid);
-            bidder_security = GetSecurityByAccount(bidder_accId);
+            bidder_security = accmgr.GetSecurity(bidder_accId);
 
             if(bidder_security > SEC_PLAYER )               // not do redundant DB requests
             {
@@ -558,6 +559,74 @@ void ObjectMgr::LoadCreatureLocales()
 
     sLog.outString();
     sLog.outString( ">> Loaded %u creature locale strings", mCreatureLocaleMap.size() );
+}
+
+void ObjectMgr::LoadNpcOptionLocales()
+{
+    mNpcOptionLocaleMap.clear();                              // need for reload case
+
+    QueryResult *result = WorldDatabase.Query("SELECT entry,"
+        "option_text_loc1,box_text_loc1,option_text_loc2,box_text_loc2,"
+        "option_text_loc3,box_text_loc3,option_text_loc4,box_text_loc4,"
+        "option_text_loc5,box_text_loc5,option_text_loc6,box_text_loc6,"
+        "option_text_loc7,box_text_loc7,option_text_loc8,box_text_loc8 "
+        "FROM locales_npc_option");
+
+    if(!result)
+    {
+        barGoLink bar(1);
+
+        bar.step();
+
+        sLog.outString("");
+        sLog.outString(">> Loaded 0 npc_option locale strings. DB table `locales_npc_option` is empty.");
+        return;
+    }
+
+    barGoLink bar(result->GetRowCount());
+
+    do
+    {
+        Field *fields = result->Fetch();
+        bar.step();
+
+        uint32 entry = fields[0].GetUInt32();
+
+        NpcOptionLocale& data = mNpcOptionLocaleMap[entry];
+
+        for(int i = 1; i < MAX_LOCALE; ++i)
+        {
+            std::string str = fields[1+2*(i-1)].GetCppString();
+            if(!str.empty())
+            {
+                int idx = GetOrNewIndexForLocale(LocaleConstant(i));
+                if(idx >= 0)
+                {
+                    if(data.OptionText.size() <= idx)
+                        data.OptionText.resize(idx+1);
+
+                    data.OptionText[idx] = str;
+                }
+            }
+            str = fields[1+2*(i-1)+1].GetCppString();
+            if(!str.empty())
+            {
+                int idx = GetOrNewIndexForLocale(LocaleConstant(i));
+                if(idx >= 0)
+                {
+                    if(data.BoxText.size() <= idx)
+                        data.BoxText.resize(idx+1);
+
+                    data.BoxText[idx] = str;
+                }
+            }
+        }
+    } while (result->NextRow());
+
+    delete result;
+
+    sLog.outString();
+    sLog.outString( ">> Loaded %u npc_option locale strings", mNpcOptionLocaleMap.size() );
 }
 
 void ObjectMgr::LoadCreatureTemplates()
@@ -1293,41 +1362,14 @@ uint32 ObjectMgr::GetPlayerAccountIdByGUID(const uint64 &guid) const
     return 0;
 }
 
-uint32 ObjectMgr::GetSecurityByAccount(uint32 acc_id) const
+uint32 ObjectMgr::GetPlayerAccountIdByPlayerName(std::string name) const
 {
-    QueryResult *result = loginDatabase.PQuery("SELECT gmlevel FROM account WHERE id = '%u'", acc_id);
+    QueryResult *result = CharacterDatabase.PQuery("SELECT account FROM characters WHERE name = '%s'", name.c_str());
     if(result)
     {
-        uint32 sec = (*result)[0].GetUInt32();
+        uint32 acc = (*result)[0].GetUInt32();
         delete result;
-        return sec;
-    }
-
-    return 0;
-}
-
-bool ObjectMgr::GetAccountNameByAccount(uint32 acc_id, std::string &name) const
-{
-    QueryResult *result = loginDatabase.PQuery("SELECT username FROM account WHERE id = '%u'", acc_id);
-    if(result)
-    {
-        name = (*result)[0].GetCppString();
-        delete result;
-        return true;
-    }
-
-    return false;
-}
-
-uint32 ObjectMgr::GetAccountByAccountName(std::string name) const
-{
-    loginDatabase.escape_string(name);
-    QueryResult *result = loginDatabase.PQuery("SELECT id FROM account WHERE username = '%s'", name.c_str());
-    if(result)
-    {
-        uint32 id = (*result)[0].GetUInt32();
-        delete result;
-        return id;
+        return acc;
     }
 
     return 0;
@@ -2759,11 +2801,11 @@ void ObjectMgr::LoadQuests()
         "RewItemId1, RewItemId2, RewItemId3, RewItemId4, RewItemCount1, RewItemCount2, RewItemCount3, RewItemCount4,"
     //   89              90              91              92              93              94            95            96            97            98
         "RewRepFaction1, RewRepFaction2, RewRepFaction3, RewRepFaction4, RewRepFaction5, RewRepValue1, RewRepValue2, RewRepValue3, RewRepValue4, RewRepValue5,"
-    //   99             100               101       102           103                104               105         106     107     108
-        "RewOrReqMoney, RewMoneyMaxLevel, RewSpell, RewSpellCast, RewMailTemplateId, RewMailDelaySecs, PointMapId, PointX, PointY, PointOpt,"
-    //   109            110            111            112           113              114            115                116                117                118
+    //   99                 100            101               102       103           104                105               106         107     108    109
+        "RewHonorableKills, RewOrReqMoney, RewMoneyMaxLevel, RewSpell, RewSpellCast, RewMailTemplateId, RewMailDelaySecs, PointMapId, PointX, PointY, PointOpt,"
+    //   110            111            112           113              114            115                116                117                118             119
         "DetailsEmote1, DetailsEmote2, DetailsEmote3, DetailsEmote4,IncompleteEmote, CompleteEmote, OfferRewardEmote1, OfferRewardEmote2, OfferRewardEmote3, OfferRewardEmote4,"
-    //   119          120
+    //   120          121
         "StartScript, CompleteScript"
         " FROM quest_template");
     if(result == NULL)
@@ -6405,6 +6447,10 @@ bool PlayerCondition::Meets(Player const * player) const
                     return true;
             return false;
         }
+        case CONDITION_NO_AURA:
+            return !player->HasAura(value1, value2);
+        case CONDITION_ACTIVE_EVENT:
+            return gameeventmgr.IsActiveEvent(value1);
         default:
             return false;
     }
@@ -6525,6 +6571,30 @@ bool PlayerCondition::IsValid(ConditionType condition, uint32 value1, uint32 val
                 sLog.outErrorDb("Quest condition has useless data in value2 (%u)!", value2);
             break;
         }
+        case CONDITION_NO_AURA:
+        {
+            if(!sSpellStore.LookupEntry(value1))
+            {
+                sLog.outErrorDb("Aura condition requires to have non existing spell (Id: %d), skipped", value1);
+                return false;
+            }
+            if(value2 > 2)
+            {
+                sLog.outErrorDb("Aura condition requires to have non existing effect index (%u) (must be 0..2), skipped", value2);
+                return false;
+            }
+            break;
+        }
+        case CONDITION_ACTIVE_EVENT:
+        {
+            GameEvent::GameEventDataMap const& events = gameeventmgr.GetEventMap();
+            if(value1 >=events.size() || !events[value1].isValid())
+            {
+                sLog.outErrorDb("Active event condition requires existed event id (%u), skipped", value1);
+                return false;
+            }
+            break;
+        }
     }
     return true;
 }
@@ -6634,11 +6704,15 @@ GameTele const* ObjectMgr::GetGameTele(std::string name) const
     // converting string that we try to find to lower case
     wstrToLower( wname );
 
+    // Alternative first GameTele what contains wnameLow as substring in case no GameTele location found
+    const GameTele* alt = NULL;
     for(GameTeleMap::const_iterator itr = m_GameTeleMap.begin(); itr != m_GameTeleMap.end(); ++itr)
         if(itr->second.wnameLow == wname)
             return &itr->second;
+        else if (alt == NULL && itr->second.wnameLow.find(wname) != std::wstring::npos)
+            alt = &itr->second;
 
-    return NULL;
+    return alt;
 }
 
 bool ObjectMgr::AddGameTele(GameTele& tele)
@@ -6876,6 +6950,58 @@ void ObjectMgr::LoadNpcTextId()
 
     sLog.outString();
     sLog.outString( ">> Loaded %d NpcTextId ", count );
+}
+
+void ObjectMgr::LoadNpcOptions()
+{
+    m_mCacheNpcOptionList.clear();                          // For reload case
+
+    QueryResult *result = WorldDatabase.Query(
+        //      0  1         2       3    4      5         6     7           8
+        "SELECT id,gossip_id,npcflag,icon,action,box_money,coded,option_text,box_text "
+        "FROM npc_option");
+
+    if( !result )
+    {
+        barGoLink bar( 1 );
+
+        bar.step();
+
+        sLog.outString();
+        sLog.outErrorDb(">> Loaded `npc_option`, table is empty!");
+        return;
+    }
+
+    barGoLink bar( result->GetRowCount() );
+
+    uint32 count = 0;
+
+    do
+    {
+        bar.step();
+
+        Field* fields = result->Fetch();
+
+        GossipOption go;
+        go.Id               = fields[0].GetUInt32();
+        go.GossipId         = fields[1].GetUInt32();
+        go.NpcFlag          = fields[2].GetUInt32();
+        go.Icon             = fields[3].GetUInt32();
+        go.Action           = fields[4].GetUInt32();
+        go.BoxMoney         = fields[5].GetUInt32();
+        go.Coded            = fields[6].GetUInt8()!=0;
+        go.OptionText       = fields[7].GetCppString();
+        go.BoxText          = fields[8].GetCppString();
+
+        m_mCacheNpcOptionList.push_back(go);
+
+        ++count;
+
+    } while (result->NextRow());
+    delete result;
+
+    sLog.outString();
+    sLog.outString( ">> Loaded %d npc_option entries", count );
 }
 
 void ObjectMgr::AddVendorItem( uint32 entry,uint32 item, uint32 maxcount, uint32 incrtime, uint32 extendedcost )

@@ -26,6 +26,7 @@
 #include "Common.h"
 #include "Timer.h"
 #include "Policies/Singleton.h"
+#include "SharedDefines.h"
 
 #include <map>
 #include <set>
@@ -38,7 +39,6 @@ class Player;
 class Weather;
 struct ScriptAction;
 struct ScriptInfo;
-class CliCommandHolder;
 class SqlResultQueue;
 class QueryResult;
 class WorldSocket;
@@ -146,7 +146,6 @@ enum WorldConfigs
     CONFIG_SILENTLY_GM_JOIN_TO_CHANNEL,
     CONFIG_TALENTS_INSPECTING,
     CONFIG_CHAT_FAKE_MESSAGE_PREVENTING,
-    CONFIG_TCP_NO_DELAY,
     CONFIG_CORPSE_DECAY_NORMAL,
     CONFIG_CORPSE_DECAY_RARE,
     CONFIG_CORPSE_DECAY_ELITE,
@@ -271,14 +270,6 @@ enum RealmZone
     REALM_ZONE_CN9           = 29                           // basic-Latin at create, any at login
 };
 
-/// Ban function return codes
-enum BanReturn
-{
-    BAN_SUCCESS,
-    BAN_SYNTAX_ERROR,
-    BAN_NOTFOUND
-};
-
 // DB scripting commands
 #define SCRIPT_COMMAND_TALK                  0              // source = unit, target=any, datalong ( 0=say, 1=whisper, 2=yell, 3=emote text)
 #define SCRIPT_COMMAND_EMOTE                 1              // source = unit, datalong = anim_id
@@ -296,37 +287,23 @@ enum BanReturn
 #define SCRIPT_COMMAND_REMOVE_AURA          14              // source (datalong2!=0) or target (datalong==0) unit, datalong = spell_id
 #define SCRIPT_COMMAND_CAST_SPELL           15              // source (datalong2!=0) or target (datalong==0) unit, datalong = spell_id
 
-/// CLI related stuff, define here to prevent cyclic dependancies
-
-typedef int(* pPrintf)(const char*,...);
-typedef void(* pCliFunc)(char *,pPrintf);
-
-/// Command Template class
-struct CliCommand
-{
-    char const * cmd;
-    pCliFunc Func;
-    char const * description;
-};
-
 /// Storage class for commands issued for delayed execution
-class CliCommandHolder
+struct CliCommandHolder
 {
-    private:
-        const CliCommand *cmd;
-        char *args;
-        pPrintf m_zprintf;
-    public:
-        CliCommandHolder(const CliCommand *command, const char *arguments, pPrintf p_zprintf)
-            : cmd(command), m_zprintf(p_zprintf)
-        {
-            size_t len = strlen(arguments)+1;
-            args = new char[len];
-            memcpy(args, arguments, len);
-        }
-        ~CliCommandHolder() { delete[] args; }
-        void Execute() const { cmd->Func(args, m_zprintf); }
-        pPrintf GetOutputMethod() const {return (m_zprintf);}
+    typedef void Print(const char*);
+
+    char *m_command;
+    Print* m_print;
+
+    CliCommandHolder(const char *command, Print* zprint)
+        : m_print(zprint)
+    {
+        size_t len = strlen(command)+1;
+        m_command = new char[len];
+        memcpy(m_command, command, len);
+    }
+
+    ~CliCommandHolder() { delete[] m_command; }
 };
 
 /// The World
@@ -448,8 +425,8 @@ class World
         void KickAll();
         void KickAllLess(AccountTypes sec);
         void KickAllQueued();
-        uint8 BanAccount(std::string type, std::string nameOrIP, std::string duration, std::string reason, std::string author);
-        bool RemoveBanAccount(std::string type, std::string nameOrIP);
+        BanReturn BanAccount(BanMode mode, std::string nameOrIP, std::string duration, std::string reason, std::string author);
+        bool RemoveBanAccount(BanMode mode, std::string nameOrIP);
 
         void ScriptsStart(std::map<uint32, std::multimap<uint32, ScriptInfo> > const& scripts, uint32 id, Object* source, Object* target);
         void ScriptCommandStart(ScriptInfo const& script, uint32 delay, Object* source, Object* target);
@@ -464,7 +441,7 @@ class World
         static float GetVisibleObjectGreyDistance()     { return m_VisibleObjectGreyDistance;     }
 
         void ProcessCliCommands();
-        void QueueCliCommand(CliCommandHolder* command) { cliCmdQueue.add(command); }
+        void QueueCliCommand( CliCommandHolder::Print* zprintf, char const* input ) { cliCmdQueue.add(new CliCommandHolder(input, zprintf)); }
 
         void UpdateResultQueue();
         void InitResultQueue();
@@ -472,6 +449,15 @@ class World
         void UpdateRealmCharCount(uint32 accid);
 
         LocaleConstant GetAvailableDbcLocale(LocaleConstant locale) const { if(m_availableDbcLocaleMask & (1 << locale)) return locale; else return m_defaultDbcLocale; }
+
+        //used World DB version
+        void LoadDBVersion();
+        char const* GetDBVersion() { return m_DBVersion.c_str(); }
+
+        //used Script version
+        void SetScriptsVersion(char const* version) { m_ScriptsVersion = version ? version : "unknown scripting library"; }
+        char const* GetScriptsVersion() { return m_ScriptsVersion.c_str(); }
+
     protected:
         void _UpdateGameTime();
         void ScriptsProcess();
@@ -531,6 +517,10 @@ class World
         //sessions that are added async
         void AddSession_(WorldSession* s);
         ZThread::LockedQueue<WorldSession*, ZThread::FastMutex> addSessQueue;
+
+        //used versions
+        std::string m_DBVersion;
+        std::string m_ScriptsVersion;
 };
 
 extern uint32 realmID;

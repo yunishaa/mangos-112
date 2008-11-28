@@ -39,7 +39,7 @@ UNLOCK TABLES;
 -- Table structure for table `areatrigger_scripts`
 --
 
-DROP TABLE IF EXISTS `areatrigger_scripts`; 
+DROP TABLE IF EXISTS `areatrigger_scripts`;
 CREATE TABLE `areatrigger_scripts` (
     `entry` MEDIUMINT( 8 ) NOT NULL ,
     `ScriptName` CHAR( 64 ) NOT NULL ,
@@ -173,21 +173,34 @@ CREATE TABLE `command` (
 LOCK TABLES `command` WRITE;
 /*!40000 ALTER TABLE `command` DISABLE KEYS */;
 INSERT INTO `command` VALUES
-('acct',0,'Syntax: .acct\r\n\r\nDisplay the access level of your account.'),
+('account',0,'Syntax: .account\r\n\r\nDisplay the access level of your account.'),
+('account create',4,'Syntax: .account create $account $password\r\n\r\nCreate account and set password to it.'),
+('account delete',4,'Syntax: .account delete $account\r\n\r\nDelete account with all characters.'),
+('account onlinelist',4,'Syntax: .account onlinelist\r\n\r\nShow list of online accounts.'),
+('account set addon',3,'Syntax: .account set addon [$account] #addon\r\n\r\nSet user (posible targeted) expansion addon level allowed. Addon values: 0 - normal, 1 - tbc, 2 - wotlk.'),
+('account set gmlevel',4,'Syntax: .account set gmlevel [$account] #level\r\n\r\nSet the security level for targeted player (can''t be used at self) or for account $name to a level of #level.\r\n\r\n#level may range from 0 to 3.'),
+('account set password',4,'Syntax: .account set password $account $password $password\r\n\r\nSet password for account.'),
 ('additem',3,'Syntax: .additem #itemid/[#itemname]/#shift-click-item-link #itemcount\r\n\r\nAdds the specified number of items of id #itemid (or exact (!) name $itemname in brackets, or link created by shift-click at item in inventory or recipe) to your or selected character inventory. If #itemcount is omitted, only one item will be added.\r\n.'),
 ('additemset',3,'Syntax: .additemset #itemsetid\r\n\r\nAdd items from itemset of id #itemsetid to your or selected character inventory. Will add by one example each item from itemset.'),
 ('addmove',2,'Syntax: .addmove #creature_guid [#waittime]\r\n\r\nAdd your current location as a waypoint for creature with guid #creature_guid. And optional add wait time.'),
 ('announce',1,'Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.'),
 ('aura',3,'Syntax: .aura #spellid\r\n\r\nAdd the aura from spell #spellid to the selected Unit.'),
-('ban',3,'Syntax is: ban <account|ip|character> $NameOrIp $bantime $reason\r\nBan account or IP and kick player.\r\n$bantime: negative value leads to permban, otherwise use a timestring like \"4d20h3s\".'),
-('baninfo',3,'Syntax is: baninfo <account|ip|character>\r\nWatch full information about a specific ban.'),
+('ban account',3,'Syntax is: ban account $Name $bantime $reason\r\nBan account kick player.\r\n$bantime: negative value leads to permban, otherwise use a timestring like \"4d20h3s\".'),
+('ban character',3,'Syntax is: ban character $Name $bantime $reason\r\nBan account and kick player.\r\n$bantime: negative value leads to permban, otherwise use a timestring like \"4d20h3s\".'),
+('ban ip',3,'Syntax is: ban ip $Ip $bantime $reason\r\nBan IP.\r\n$bantime: negative value leads to permban, otherwise use a timestring like \"4d20h3s\".'),
+('baninfo account',3,'Syntax is: baninfo account\r\nWatch full information about a specific ban.'),
+('baninfo character',3,'Syntax is: baninfo character\r\nWatch full information about a specific ban.'),
+('baninfo ip',3,'Syntax is: baninfo ip\r\nWatch full information about a specific ban.'),
 ('bank',3,'Syntax: .bank\r\n\r\nShow your bank inventory.'),
-('banlist',3,'Syntax is: banlist <account|ip|character> $NameOrIp\r\nsearches the banlist for a pattern.'),
+('banlist account',3,'Syntax is: banlist account [$Name]\r\nSearches the banlist for a account name pattern or show full list account bans.'),
+('banlist character',3,'Syntax is: banlist character $Name\r\nSearches the banlist for a character name pattern. Pattern required.'),
+('banlist ip',3,'Syntax is: banlist ip [$Ip]\r\nSearches the banlist for a IP pattern or show full list of IP bans.'),
 ('cast',3,'Syntax: .cast #spellid [triggered]\r\n  Cast #spellid to selected target. If no target selected cast to self. If \'trigered\' or part provided then spell casted with triggered flag.'),
 ('cast back',3,'Syntax: .cast back #spellid [triggered]\r\n  Selected target will cast #spellid to your character. If \'trigered\' or part provided then spell casted with triggered flag.'),
 ('cast dist',3,'Syntax: .cast dist #spellid [#dist [triggered]]\r\n  You will cast spell to pint at distance #dist. If \'trigered\' or part provided then spell casted with triggered flag. Not all spells can be casted as area spells.'),
 ('cast self',3,'Syntax: .cast self #spellid [triggered]\r\nCast #spellid by target at target itself. If \'trigered\' or part provided then spell casted with triggered flag.'),
 ('cast target',3,'Syntax: .cast target #spellid [triggered]\r\n  Selected target will cast #spellid to his victim. If \'trigered\' or part provided then spell casted with triggered flag.'),
+('chardelete',4,'Syntax: .chardelete $charactername\r\n\r\nDelete character.'),
 ('combatstop',2,'Syntax: .combatstop [$playername]\r\nStop combat for selected character. If selected non-player then command applied to self. If $playername provided then attempt applied to online player $playername.'),
 ('commands',0,'Syntax: .commands\r\n\r\nDisplay a list of available commands for your account level.'),
 ('cooldown',3,'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or you (if no selection).'),
@@ -211,7 +224,9 @@ INSERT INTO `command` VALUES
 ('gm',1,'Syntax: .gm [on/off]\r\n\r\nEnable or Disable in game GM MODE or show current state of on/off not provided.'),
 ('gm chat',1,'Syntax: .gm chat [on/off]\r\n\r\nEnable or disable chat GM MODE (show gm badge in messages) or show current state of on/off not provided.'),
 ('gm fly',3,'Syntax: .gm fly on/off\r\nEnable/disable gm fly mode.'),
-('gm list',0,'Syntax: .gm list\r\n\r\nDisplay a list of available Game Masters.'),
+('gm ingame',0,'Syntax: .gm ingame\r\n\r\nDisplay a list of available in game Game Masters.'),
+('gm list',3,'Syntax: .gm list\r\n\r\nDisplay a list of all Game Masters accounts and security levels.'),
+('gm online',0,'Syntax: .gm online\r\n\r\nDisplay a list of available Game Masters.'),
 ('gm visible',1,'Syntax: .gm visible on/off\r\n\r\nOutput current visibility state or make GM visible(on) and invisible(off) for other players.'),
 ('go creature',2,'Syntax: .go creature #creature_guid\r\nTeleport your character to creature with guid #creature_guid.\r\n.gocreature #creature_name\r\nTeleport your character to creature with this name.\r\n.gocreature id #creature_id\r\nTeleport your character to a creature that was spawned from the template with this entry.\r\n*If* more than one creature is found, then you are teleported to the first that is found inside the database.'),
 ('go graveyard',2,'Syntax: .go graveyard #graveyardId\r\n Teleport to graveyard with the graveyardId specified.'),
@@ -236,7 +251,7 @@ INSERT INTO `command` VALUES
 ('guild invite',2,'Syntax: .guild invite $CharacterName $GuildName\r\n\r\nAdd $CharacterName into a guild $GuildName.'),
 ('guild rank',2,'Syntax: .guild rank $CharacterName #Rank\r\n\r\nSet for $CharacterName rank #Rank in a guild.'),
 ('guild uninvite',2,'Syntax: .guild uninvite $CharacterName\r\n\r\nRemove $CharacterName from a guild.'),
-('help',0,'Syntax: .help $command\r\n\r\nDisplay usage instructions for the given $command.'),
+('help',0,'Syntax: .help [$command]\r\n\r\nDisplay usage instructions for the given $command. If no $command provided show list available commands.'),
 ('hidearea',3,'Syntax: .hidearea #areaid\r\n\r\nHide the area of #areaid to the selected character. If no character is selected, hide this area to you.'),
 ('honor add',2,'Syntax: .honor add $amount\r\n\r\nAdd a certain amount of honor (gained today) to the selected player.'),
 ('honor addkill',2,'Syntax: .honor addkikll\r\n\r\nAdd the targeted unit as one of your pvp kills today (you only get honor if it\'s a racial leader or a player)'),
@@ -261,7 +276,7 @@ INSERT INTO `command` VALUES
 ('levelup',3,'Syntax: .levelup [$playername] [#numberoflevels]\r\n\r\nIncrease/decrease the level of character with $playername (or the selected if not name provided) by #numberoflevels Or +1 if no #numberoflevels provided). If #numberoflevels is omitted, the level will be increase by 1. If #numberoflevels is 0, the same level will be restarted. If no character is selected and name not provided, increase your level. Command can be used for offline character. All stats and dependent VALUESrecalculated. At level decrease talents can be reset if need. Also at level decrease equipped items with greater level requirement can be lost.'),
 ('linkgrave',3,'Syntax: .linkgrave #graveyard_id [alliance|horde]\r\n\r\nLink current zone to graveyard for any (or alliance/horde faction ghosts). This let character ghost from zone teleport to graveyard after die if graveyard is nearest from linked to zone and accept ghost of this faction. Add only single graveyard at another map and only if no graveyards linked (or planned linked at same map).'),
 ('list creature',3,'Syntax: .list creature #creature_id [#max_count]\r\n\r\nOutput creatures with creature id #creature_id found in world. Output creature guids and coordinates sorted by distance from character. Will be output maximum #max_count creatures. If #max_count not provided use 10 as default value.'),
-('list item',3,'Syntax: .list item #item_id [#max_count]\r\n\r\nOutput items with item id #item_id found in all character inventories, mails and auctions. Output item guids, item owner guid, owner account and owner name. Will be output maximum #max_count items. If #max_count not provided use 10 as default value.'),
+('list item',3,'Syntax: .list item #item_id [#max_count]\r\n\r\nOutput items with item id #item_id found in all character inventories, mails, auctions, and guild banks. Output item guids, item owner guid, owner account and owner name (guild name and guid in case guild bank). Will be output maximum #max_count items. If #max_count not provided use 10 as default value.'),
 ('list object',3,'Syntax: .list object #gameobject_id [#max_count]\r\n\r\nOutput gameobjects with gameobject id #gameobject_id found in world. Output gameobject guids and coordinates sorted by distance from character. Will be output maximum #max_count gameobject. If #max_count not provided use 10 as default value.'),
 ('loadscripts',3,'Syntax: .loadscripts $scriptlibraryname\r\n\r\nUnload current and load the script library $scriptlibraryname or reload current if $scriptlibraryname omitted, in case you changed it while the server was running.'),
 ('lockaccount',0,'Syntax: .lockaccount [on|off]\r\n\r\nAllow login from account only from current used IP or remove this requirement.'),
@@ -315,6 +330,7 @@ INSERT INTO `command` VALUES
 ('npc delitem',2,'Syntax: .npc delitem #itemId\r\n\r\nRemove item #itemid from item list of selected vendor.'),
 ('npc factionid',2,'Syntax: .npc factionid #factionid\r\n\r\nSet the faction of the selected creature to #factionid.'),
 ('npc flag',2,'Syntax: .npc flag #npcflag\r\n\r\nSet the NPC flags of creature template of the selected creature and selected creature to #npcflag. NPC flags will applied to all creatures of selected creature template after server restart or grid unload/load.'),
+('npc follow',2,'Syntax: .npc follow\r\n\r\nSelected creature start follow you until death/fight/etc.'),
 ('npc info',3,'Syntax: .npc info\r\n\r\nDisplay a list of details for the selected creature.\r\n\r\nThe list includes:\r\n- GUID, Faction, NPC flags, Entry ID, Model ID,\r\n- Level,\r\n- Health (current/maximum),\r\n\r\n- Field flags, dynamic flags, faction template, \r\n- Position information,\r\n- and the creature type, e.g. if the creature is a vendor.'),
 ('npc move',2,'Syntax: .npc move [#creature_guid]\r\n\r\nMove the targeted creature spawn point to your coordinates.'),
 ('npc name',2,'Syntax: .npc name $name\r\n\r\nChange the name of the selected creature or character to $name.\r\n\r\nCommand disabled.'),
@@ -326,7 +342,10 @@ INSERT INTO `command` VALUES
 ('npc subname',2,'Syntax: .npc subname $Name\r\n\r\nChange the subname of the selected creature or player to $Name.\r\n\r\nCommand disabled.'),
 ('npc textemote',3,'Syntax: .npc textemote #emoteid\r\n\r\nMake the selected creature to do textemote with an emote of id #emoteid.'),
 ('npc whisper',1,'Syntax: .npc whisper #playerguid #text\r\nMake the selected npc whisper #text to  #playerguid.'),
+('npc unfollow',2,'Syntax: .npc unfollow\r\n\r\nSelected creature (non pet) stop follow you.'),
 ('password',0,'Syntax: .password $old_password $new_password $new_password\r\n\r\nChange your account password.'),
+('pdump write',3,'Syntax is: pdump write $filename $playerNameOrGUID\r\nWrite character dump with name/guid $playerNameOrGUID to file $filename.'),
+('pdump load',3,'Syntax is: pdump load $filename $account [$newname] [$newguid]\r\nLoad character dump from dump file into character list of $account with saved or $newname, with saved (or first free) or $newguid guid.'),
 ('pinfo',2,'Syntax: .pinfo [$player_name] [rep]\r\n\r\nOutput account information for selected player or player find by $player_name. If \"rep\" parameter provided show reputation information for player.'),
 ('plimit',3,'Syntax: .plimit [#num|-1|-2|-3|reset|player|moderator|gamemaster|administrator]\r\n\r\nWithout arg show current player amount and security level limitations for login to server, with arg set player linit ($num > 0) or securiti limitation ($num < 0 or security leme name. With `reset` sets player limit to the one in the config file'),
 ('quest add',3,'Syntax: .quest add #quest_id\r\n\r\nAdd to character quest log quest #quest_id. Quest started from item can\'t be added by this command but correct .additem call provided in command output.'),
@@ -341,22 +360,28 @@ INSERT INTO `command` VALUES
 ('reload all_spell',3,'Syntax: .reload all_spell\r\n\r\nReload all `spell_*` tables with reload support added and that can be _safe_ reloaded.'),
 ('reload all_locales',3,'Syntax: .reload all_locales\r\n\r\nReload all `locales_*` tables with reload support added and that can be _safe_ reloaded.'),
 ('reload config',3,'Syntax: .reload config\r\n\r\nReload config settings (by default stored in mangosd.conf). Not all settings can be change at reload: some new setting values will be ignored until restart, some values will applied with delay or only to new objects/maps, some values will explicitly rejected to change at reload.'),
+('repairitems',2,'Syntax: .repairitems\r\n\r\nRepair all selected player''s items.'),
 ('reset all',3,'Syntax: .reset all spells\r\n\r\nSyntax: .reset all talents\r\n\r\nRequest reset spells or talents at next login each existed character.'),
 ('reset honor',3,'Syntax:\r\n.reset honor [Playername]\r\n  Reset all honor data for targeted character.'),
 ('reset level',3,'Syntax:\r\n.reset level [Playername]\r\n  Reset level to 1 including reset stats and talents.  Equipped items with greater level requirement can be lost.'),
 ('reset spells',3,'Syntax:\r\n.reset spells [Playername]\r\n  Removes all non-original spells from spellbook.\r\n. Playername can be name of offline character.'),
 ('reset stats',3,'Syntax:\r\n.reset stats [Playername]\r\n  Resets(recalculate) all stats of the targeted player to their original VALUESat current level.'),
 ('reset talents',3,'Syntax:\r\n.reset talents [Playername]\r\n  Removes all talents of the targeted player. Playername can be name of offline character.'),
-('respawn',3,'Syntax: .respawn\r\n\r\nRespawn all nearest creatures and GO without waiting respawn time expiration.'),
+('respawn',3,'Syntax: .respawn\r\n\r\nRespawn selected creature or respawn all nearest creatures (if none selected) and GO without waiting respawn time expiration.'),
 ('revive',3,'Syntax: .revive\r\n\r\nRevive the selected player. If no player is selected, it will revive you.'),
 ('save',0,'Syntax: .save\r\n\r\nSaves your character.'),
 ('saveall',1,'Syntax: .saveall\r\n\r\nSave all characters in game.'),
-('security',3,'Syntax: .security $name #level\r\n\r\nSet the security level of player $name to a level of #level.\r\n\r\n#level may range from 0 to 5.'),
 ('sendmail',1,'Syntax: .sendmail #playername "#subject" "#text" itemid1[:count1] itemid2[:count2] ... itemidN[:countN]\r\n\r\nSend a mail to a player. Subject and mail text must be in "". If for itemid not provided related count values then expected 1, if count > max items in stack then items will be send in required amount stacks. All stacks amount in mail limited to 12.'),
+('sendmessage',3,'Syntax: .sendmessage $playername $message\r\n\r\nSend screen message to player from ADMINISTRATOR.'),
+('server corpses',2,'Syntax: .server corpses\r\n\r\nTriggering corpses expire check in world.'),
+('server exit',4,'Syntax: .server exit\r\n\r\nTerminate mangosd NOW.'),
 ('server info',0,'Syntax: .server info\r\n\r\nDisplay server version and the number of connected players.'),
 ('server idleshutdown',3,'Syntax: .server idleshutdown #delay|cancel\r\n\r\nShut the server down after #delay seconds if no active connections are present (no players) or cancel the restart/shutdown if cancel value is used.'),
 ('server idlerestart',3,'Syntax: .server idlerestart #delay|cancel\r\n\r\nRestart the server after #delay seconds if no active connections are present (no players) or cancel the restart/shutdown if cancel value is used.'),
+('server motd',0,'Syntax: .server motd\r\n\r\nShow server Message of the day.'),
 ('server restart',3,'Syntax: .server restart seconds\r\n\r\nRestart the server after given seconds and show "Restart server in X" or cancel the restart/shutdown if cancel value is used.'),
+('server set loglevel',4,'Syntax: .server set loglevel #level\r\n\r\nSet server log level (0 - errors only, 1 - basic, 2 - detail, 3 - debug).'),
+('server set motd',3,'Syntax: .server set motd $MOTD\r\n\r\nSet server Message of the day.'),
 ('server shutdown',3,'Syntax: .server shutdown seconds\r\n\r\nShut the server down after given seconds and show "Off server in X" or cancel the restart/shutdown if cancel value is used.'),
 ('setskill',3,'Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provide) for the selected character. If no character is selected, you learn the skill.'),
 ('showarea',3,'Syntax: .showarea #areaid\r\n\r\nReveal the area of #areaid to the selected character. If no character is selected, reveal this area to you.'),
@@ -368,11 +393,13 @@ INSERT INTO `command` VALUES
 ('tele group',1,'Syntax: .tele group#location\r\n\r\nTeleport a selected player and his group members to a given location.'),
 ('tele name',1,'Syntax: .tele name #playername #location\r\n\r\nTeleport a player to a given location.'),
 ('ticket',2,'Syntax: .ticket on\r\n        .ticket off\r\n        .ticket #num\r\n        .ticket $character_name\r\n\r\non/off for GMs to show or not a new ticket directly, $character_name to show ticket of this character, #num to show ticket #num.'),
-('transport',3,'Not yet implemented.'),
 ('unaura',3,'Syntax: .unaura #spellid\r\n\r\nRemove aura due to spell #spellid from the selected Unit.'),
-('unban',3,'Syntax is: unban <account|ip|character> $NameOrIp\r\nUnban account or IP.'),
+('unban account',3,'Syntax is: unban account $Name\r\nUnban accounts for account name pattern.'),
+('unban character',3,'Syntax is: unban character $Name\r\nUnban accounts for character name pattern.'),
+('unban ip',3,'Syntax is: unban ip $Ip\r\nUnban accounts for IP pattern.'),
 ('unlearn',3,'Syntax: .unlearn #startspell #endspell\r\n\r\nUnlearn for selected player the range of spells between id #startspell and #endspell. If no #endspell is provided, just unlearn spell of id #startspell.'),
 ('unmute',1,'Syntax: .unmute $playerName\r\n\r\nRestore chat messaging for any character from account of character $playerName.'),
+('waterwalk',2,'Syntax: .waterwalk on/off\r\n\r\nSet on/off waterwalk state for selected player.'),
 ('wchange',3,'Syntax: .wchange #weathertype #status\r\n\r\nSet current weather to #weathertype with an intensity of #status.\r\n\r\n#weathertype can be 1 for rain, 2 for snow, and 3 for sand. #status can be 0 for disabled, and 1 for enabled.'),
 ('whispers',1,'Syntax: .whispers on|off\r\nEnable/disable accepting whispers by GM from players. By default use mangosd.conf setting.'),
 ('wp',2,'Using WP Command:\r\nEach Waypoint Command has it\'s own description!'),
@@ -767,7 +794,8 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `db_version`;
 CREATE TABLE `db_version` (
-  `version` varchar(120) default NULL
+  `version` varchar(120) default NULL,
+  `required_2008_10_29_03_mangos_db_version` bit(1) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Used DB version notes';
 
 --
@@ -777,7 +805,7 @@ CREATE TABLE `db_version` (
 LOCK TABLES `db_version` WRITE;
 /*!40000 ALTER TABLE `db_version` DISABLE KEYS */;
 INSERT INTO `db_version` VALUES
-('Mangos default database.');
+('Mangos default database.',NULL);
 /*!40000 ALTER TABLE `db_version` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1780,6 +1808,42 @@ LOCK TABLES `locales_item` WRITE;
 /*!40000 ALTER TABLE `locales_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+--
+-- Table structure for table `locales_npc_option`
+--
+
+DROP TABLE IF EXISTS `locales_npc_option`;
+CREATE TABLE `locales_npc_option` (
+  `entry` mediumint(8) unsigned NOT NULL default '0',
+  `option_text_loc1` text,
+  `option_text_loc2` text,
+  `option_text_loc3` text,
+  `option_text_loc4` text,
+  `option_text_loc5` text,
+  `option_text_loc6` text,
+  `option_text_loc7` text,
+  `option_text_loc8` text,
+  `box_text_loc1` text,
+  `box_text_loc2` text,
+  `box_text_loc3` text,
+  `box_text_loc4` text,
+  `box_text_loc5` text,
+  `box_text_loc6` text,
+  `box_text_loc7` text,
+  `box_text_loc8` text,
+  PRIMARY KEY  (`entry`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `locales_npc_option`
+--
+
+LOCK TABLES `locales_npc_option` WRITE;
+/*!40000 ALTER TABLE `locales_npc_option` DISABLE KEYS */;
+/*!40000 ALTER TABLE `locales_npc_option` ENABLE KEYS */;
+UNLOCK TABLES;
+
 --
 -- Table structure for table `locales_npc_text`
 --
@@ -2103,7 +2167,7 @@ INSERT INTO `mangos_string` VALUES
 (22,'You are not mounted so you can\'t dismount.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (23,'Cannot do that while fighting.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (24,'You used it recently.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(25,'Your password can\'t be longer than 16 characters (client limit), password not changed!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(25,'Password not changed (unknown error)!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (26,'The password was changed',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (27,'The new passwords do not match or the old password is wrong',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (28,'Your account is now locked.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -2132,6 +2196,11 @@ INSERT INTO `mangos_string` VALUES
 (51,'Hello! Ready for some training?',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (52,'Invaid item count (%u) for item %u',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (53,'Mail can\'t have more %u item stacks',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(54,'The new passwords do not match',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(55,'Your password can\'t be longer than 16 characters (client limit), password not changed!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(56,'Current Message of the day: \r\n%s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(57,'Using World DB: %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(58,'Using script library: %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (100,'Global notify: ',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (101,'Map: %u (%s) Zone: %u (%s) Area: %u (%s)\nX: %f Y: %f Z: %f Orientation: %f\ngrid[%u,%u]cell[%u,%u] InstanceID: %u\n ZoneX: %f ZoneY: %f\nGroundZ: %f FloorZ: %f Have height data (Map: %u VMap: %u)',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (102,'%s is already being teleported.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -2202,6 +2271,7 @@ INSERT INTO `mangos_string` VALUES
 (168,'Locations found are:\n %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (169,'Mail sent to %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (170,'You try to hear sound %u but it doesn\'t exist.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(172,'server console command',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (200,'No selection.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (201,'Object GUID is: lowpart %u highpart %X',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (202,'The name was too long by %i characters.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -2338,8 +2408,15 @@ INSERT INTO `mangos_string` VALUES
 (333,'GM mode is OFF',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (334,'GM Chat Badge is ON',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (335,'GM Chat Badge is OFF',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(336,'You repair all %s''s items.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(337,'All your items repaired by %s.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(338,'You set waterwalk mode %s for %s.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(339,'Your waterwalk mode %s by %s.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(340,'%s is now following you.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(341,'%s is not following you.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(342,'%s is now not following you.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (400,'|cffff0000[System Message]:|rScripts reloaded',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(401,'You change security level of %s to %i.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(401,'You change security level of account %s to %i.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (402,'%s changed your security level to %i.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (403,'You have low security level for this.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (404,'Creature movement disabled.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -2351,7 +2428,7 @@ INSERT INTO `mangos_string` VALUES
 (410,'%s %s not found',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (411,'%s unbanned.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (412,'There was an error removing the ban on %s.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(413,'There is no such account.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(413,'Account not exist: %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (414,'There is no such character.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (415,'There is no such IP in banlist.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (416,'Account %s has never been banned',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -2376,7 +2453,7 @@ INSERT INTO `mangos_string` VALUES
 (435,'Invalid item id: %u',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (436,'No items found!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (437,'Invalid gameobject id: %u',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(438,'Found items %u: %u ( inventory %u mail %u auction %u )',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(438,'Found items %u: %u ( inventory %u mail %u auction %u guild %u)',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (439,'Found gameobjects %u: %u ',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (440,'Invalid creature id: %u',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (441,'Found creatures %u: %u ',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -2530,6 +2607,13 @@ INSERT INTO `mangos_string` VALUES
 (590,'   Fear movement',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (591,'   Distract movement',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (592,'You have learned all spells in craft: %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(593,'Currently Banned Accounts:',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(594,'|    Account    |   BanDate    |   UnbanDate  |  Banned By    |   Ban Reason  |',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(595,'Currently Banned IPs:',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(596,'|      IP       |   BanDate    |   UnbanDate  |  Banned By    |   Ban Reason  |',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(597,'Current gamemasters:',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(598,'|    Account    |  GM  |',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(599,'No gamemasters.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (600,'The Alliance wins!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (601,'The Horde wins!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (602,'The battle for Warsong Gulch begins in 1 minute.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -2589,7 +2673,38 @@ INSERT INTO `mangos_string` VALUES
 (806,'You don\'t know that language',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (807,'Please provide character name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (808,'Player %s not found or offline',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(809,'Account for character %s not found',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+(809,'Account for character %s not found',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1000,'Exiting daemon...',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1001,'Account deleted: %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1002,'Account %s NOT deleted (probably sql file format was updated)',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1003,'Account %s NOT deleted (unknown error)',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1004,'Account created: %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1005,'Account name can\'t be longer than 16 characters (client limit), account not created!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1006,'Account with this name already exist!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1007,'Account %s NOT created (probably sql file format was updated)',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1008,'Account %s NOT created (unknown error)',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1009,'Player %s (Guid: %u) Account %s (Id: %u) deleted.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1010,'|    Account    |       Character      |       IP        | GM | TBC |',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1011,'|<Error>        | %20s |<Error>          |<Er>|<Err>|',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1100,'Account %s (Id: %u) have up to %u expansion allowed now.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1101,'Message of the day changed to:\r\n%s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1102,'Message sent to %s: %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1103,'%d - %s %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1104,'%d - %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1105,'%d - %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1106,'%d - %s %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1107,'%d - %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1108,'%d - %s %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1109,'%d - %s %s %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1110,'%d - %s X:%f Y:%f Z:%f MapId:%d',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1111,'%d - %s X:%f Y:%f Z:%f MapId:%d',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1112,'Failed to open file: %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1113,'Account %s (%u) have max amount allowed characters (client limit)',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1114,'Dump file have broken data!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1115,'Invalid character name!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1116,'Invalid character guid!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1117,'Character guid %u in use!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1118,'%d - guild: %s (guid: %u) %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `mangos_string` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2640,12 +2755,15 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `npc_option`;
 CREATE TABLE `npc_option` (
-  `id` tinyint(3) unsigned NOT NULL default '0',
-  `gossip_id` tinyint(3) unsigned NOT NULL default '0',
+  `id` mediumint(8) unsigned NOT NULL default '0',
+  `gossip_id` mediumint(8) unsigned NOT NULL default '0',
   `npcflag` int(10) unsigned NOT NULL default '0',
   `icon` tinyint(3) unsigned NOT NULL default '0',
-  `action` tinyint(3) unsigned NOT NULL default '0',
+  `action` mediumint(8) unsigned NOT NULL default '0',
+  `box_money` int(10) unsigned NOT NULL default '0',
+  `coded` tinyint(3) unsigned NOT NULL default '0',
   `option_text` text,
+  `box_text` text,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -11533,6 +11651,7 @@ INSERT INTO `spell_affect` VALUES
 (30086,0,0x0000071B804CC41A),
 (30086,1,0x0000000000000400),
 (30086,2,0x0000000000000002),
+(30017,0,0x0000000000000000),
 (30143,0,0x0000002000000000),
 (30144,0,0x0000002000000000),
 (30145,0,0x0000002000000000),
@@ -11543,6 +11662,7 @@ INSERT INTO `spell_affect` VALUES
 (30248,0,0x0000200000000000),
 (30251,0,0x000010C000000125),
 (30256,0,0x000010C000000125),
+(30280,0,0x0000000000000000),
 (30288,0,0x0000004000000001),
 (30289,0,0x0000004000000001),
 (30290,0,0x0000004000000001),
@@ -11739,6 +11859,7 @@ INSERT INTO `spell_affect` VALUES
 (34492,1,0x0000000000000080),
 (34493,0,0x00004000000000C2),
 (34493,1,0x0000000000000080),
+(34520,1,0x0000000000000000),
 (34754,0,0x0000000400001800),
 (34936,0,0x0000004000000001),
 (34948,1,0x0000000000000020),
@@ -11827,6 +11948,7 @@ INSERT INTO `spell_affect` VALUES
 (37505,0,0x0000000100000000),
 (37507,0,0x0000000000000800),
 (37508,0,0x0000000100061800),
+(37508,1,0x0000000000000000),
 (37512,0,0x00000080000F0000),
 (37513,0,0x0000000000000001),
 (37517,0,0x0000014D2A600CEF),
@@ -11944,6 +12066,7 @@ INSERT INTO `spell_affect` VALUES
 (44300,0,0x0000800000000000),
 (44301,0,0x0000000001000000),
 (44302,0,0x0000000001000000),
+(44373,0,0x0000000000000000),
 (46088,0,0x0000044000000000),
 (46090,0,0x0000000000000002),
 (46091,0,0x0000000000800000),
@@ -14022,8 +14145,8 @@ LOCK TABLES `spell_learn_spell` WRITE;
 /*!40000 ALTER TABLE `spell_learn_spell` DISABLE KEYS */;
 INSERT INTO `spell_learn_spell` VALUES
 (2842,8681),
-(5784,33388), 
-(13819,33388), 
+(5784,33388),
+(13819,33388),
 (17002,24867),
 (23161,33391),
 (23214,33391),
@@ -14952,6 +15075,7 @@ INSERT INTO `spell_proc_event` VALUES
 (33953,0,0,0,0,0x0000000000000000,0x08000000,0,0),
 (34082,0,0,0,0,0x0000000000000000,0x00000000,0,0),
 (34138,0,0,0,11,0x0000000000000080,0x08000000,0,0),
+(34139,0,0,0,10,0x0000000040000000,0x08000000,0,0),
 (34303,0,0,0,0,0x0000000000000000,0x00000080,0,0),
 (34320,0,0,0,0,0x0000000000000000,0x00010000,0,0),
 (34355,0,0,0,0,0x0000000000000000,0x00100402,0,3),
@@ -14965,7 +15089,9 @@ INSERT INTO `spell_proc_event` VALUES
 (34506,0,0,0,0,0x0000000000000000,0x00080000,0,0),
 (34507,0,0,0,0,0x0000000000000000,0x00080000,0,0),
 (34508,0,0,0,0,0x0000000000000000,0x00080000,0,0),
+(34584,0,0,0,0,0x0000000000000000,0x00004000,0,30),
 (34586,0,0,0,0,0x0000000000000000,0x00080001,1.5,0),
+(34598,0,0,0,0,0x0000000000000000,0x00020000,0,45),
 (34749,0,0,0,0,0x0000000000000000,0x02000000,0,0),
 (34753,0,0,0,6,0x0000000000001800,0x08000000,0,0),
 (34774,0,0,0,0,0x0000000000000000,0x00080001,1.5,20),
@@ -15000,6 +15126,7 @@ INSERT INTO `spell_proc_event` VALUES
 (35942,0,0,0,0,0x0000000000000000,0x00080001,0,0),
 (36111,0,0,0,0,0x0000000000000000,0x00000001,0,0),
 (36123,0,0,0,0,0x0000000000000000,0x00008000,0,0),
+(36488,0,0,0,0,0x0000000000000000,0x08000000,0,0),
 (36576,0,0,0,0,0x0000000000000000,0x00008000,0,0),
 (37168,0,0,0,8,0x00000009003E0000,0x00020000,0,0),
 (37169,0,0,0,8,0x0000000000020000,0x00000000,0,0),
@@ -15076,11 +15203,13 @@ INSERT INTO `spell_proc_event` VALUES
 (41434,0,0,0,0,0x0000000000000000,0x00000001,2,45),
 (41635,0,0,0,0,0x0000000000000000,0x00008000,0,0),
 (41989,0,0,0,0,0x0000000000000000,0x00000001,3,0),
-(42083,0,0,0,0,0x0000000000000000,0x00401000,0,0),
+(42083,0,0,0,0,0x0000000000000000,0x00401000,0,45),
 (42135,0,0,0,0,0x0000000000000000,0x00100402,0,90),
 (42136,0,0,0,0,0x0000000000000000,0x00100402,0,90),
+(42368,0,0,0,10,0x0000000040000000,0x08000000,0,0),
 (42370,0,0,0,11,0x0000000000000080,0x08000000,0,0),
 (43338,0,0,0,0,0x0000000000000000,0x00001000,0,0),
+(43726,0,0,0,10,0x0000000040000000,0x08000000,0,0),
 (43728,0,0,0,11,0x0000000000000080,0x08000000,0,0),
 (43737,0,0,0,7,0x0000044000000000,0x00000001,0,10),
 (43739,0,0,0,7,0x0000000000000002,0x00020000,0,0),
@@ -15106,6 +15235,7 @@ INSERT INTO `spell_proc_event` VALUES
 (45483,0,0,0,0,0x0000000000000000,0x00080001,0,45),
 (45484,0,0,0,0,0x0000000000000000,0x08000000,0,45),
 (46046,0,0,0,0,0x0000000000000000,0x00000001,0,5),
+(46092,0,0,0,10,0x0000000040000000,0x08000000,0,0),
 (46098,0,0,0,11,0x0000000000000080,0x08000000,0,0),
 (46364,0,0,0,0,0x0000000000000000,0x00100402,0,0),
 (46569,0,0,0,0,0x0000000000000000,0x00004000,0,45),

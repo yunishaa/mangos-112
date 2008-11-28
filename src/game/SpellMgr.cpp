@@ -743,8 +743,6 @@ void SpellMgr::LoadSpellAffects()
     sLog.outString();
     sLog.outString( ">> Loaded %u spell affect definitions", count );
 
-    /*
-    // Commented for now, as it still produces many errors (still quite many spells miss spell_affect)
     for (uint32 id = 0; id < sSpellStore.GetNumRows(); ++id)
     {
         SpellEntry const* spellInfo = sSpellStore.LookupEntry(id);
@@ -765,10 +763,9 @@ void SpellMgr::LoadSpellAffects()
             if(mSpellAffectMap.find((id<<8) + effectId) !=  mSpellAffectMap.end())
                 continue;
 
-            sLog.outErrorDb("Spell %u (%s) misses spell_affect for effect %u",id,spellInfo->SpellName[sWorld.GetDBClang()], effectId);
+            sLog.outErrorDb("Spell %u (%s) misses spell_affect for effect %u",id,spellInfo->SpellName[sWorld.GetDefaultDbcLocale()], effectId);
         }
     }
-    */
 }
 
 bool SpellMgr::IsAffectedBySpell(SpellEntry const *spellInfo, uint32 spellId, uint8 effectId, uint64 familyFlags) const
@@ -2062,7 +2059,7 @@ bool IsSpellAllowedInLocation(SpellEntry const *spellInfo,uint32 map_id,uint32 z
                 // in the Blade's Edge Mountains Plateaus and Gruul's Lair.
                 return zone_id ==3522 || map_id==565;
             }
-            if(mask & ELIXIR_UNSTABLE_MASK)
+            if(mask & ELIXIR_SHATTRATH_MASK)
             {
                 // in Tempest Keep, Serpentshrine Cavern, Caverns of Time: Mount Hyjal, Black Temple
                 // TODO: and the Sunwell Plateau

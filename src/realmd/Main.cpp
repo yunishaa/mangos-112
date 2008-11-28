@@ -29,6 +29,7 @@
 #include "sockets/ListenSocket.h"
 #include "AuthSocket.h"
 #include "SystemConfig.h"
+#include "revision.h"
 #include "Util.h"
 
 #ifdef WIN32
@@ -149,7 +150,7 @@ extern int main(int argc, char **argv)
         while (pause > clock()) {}
     }
 
-    sLog.outString( "%s (WoW only realm-daemon for client 1.12.x)", _FULLVERSION );
+    sLog.outString( "%s [realm-daemon]", _FULLVERSION(REVISION_DATE,REVISION_TIME,REVISION_ID) );
     sLog.outString( "<Ctrl-C> to stop.\n" );
 
     /// realmd PID file creation

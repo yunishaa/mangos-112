@@ -24,7 +24,7 @@
 				AdditionalIncludeDirectories="..\..\dep\include;..\..\dep\include\g3dlite;..\..\src\framework;..\..\src\shared;..\..\dep\ACE_wrappers"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				StringPooling="TRUE"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="TRUE"
@@ -80,7 +80,7 @@
 				AdditionalIncludeDirectories="..\..\dep\include;..\..\dep\include\g3dlite;..\..\src\framework;..\..\src\shared;..\..\dep\ACE_wrappers"
 				PreprocessorDefinitions="WIN32;_DEBUG;MANGOS_DEBUG;_LIB"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\shared__$(PlatformName)_$(ConfigurationName)\shared.pch"
@@ -262,12 +262,6 @@
 				RelativePath="..\..\dep\include\mersennetwister\MersenneTwister.h">
 			</File>
 			<File
-				RelativePath="..\..\src\shared\Mthread.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\shared\Mthread.h">
-			</File>
-			<File
 				RelativePath="..\..\src\shared\ProgressBar.cpp">
 			</File>
 			<File
@@ -429,35 +423,35 @@
 			RelativePath="..\..\src\shared\Common.h">
 		</File>
 		<File
-			RelativePath="..\..\src\shared\ServiceWin32.cpp">
-		</File>
-		<File
-			RelativePath="..\..\src\shared\ServiceWin32.h">
-		</File>
-		<File
-			RelativePath="..\..\src\shared\svn_revision.h">
+			RelativePath="..\..\src\shared\revision.h">
 			<FileConfiguration
 				Name="Release|Win32">
 				<Tool
 					Name="VCCustomBuildTool"
-					Description="Extract SVN revision"
+					Description="Extract revision"
 					CommandLine="cd &quot;$(SolutionDir)..\src\shared&quot;
-&quot;$(TargetDir)\..\gensvnrevision__$(PlatformName)_$(ConfigurationName)\gensvnrevision.exe&quot; &quot;..\..&quot;
+&quot;$(TargetDir)\..\genrevision__$(PlatformName)_$(ConfigurationName)\genrevision.exe&quot; &quot;..\..&quot;
 "
-					AdditionalDependencies="$(SolutionDir)../.svn/entries"
-					Outputs="svn_revision.h"/>
+					AdditionalDependencies="$(SolutionDir)../.svn/entries;$(SolutionDir)../_svn/entries;$(SolutionDir)../.git/FETCH_HEAD"
+					Outputs="revision.h"/>
 			</FileConfiguration>
 			<FileConfiguration
 				Name="Debug|Win32">
 				<Tool
 					Name="VCCustomBuildTool"
-					Description="Extract SVN revision"
+					Description="Extract revision"
 					CommandLine="cd &quot;$(SolutionDir)..\src\shared&quot;
-&quot;$(TargetDir)\..\gensvnrevision__$(PlatformName)_$(ConfigurationName)\gensvnrevision.exe&quot; &quot;..\..&quot;
+&quot;$(TargetDir)\..\genrevision__$(PlatformName)_$(ConfigurationName)\genrevision.exe&quot; &quot;..\..&quot;
 "
-					AdditionalDependencies="$(SolutionDir)../.svn/entries"
-					Outputs="svn_revision.h"/>
+					AdditionalDependencies="$(SolutionDir)../.svn/entries;$(SolutionDir)../_svn/entries;$(SolutionDir)../.git/FETCH_HEAD"
+					Outputs="revision.h"/>
 			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\src\shared\ServiceWin32.cpp">
+		</File>
+		<File
+			RelativePath="..\..\src\shared\ServiceWin32.h">
 		</File>
 		<File
 			RelativePath="..\..\src\shared\SystemConfig.h.in">

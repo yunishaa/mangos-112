@@ -48,6 +48,8 @@ class AccountMgr
         bool CheckPassword(uint32 accid, std::string passwd);
 
         uint32 GetId(std::string username);
+        uint32 GetSecurity(uint32 acc_id);
+        bool GetName(uint32 acc_id, std::string &name);
 
         static bool normilizeString(std::string& utf8str);
 };

@@ -32,6 +32,7 @@
 #include "Timer.h"
 #include "Policies/SingletonImp.h"
 #include "SystemConfig.h"
+#include "revision.h"
 #include "Config/ConfigEnv.h"
 #include "Database/DatabaseEnv.h"
 #include "CliRunnable.h"
@@ -195,7 +196,7 @@ Master::~Master()
 /// Main function
 int Master::Run()
 {
-    sLog.outString( "%s (world-daemon for client 1.12.x)", _FULLVERSION );
+    sLog.outString( "%s [world-daemon]", _FULLVERSION(REVISION_DATE,REVISION_TIME,REVISION_ID) );
     sLog.outString( "<Ctrl-C> to stop.\n\n" );
 
     sLog.outTitle( "MM   MM         MM   MM  MMMMM   MMMM   MMMMM");
@@ -457,17 +458,9 @@ bool Master::_StartDB()
     ///- Clean the database before starting
     clearOnlineAccounts();
 
-    QueryResult* result = WorldDatabase.Query("SELECT version FROM db_version LIMIT 1");
-    if(result)
-    {
-        Field* fields = result->Fetch();
+    sWorld.LoadDBVersion();
 
-        sLog.outString("Using %s", fields[0].GetString());
-        delete result;
-    }
-    else
-        sLog.outString("Using unknown world database.");
-
+    sLog.outString("Using %s", sWorld.GetDBVersion());
     return true;
 }
 

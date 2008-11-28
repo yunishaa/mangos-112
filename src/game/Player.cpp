@@ -425,10 +425,8 @@ Player::~Player ()
 {
     CleanupsBeforeDelete();
 
-    if(m_uint32Values)                                      // only for fully created Object
-    {
-        sSocialMgr.RemovePlayerSocial(GetGUIDLow());
-    }
+    // it must be unloaded already in PlayerLogout and accessed only for loggined player
+    //m_social = NULL;
 
     // Note: buy back item already deleted from DB when player was saved
     for(int i = 0; i < PLAYER_SLOTS_COUNT; ++i)
@@ -3192,6 +3190,8 @@ void Player::InitVisibleBits()
 {
     updateVisualBits.SetCount(PLAYER_END);
 
+    // TODO: really implement OWNER_ONLY and GROUP_ONLY. Flags can be found in UpdateFields.h
+
     updateVisualBits.SetBit(OBJECT_FIELD_GUID);
     updateVisualBits.SetBit(OBJECT_FIELD_TYPE);
     updateVisualBits.SetBit(OBJECT_FIELD_SCALE_X);
@@ -3203,6 +3203,7 @@ void Player::InitVisibleBits()
     updateVisualBits.SetBit(UNIT_FIELD_SUMMON+1);
 
     updateVisualBits.SetBit(UNIT_FIELD_CHARMEDBY);
+    updateVisualBits.SetBit(UNIT_FIELD_CHARMEDBY+1);
 
     updateVisualBits.SetBit(UNIT_FIELD_TARGET);
     updateVisualBits.SetBit(UNIT_FIELD_TARGET+1);
@@ -3234,14 +3235,12 @@ void Player::InitVisibleBits()
     updateVisualBits.SetBit(UNIT_FIELD_AURASTATE);
     updateVisualBits.SetBit(UNIT_FIELD_BASEATTACKTIME);
     updateVisualBits.SetBit(UNIT_FIELD_BASEATTACKTIME + 1);
-    updateVisualBits.SetBit(UNIT_FIELD_RANGEDATTACKTIME);
     updateVisualBits.SetBit(UNIT_FIELD_BOUNDINGRADIUS);
     updateVisualBits.SetBit(UNIT_FIELD_COMBATREACH);
     updateVisualBits.SetBit(UNIT_FIELD_DISPLAYID);
     updateVisualBits.SetBit(UNIT_FIELD_NATIVEDISPLAYID);
     updateVisualBits.SetBit(UNIT_FIELD_MOUNTDISPLAYID);
     updateVisualBits.SetBit(UNIT_FIELD_BYTES_1);
-    updateVisualBits.SetBit(UNIT_FIELD_MOUNTDISPLAYID);
     updateVisualBits.SetBit(UNIT_FIELD_PETNUMBER);
     updateVisualBits.SetBit(UNIT_FIELD_PET_NAME_TIMESTAMP);
     updateVisualBits.SetBit(UNIT_DYNAMIC_FLAGS);
@@ -3249,16 +3248,16 @@ void Player::InitVisibleBits()
     updateVisualBits.SetBit(UNIT_MOD_CAST_SPEED);
     updateVisualBits.SetBit(UNIT_FIELD_BYTES_2);
 
+    updateVisualBits.SetBit(PLAYER_DUEL_ARBITER);
+    updateVisualBits.SetBit(PLAYER_DUEL_ARBITER+1);
     updateVisualBits.SetBit(PLAYER_FLAGS);
+    updateVisualBits.SetBit(PLAYER_GUILDID);
+    updateVisualBits.SetBit(PLAYER_GUILDRANK);
     updateVisualBits.SetBit(PLAYER_BYTES);
     updateVisualBits.SetBit(PLAYER_BYTES_2);
     updateVisualBits.SetBit(PLAYER_BYTES_3);
-    updateVisualBits.SetBit(PLAYER_GUILDID);
-    updateVisualBits.SetBit(PLAYER_GUILDRANK);
-    updateVisualBits.SetBit(PLAYER_GUILD_TIMESTAMP);
     updateVisualBits.SetBit(PLAYER_DUEL_TEAM);
-    updateVisualBits.SetBit(PLAYER_DUEL_ARBITER);
-    updateVisualBits.SetBit(PLAYER_DUEL_ARBITER+1);
+    updateVisualBits.SetBit(PLAYER_GUILD_TIMESTAMP);
 
     // PLAYER_QUEST_LOG_x also visible bit on official (but only on party/raid)...
     for(uint16 i = PLAYER_QUEST_LOG_1_1; i < PLAYER_QUEST_LOG_20_2; i+=3)
@@ -3287,16 +3286,6 @@ void Player::InitVisibleBits()
     }
 
     updateVisualBits.SetBit(PLAYER_CHOSEN_TITLE);
-
-    updateVisualBits.SetBit(UNIT_VIRTUAL_ITEM_SLOT_DISPLAY);
-    updateVisualBits.SetBit(UNIT_VIRTUAL_ITEM_SLOT_DISPLAY + 1);
-    updateVisualBits.SetBit(UNIT_VIRTUAL_ITEM_SLOT_DISPLAY + 2);
-    updateVisualBits.SetBit(UNIT_VIRTUAL_ITEM_INFO);
-    updateVisualBits.SetBit(UNIT_VIRTUAL_ITEM_INFO + 1);
-    updateVisualBits.SetBit(UNIT_VIRTUAL_ITEM_INFO + 2);
-    updateVisualBits.SetBit(UNIT_VIRTUAL_ITEM_INFO + 3);
-    updateVisualBits.SetBit(UNIT_VIRTUAL_ITEM_INFO + 4);
-    updateVisualBits.SetBit(UNIT_VIRTUAL_ITEM_INFO + 5);
 }
 
 void Player::BuildCreateUpdateBlockForPlayer( UpdateData *data, Player *target ) const
@@ -12055,6 +12044,10 @@ void Player::RewardQuest( Quest const *pQuest, uint32 reward, Object* questGiver
     // Give player extra money if GetRewOrReqMoney > 0 and get ReqMoney if negative
     ModifyMoney( pQuest->GetRewOrReqMoney() );
 
+    // honor reward
+    if(pQuest->GetRewHonorableKills())
+        RewardHonor(NULL, 0, MaNGOS::Honor::hk_honor_at_level(getLevel(), pQuest->GetRewHonorableKills()));
+
     // title reward
     if(pQuest->GetCharTitleId())
     {
@@ -13322,8 +13315,8 @@ float Player::GetFloatValueFromDB(uint16 index, uint64 guid)
 
 bool Player::LoadFromDB( uint32 guid, SqlQueryHolder *holder )
 {
-    ////                                                     0     1        2     3     4     5      6           7           8           9    10           11        12         13         14         15          16           17                 18                 19                 20       21       22       23       24         25       26            27        [28]  [29]    30                 31         32
-    //QueryResult *result = CharacterDatabase.PQuery("SELECT guid, account, data, name, race, class, position_x, position_y, position_z, map, orientation, taximask, cinematic, totaltime, leveltime, rest_bonus, logout_time, is_logout_resting, resettalents_cost, resettalents_time, trans_x, trans_y, trans_z, trans_o, transguid, gmstate, stable_slots, at_login, zone, online, death_expire_time, taxi_path, dungeon_difficulty FROM characters WHERE guid = '%u'", guid);
+    ////                                                     0     1        2     3     4     5      6           7           8           9    10           11        12         13         14         15          16           17                 18                 19                 20       21       22       23       24         25           26            27        [28]  [29]    30                 31         32
+    //QueryResult *result = CharacterDatabase.PQuery("SELECT guid, account, data, name, race, class, position_x, position_y, position_z, map, orientation, taximask, cinematic, totaltime, leveltime, rest_bonus, logout_time, is_logout_resting, resettalents_cost, resettalents_time, trans_x, trans_y, trans_z, trans_o, transguid, extra_flags, stable_slots, at_login, zone, online, death_expire_time, taxi_path, dungeon_difficulty FROM characters WHERE guid = '%u'", guid);
     QueryResult *result = holder->GetResult(PLAYER_LOGIN_QUERY_LOADFROM);
 
     if(!result)
@@ -13558,7 +13551,7 @@ bool Player::LoadFromDB( uint32 guid, SqlQueryHolder *holder )
 
     m_taxi.LoadTaxiMask( fields[11].GetString() );          // must be before InitTaxiNodesForLevel
 
-    uint32 gmstate = fields[25].GetUInt32();
+    uint32 extraflags = fields[25].GetUInt32();
 
     m_stableSlots = fields[26].GetUInt32();
     if(m_stableSlots > 2)
@@ -13748,7 +13741,7 @@ bool Player::LoadFromDB( uint32 guid, SqlQueryHolder *holder )
             case 0:                      break;             // disable
             case 1: SetGameMaster(true); break;             // enable
             case 2:                                         // save state
-                if(gmstate & PLAYER_EXTRA_GM_ON)
+                if(extraflags & PLAYER_EXTRA_GM_ON)
                     SetGameMaster(true);
                 break;
         }
@@ -13759,7 +13752,7 @@ bool Player::LoadFromDB( uint32 guid, SqlQueryHolder *holder )
             case 0:                        break;           // disable
             case 1: SetAcceptTicket(true); break;           // enable
             case 2:                                         // save state
-            if(gmstate & PLAYER_EXTRA_GM_ACCEPT_TICKETS)
+            if(extraflags & PLAYER_EXTRA_GM_ACCEPT_TICKETS)
                 SetAcceptTicket(true);
             break;
         }
@@ -13770,7 +13763,7 @@ bool Player::LoadFromDB( uint32 guid, SqlQueryHolder *holder )
             case 0:                  break;                 // disable
             case 1: SetGMChat(true); break;                 // enable
             case 2:                                         // save state
-                if(gmstate & PLAYER_EXTRA_GM_CHAT)
+                if(extraflags & PLAYER_EXTRA_GM_CHAT)
                     SetGMChat(true);
                 break;
         }
@@ -13781,7 +13774,7 @@ bool Player::LoadFromDB( uint32 guid, SqlQueryHolder *holder )
             case 0:                          break;         // disable
             case 1: SetAcceptWhispers(true); break;         // enable
             case 2:                                         // save state
-                if(gmstate & PLAYER_EXTRA_ACCEPT_WHISPERS)
+                if(extraflags & PLAYER_EXTRA_ACCEPT_WHISPERS)
                     SetAcceptWhispers(true);
                 break;
         }
@@ -14766,7 +14759,7 @@ void Player::SaveToDB()
         "map, dungeon_difficulty, position_x, position_y, position_z, orientation, data, "
         "taximask, online, cinematic, "
         "totaltime, leveltime, rest_bonus, logout_time, is_logout_resting, resettalents_cost, resettalents_time, "
-        "trans_x, trans_y, trans_z, trans_o, transguid, gmstate, stable_slots, at_login, zone, "
+        "trans_x, trans_y, trans_z, trans_o, transguid, extra_flags, stable_slots, at_login, zone, "
         "death_expire_time, taxi_path) VALUES ("
         << GetGUIDLow() << ", "
         << GetSession()->GetAccountId() << ", '"
@@ -17814,14 +17807,16 @@ bool Player::RewardPlayerAndGroupAtKill(Unit* pVictim)
         uint32 count = 0;
         uint32 sum_level = 0;
         Player* member_with_max_level = NULL;
+        Player* not_gray_member_with_max_level = NULL;
 
-        pGroup->GetDataForXPAtKill(pVictim,count,sum_level,member_with_max_level);
+        pGroup->GetDataForXPAtKill(pVictim,count,sum_level,member_with_max_level,not_gray_member_with_max_level);
 
         if(member_with_max_level)
         {
-            xp = PvP ? 0 : MaNGOS::XP::Gain(member_with_max_level, pVictim);
+            /// not get Xp in PvP or no not gray players in group
+            xp = (PvP || !not_gray_member_with_max_level) ? 0 : MaNGOS::XP::Gain(not_gray_member_with_max_level, pVictim);
 
-            // skip in check PvP case (for speed, not used)
+            /// skip in check PvP case (for speed, not used)
             bool is_raid = PvP ? false : sMapStore.LookupEntry(GetMapId())->IsRaid() && pGroup->isRaidGroup();
             bool is_dungeon = PvP ? false : sMapStore.LookupEntry(GetMapId())->IsDungeon();
             float group_rate = MaNGOS::XP::xp_in_group_rate(count,is_raid);
@@ -17849,9 +17844,10 @@ bool Player::RewardPlayerAndGroupAtKill(Unit* pVictim)
                     pGroupGuy->RewardReputation(pVictim,is_dungeon ? 1.0f : rate);
 
                     // XP updated only for alive group member
-                    if(pGroupGuy->isAlive())
+                    if(pGroupGuy->isAlive() && not_gray_member_with_max_level &&
+                       pGroupGuy->getLevel() <= not_gray_member_with_max_level->getLevel())
                     {
-                        uint32 itr_xp = uint32(xp*rate);
+                        uint32 itr_xp = (member_with_max_level == not_gray_member_with_max_level) ? uint32(xp*rate) : uint32((xp*rate/2)+1);
 
                         pGroupGuy->GiveXP(itr_xp, pVictim);
                         if(Pet* pet = pGroupGuy->GetPet())

@@ -20,7 +20,7 @@
 SUBDIRS = Auth Config Database vmap
 
 ## CPP flags for includes, defines, etc.
-AM_CPPFLAGS = $(MANGOS_INCLUDES) -I$(top_builddir)/src/shared -I$(srcdir) -I$(srcdir)/../../dep/include -I$(srcdir)/../framework -I$(srcdir)/../shared -I$(srcdir)/../../dep/include/g3dlite
+AM_CPPFLAGS = $(MANGOS_INCLUDES) -I$(top_builddir)/src/shared -I$(srcdir) -I$(srcdir)/../../dep/include -I$(srcdir)/../framework -I$(srcdir)/../shared -I$(srcdir)/../../dep/include/g3dlite  -DSYSCONFDIR=\"$(sysconfdir)/\"
 ## AM_CPPFLAGS += -I$(srcdir)/../game -I$(srcdir)/../realmd
 
 ## Build MaNGOS shared library and its parts as convenience library.
@@ -40,26 +40,24 @@ libmangosshared_a_SOURCES = \
     Log.h \
     MemoryLeaks.cpp \
     MemoryLeaks.h \
-    Mthread.cpp \
-    Mthread.h \
     ProgressBar.cpp \
     ProgressBar.h \
     Timer.h \
     Util.cpp \
     Util.h \
     WorldPacket.h \
-    svn_revision.h
+    revision.h
 
-# Get svn revision
-SVN_REVISION_FILE = svn_revision.h
+# Get revision (git or svn)
+REVISION_FILE = revision.h
 
-BUILT_SOURCES = $(SVN_REVISION_FILE)
-CLEANFILES = $(SVN_REVISION_FILE)
+BUILT_SOURCES = $(REVISION_FILE)
+CLEANFILES = $(REVISION_FILE)
 
 FORCE:
 
-$(SVN_REVISION_FILE) : $(top_builddir)/src/tools/gensvnrevision/gensvnrevision FORCE
-    $(top_builddir)/src/tools/gensvnrevision/gensvnrevision $(top_srcdir)
+$(REVISION_FILE) : $(top_builddir)/src/tools/genrevision/genrevision FORCE
+	$(top_builddir)/src/tools/genrevision/genrevision $(top_srcdir)
 
 ## Additional files to include when running 'make dist'
 #  Disabled packet logger

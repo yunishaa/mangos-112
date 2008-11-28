@@ -6429,21 +6429,21 @@ bool Unit::HandleOverrideClassScriptAuraProc(Unit *pVictim, int32 scriptId, uint
     {
         case 836:                                           // Improved Blizzard (Rank 1)
         {
-            if( !procSpell || procSpell->SpellVisual!=9487 )
+            if (!procSpell || procSpell->SpellVisual!=9487)
                 return false;
             triggered_spell_id = 12484;
             break;
         }
         case 988:                                           // Improved Blizzard (Rank 2)
         {
-            if( !procSpell || procSpell->SpellVisual!=9487 )
+            if (!procSpell || procSpell->SpellVisual!=9487)
                 return false;
             triggered_spell_id = 12485;
             break;
         }
         case 989:                                           // Improved Blizzard (Rank 3)
         {
-            if( !procSpell || procSpell->SpellVisual!=9487 )
+            if (!procSpell || procSpell->SpellVisual!=9487)
                 return false;
             triggered_spell_id = 12486;
             break;
@@ -7709,7 +7709,9 @@ uint32 Unit::SpellHealingBonus(SpellEntry const *spellProto, uint32 healamount, 
     // Healing Done
 
     // These Spells are doing fixed amount of healing (TODO found less hack-like check)
-    if(spellProto->Id == 15290 || spellProto->Id == 39373 || spellProto->Id == 33778 || spellProto->Id == 379 || spellProto->Id == 38395)
+    if (spellProto->Id == 15290 || spellProto->Id == 39373 ||
+        spellProto->Id == 33778 || spellProto->Id == 379   ||
+        spellProto->Id == 38395 || spellProto->Id == 40972)
         return healamount;
 
     int32 AdvertisedBenefit = SpellBaseHealingBonus(GetSpellSchoolMask(spellProto));
@@ -9805,7 +9807,7 @@ CharmInfo* Unit::InitCharmInfo(Unit *charm)
 }
 
 CharmInfo::CharmInfo(Unit* unit)
-: m_unit(unit), m_CommandState(COMMAND_FOLLOW), m_ReactSate(REACT_PASSIVE), m_petnumber(0)
+: m_unit(unit), m_CommandState(COMMAND_FOLLOW), m_reactState(REACT_PASSIVE), m_petnumber(0)
 {
     for(int i =0; i<4; ++i)
     {
