@@ -59,7 +59,7 @@ int libmpq_archive_open(mpq_archive *mpq_a, unsigned char *mpq_filename) {
 	memset(mpq_a->header, 0, sizeof(mpq_header));
 
 	/* Check if file exists and is readable */
-	fd = _open((char *)mpq_filename, O_RDONLY | O_BINARY | O_LARGEFILE);
+	fd = _open((char *)mpq_filename, MPQ_FILE_OPEN_FLAGS);
 	if (fd == LIBMPQ_EFILE) {
 		return LIBMPQ_EFILE;
 	}
@@ -199,7 +199,7 @@ int libmpq_archive_info(mpq_archive *mpq_a, unsigned int infotype) {
 /*
  * This function returns some useful file information.
  */
-int libmpq_file_info(mpq_archive *mpq_a, unsigned int infotype, const int number) {
+int libmpq_file_info(mpq_archive *mpq_a, unsigned int infotype, const unsigned int number) {
 	int blockindex = number; //-1;
 	int i = 0;
 	mpq_block *mpq_b = NULL;

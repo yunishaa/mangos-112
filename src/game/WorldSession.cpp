@@ -57,25 +57,23 @@ _logoutTime(0), m_playerLoading(false), m_playerLogout(false), m_playerRecentlyL
 WorldSession::~WorldSession()
 {
     ///- unload player if not unloaded
-    if(_player)
-        LogoutPlayer(true);
+    if (_player)
+        LogoutPlayer (true);
 
     /// - If have unclosed socket, close it
-  if (m_Socket)
+    if (m_Socket)
     {
-      m_Socket->CloseSocket ();
-      m_Socket->RemoveReference ();
-      m_Socket = NULL;
+        m_Socket->CloseSocket ();
+        m_Socket->RemoveReference ();
+        m_Socket = NULL;
     }
 
     ///- empty incoming packet queue
     while(!_recvQueue.empty())
     {
-        WorldPacket *packet = _recvQueue.next();
+        WorldPacket *packet = _recvQueue.next ();
         delete packet;
     }
-
-    sWorld.RemoveQueuedPlayer(this);
 }
 
 void WorldSession::SizeError(WorldPacket const& packet, uint32 size) const
@@ -374,7 +372,7 @@ void WorldSession::LogoutPlayer(bool Save)
             _player->GetGroup()->SendUpdate();
 
         ///- Broadcast a logout message to the player's friends
-        sSocialMgr.SendFriendStatus(_player, FRIEND_OFFLINE, _player->GetGUIDLow(), "", true);
+        sSocialMgr.SendFriendStatus(_player, FRIEND_OFFLINE, _player->GetGUIDLow(), true);
 
         ///- Delete the player object
         _player->CleanupsBeforeDelete();                    // do some cleanup before deleting to prevent crash at crossreferences to already deleted data

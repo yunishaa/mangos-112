@@ -55,6 +55,7 @@
 #include "CellImpl.h"
 #include "InstanceSaveMgr.h"
 #include "WaypointManager.h"
+#include "GMTicketMgr.h"
 #include "Util.h"
 
 INSTANTIATE_SINGLETON_1( World );
@@ -177,67 +178,66 @@ bool World::RemoveSession(uint32 id)
 
 void World::AddSession(WorldSession* s)
 {
-  addSessQueue.add(s);
+    addSessQueue.add(s);
 }
 
 void
 World::AddSession_ (WorldSession* s)
 {
-  ASSERT (s);
+    ASSERT (s);
 
-  //NOTE - Still there is race condition in WorldSession* being used in the Sockets
+    //NOTE - Still there is race condition in WorldSession* being used in the Sockets
 
-  ///- kick already loaded player with same account (if any) and remove session
-  ///- if player is in loading and want to load again, return
-  if (!RemoveSession (s->GetAccountId ()))
+    ///- kick already loaded player with same account (if any) and remove session
+    ///- if player is in loading and want to load again, return
+    if (!RemoveSession (s->GetAccountId ()))
     {
-      s->KickPlayer ();
-      m_kicked_sessions.insert (s);
-      return;
+        s->KickPlayer ();
+        m_kicked_sessions.insert (s);
+        return;
     }
 
-  WorldSession* old = m_sessions[s->GetAccountId ()];
-  m_sessions[s->GetAccountId ()] = s;
+    WorldSession* old = m_sessions[s->GetAccountId ()];
+    m_sessions[s->GetAccountId ()] = s;
 
-  // if session already exist, prepare to it deleting at next world update
-  // NOTE - KickPlayer() should be called on "old" in RemoveSession()
-  if (old)
-    m_kicked_sessions.insert (old);
+    // if session already exist, prepare to it deleting at next world update
+    // NOTE - KickPlayer() should be called on "old" in RemoveSession()
+    if (old)
+        m_kicked_sessions.insert (old);
 
-  uint32 Sessions = GetActiveAndQueuedSessionCount ();
-  uint32 pLimit = GetPlayerAmountLimit ();
-  uint32 QueueSize = GetQueueSize (); //number of players in the queue
-  bool inQueue = false;
-  //so we don't count the user trying to
-  //login as a session and queue the socket that we are using
-  --Sessions;
+    uint32 Sessions = GetActiveAndQueuedSessionCount ();
+    uint32 pLimit = GetPlayerAmountLimit ();
+    uint32 QueueSize = GetQueueSize (); //number of players in the queue
+    //so we don't count the user trying to
+    //login as a session and queue the socket that we are using
+    --Sessions;
 
-  if (pLimit > 0 && Sessions >= pLimit && s->GetSecurity () == SEC_PLAYER )
+    if (pLimit > 0 && Sessions >= pLimit && s->GetSecurity () == SEC_PLAYER )
     {
-      AddQueuedPlayer (s);
-      UpdateMaxSessionCounters ();
-      sLog.outDetail ("PlayerQueue: Account id %u is in Queue Position (%u).", s->GetAccountId (), ++QueueSize);
-      return;
+        AddQueuedPlayer (s);
+        UpdateMaxSessionCounters ();
+        sLog.outDetail ("PlayerQueue: Account id %u is in Queue Position (%u).", s->GetAccountId (), ++QueueSize);
+        return;
     }
 
-  WorldPacket packet(SMSG_AUTH_RESPONSE, 1 /*+ 4 + 1 + 4 + 1*/);
-  packet << uint8 (AUTH_OK);
-  //packet << uint32 (0); // unknown random value...
-  //packet << uint8 (0);
-  //packet << uint32 (0);
-  //packet << uint8 (s->Expansion()); // 0 - normal, 1 - TBC, must be set in database manually for each account
-  s->SendPacket (&packet);
+    WorldPacket packet(SMSG_AUTH_RESPONSE, 1 /*+ 4 + 1 + 4 + 1*/);
+    packet << uint8 (AUTH_OK);
+    //packet << uint32 (0); // unknown random value...
+    //packet << uint8 (0);
+    //packet << uint32 (0);
+    //packet << uint8 (s->Expansion()); // 0 - normal, 1 - TBC, must be set in database manually for each account
+    s->SendPacket (&packet);
 
-  UpdateMaxSessionCounters ();
+    UpdateMaxSessionCounters ();
 
-  // Updates the population
-  if (pLimit > 0)
+    // Updates the population
+    if (pLimit > 0)
     {
-      float popu = GetActiveSessionCount (); //updated number of users on the server
-      popu /= pLimit;
-      popu *= 2;
-      loginDatabase.PExecute ("UPDATE realmlist SET population = '%f' WHERE id = '%d'", popu, realmID);
-      sLog.outDetail ("Server Population (%f).", popu);
+        float popu = GetActiveSessionCount (); //updated number of users on the server
+        popu /= pLimit;
+        popu *= 2;
+        loginDatabase.PExecute ("UPDATE realmlist SET population = '%f' WHERE id = '%d'", popu, realmID);
+        sLog.outDetail ("Server Population (%f).", popu);
     }
 }
 
@@ -479,7 +479,8 @@ void World::LoadConfigSettings(bool reload)
     }
     else if(rate_values[RATE_TARGET_POS_RECALCULATION_RANGE] > ATTACK_DISTANCE)
     {
-        sLog.outError("TargetPosRecalculateRange (%f) must be <= %f. Using %f instead.",rate_values[RATE_TARGET_POS_RECALCULATION_RANGE],ATTACK_DISTANCE,ATTACK_DISTANCE);
+        sLog.outError("TargetPosRecalculateRange (%f) must be <= %f. Using %f instead.",
+            rate_values[RATE_TARGET_POS_RECALCULATION_RANGE],ATTACK_DISTANCE,ATTACK_DISTANCE);
         rate_values[RATE_TARGET_POS_RECALCULATION_RANGE] = ATTACK_DISTANCE;
     }
 
@@ -1121,6 +1122,9 @@ void World::SetInitialWorldSettings()
     sLog.outString( "Loading Waypoints..." );
     WaypointMgr.Load();
 
+    sLog.outString( "Loading GM tickets...");
+    ticketmgr.LoadGMTickets();
+
     ///- Handle outdated emails (delete/return)
     sLog.outString( "Returning old mails..." );
     objmgr.ReturnOrDeleteOldMails(false);
@@ -1150,7 +1154,8 @@ void World::SetInitialWorldSettings()
     sprintf( isoDate, "%04d-%02d-%02d %02d:%02d:%02d",
         local.tm_year+1900, local.tm_mon+1, local.tm_mday, local.tm_hour, local.tm_min, local.tm_sec);
 
-    WorldDatabase.PExecute("INSERT INTO uptime (startstring, starttime, uptime) VALUES('%s', %ld, 0)", isoDate, m_startTime );
+    WorldDatabase.PExecute("INSERT INTO uptime (startstring, starttime, uptime) VALUES('%s', " I64FMTD ", 0)",
+        isoDate, uint64(m_startTime));
 
     m_timers[WUPDATE_OBJECTS].SetInterval(0);
     m_timers[WUPDATE_SESSIONS].SetInterval(0);
@@ -2411,7 +2416,10 @@ void World::UpdateSessions( time_t diff )
 
     ///- Delete kicked sessions at add new session
     for (std::set<WorldSession*>::iterator itr = m_kicked_sessions.begin(); itr != m_kicked_sessions.end(); ++itr)
+    {
+        RemoveQueuedPlayer (*itr);
         delete *itr;
+    }
     m_kicked_sessions.clear();
 
     ///- Then send an update signal to remaining ones

@@ -257,7 +257,7 @@ bool Creature::UpdateEntry(uint32 Entry, uint32 team, const CreatureData *data )
     SetAttackTime(OFF_ATTACK,   GetCreatureInfo()->baseattacktime);
     SetAttackTime(RANGED_ATTACK,GetCreatureInfo()->rangeattacktime);
 
-    SetUInt32Value(UNIT_FIELD_FLAGS,GetCreatureInfo()->Flags);
+    SetUInt32Value(UNIT_FIELD_FLAGS,GetCreatureInfo()->unit_flags);
     SetUInt32Value(UNIT_DYNAMIC_FLAGS,GetCreatureInfo()->dynamicflags);
 
     SetModifierValue(UNIT_MOD_ARMOR,             BASE_VALUE, float(GetCreatureInfo()->armor));
@@ -299,11 +299,11 @@ void Creature::Update(uint32 diff)
     switch( m_deathState )
     {
         case JUST_ALIVED:
-            // Dont must be called, see Creature::setDeathState JUST_ALIVED -> ALIVE promoting.
+            // Don't must be called, see Creature::setDeathState JUST_ALIVED -> ALIVE promoting.
             sLog.outError("Creature (GUIDLow: %u Entry: %u ) in wrong state: JUST_ALIVED (4)",GetGUIDLow(),GetEntry());
             break;
         case JUST_DIED:
-            // Dont must be called, see Creature::setDeathState JUST_DIED -> CORPSE promoting.
+            // Don't must be called, see Creature::setDeathState JUST_DIED -> CORPSE promoting.
             sLog.outError("Creature (GUIDLow: %u Entry: %u ) in wrong state: JUST_DEAD (1)",GetGUIDLow(),GetEntry());
             break;
         case DEAD:
@@ -469,7 +469,7 @@ void Creature::RegenerateHealth()
 
     uint32 addvalue = 0;
 
-    // Not only pet, but any controelled creature
+    // Not only pet, but any controlled creature
     if(GetCharmerOrOwnerGUID())
     {
         float HealthIncreaseRate = sWorld.getRate(RATE_HEALTH);
@@ -793,7 +793,7 @@ void Creature::sendPreparedGossip(Player* player)
     }
 
     // in case non empty gossip menu (that not included quests list size) show it
-    // (quest entries from quest menu wiill be included in list)
+    // (quest entries from quest menu will be included in list)
     player->PlayerTalkClass->SendGossipMenu(GetNpcTextId(), GetGUID());
 }
 
@@ -817,18 +817,20 @@ void Creature::OnGossipSelect(Player* player, uint32 option)
             return;
     }
 
-    uint32 textid=GetGossipTextId( action, zoneid);
-    if(textid==0)
-        textid=GetNpcTextId();
-
     switch (gossip->Action)
     {
         case GOSSIP_OPTION_GOSSIP:
+        {
+            uint32 textid = GetGossipTextId(action, zoneid);
+            if (textid == 0)
+                textid=GetNpcTextId();
+
             player->PlayerTalkClass->CloseGossip();
-            player->PlayerTalkClass->SendTalking( textid );
+            player->PlayerTalkClass->SendTalking(textid);
             break;
+        }
         case GOSSIP_OPTION_SPIRITHEALER:
-            if( player->isDead() )
+            if (player->isDead())
                 CastSpell(this,17251,true,NULL,NULL,player->GetGUID());
             break;
         case GOSSIP_OPTION_QUESTGIVER:
@@ -1061,7 +1063,7 @@ void Creature::SetLootRecipient(Unit *unit)
 void Creature::SaveToDB()
 {
     // this should only be used when the creature has already been loaded
-    // perferably after adding to map, because mapid may not be valid otherwise
+    // preferably after adding to map, because mapid may not be valid otherwise
     CreatureData const *data = objmgr.GetCreatureData(m_DBTableGuid);
     if(!data)
     {
@@ -1433,7 +1435,7 @@ float Creature::GetAttackDistance(Unit const* pl) const
     // "The aggro radius of a mob having the same level as the player is roughly 20 yards"
     float RetDistance = 20;
 
-    // "Aggro Radius varries with level difference at a rate of roughly 1 yard/level"
+    // "Aggro Radius varies with level difference at a rate of roughly 1 yard/level"
     // radius grow if playlevel < creaturelevel
     RetDistance -= (float)leveldif;
 
@@ -1728,7 +1730,7 @@ bool Creature::IsOutOfThreatArea(Unit* pVictim) const
     float AttackDist = GetAttackDistance(pVictim);
     uint32 ThreatRadius = sWorld.getConfig(CONFIG_THREAT_RADIUS);
 
-    //Use AttackDistance in distance check if threat radius is lower. This prevents creature bounce in and ouf of combat every update tick.
+    //Use AttackDistance in distance check if threat radius is lower. This prevents creature bounce in and out of combat every update tick.
     return ( length > (ThreatRadius > AttackDist ? ThreatRadius : AttackDist));
 }
 
@@ -1797,7 +1799,7 @@ bool Creature::LoadCreaturesAddon(bool reload)
     return true;
 }
 
-/// Send a message to LocalDefense channel for players oposition team in the zone
+/// Send a message to LocalDefense channel for players opposition team in the zone
 void Creature::SendZoneUnderAttackMessage(Player* attacker)
 {
     uint32 enemy_team = attacker->GetTeam();

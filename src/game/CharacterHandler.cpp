@@ -128,9 +128,10 @@ void WorldSession::HandleCharEnum(QueryResult * result)
         Player *plr = new Player(this);
         do
         {
-            sLog.outDetail("Loading char guid %u from account %u.",(*result)[0].GetUInt32(),GetAccountId());
+            uint32 guidlow = (*result)[0].GetUInt32();
+            sLog.outDetail("Loading char guid %u from account %u.",guidlow,GetAccountId());
 
-            if(plr->MinimalLoadFromDB( result, (*result)[0].GetUInt32() ))
+            if(plr->MinimalLoadFromDB( result, guidlow ))
             {
                 plr->BuildEnumData( result, &data );
                 ++num;
@@ -153,18 +154,18 @@ void WorldSession::HandleCharEnumOpcode( WorldPacket & /*recv_data*/ )
     CharacterDatabase.AsyncPQuery(&chrHandler, &CharacterHandler::HandleCharEnumCallback, GetAccountId(),
          !sWorld.getConfig(CONFIG_DECLINED_NAMES_USED) ?
     //   ------- Query Without Declined Names --------
-    //          0                1                2                      3                      4                      5               6                     7                     8
-        "SELECT characters.data, characters.name, characters.position_x, characters.position_y, characters.position_z, characters.map, characters.totaltime, characters.leveltime, characters.at_login, "
-    //   9                    10                     11
-        "character_pet.entry, character_pet.modelid, character_pet.level "
+    //          0                1                2                3                      4                      5               6                     7                     8
+        "SELECT characters.guid, characters.data, characters.name, characters.position_x, characters.position_y, characters.position_z, characters.map, characters.totaltime, characters.leveltime, "
+    //   9                    10                   11                     12
+        "characters.at_login, character_pet.entry, character_pet.modelid, character_pet.level "
         "FROM characters LEFT JOIN character_pet ON characters.guid=character_pet.owner AND character_pet.slot='0' "
         "WHERE characters.account = '%u' ORDER BY characters.guid"
         :
     //   --------- Query With Declined Names ---------
-    //          0                1                2                      3                      4                      5               6                     7                     8
-        "SELECT characters.data, characters.name, characters.position_x, characters.position_y, characters.position_z, characters.map, characters.totaltime, characters.leveltime, characters.at_login, "
-    //   9                    10                     11                   12
-        "character_pet.entry, character_pet.modelid, character_pet.level, genitive "
+    //          0                1                2                3                      4                      5               6                     7                     8
+        "SELECT characters.guid, characters.data, characters.name, characters.position_x, characters.position_y, characters.position_z, characters.map, characters.totaltime, characters.leveltime, "
+    //   9                    10                   11                     12                   13
+        "characters.at_login, character_pet.entry, character_pet.modelid, character_pet.level, genitive "
         "FROM characters LEFT JOIN character_pet ON characters.guid = character_pet.owner AND character_pet.slot='0' "
         "LEFT JOIN character_declinedname ON characters.guid = character_declinedname.guid "
         "WHERE characters.account = '%u' ORDER BY characters.guid",
@@ -635,7 +636,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder * holder)
     }
 
     // friend status
-    sSocialMgr.SendFriendStatus(pCurrChar, FRIEND_ONLINE, pCurrChar->GetGUIDLow(), "", true);
+    sSocialMgr.SendFriendStatus(pCurrChar, FRIEND_ONLINE, pCurrChar->GetGUIDLow(), true);
 
     // Place character in world (and load zone) before some object loading
     pCurrChar->LoadCorpse();
@@ -750,7 +751,8 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder * holder)
         SendNotification(LANG_GM_ON);
 
     std::string IP_str = GetRemoteAddress();
-    sLog.outChar("Account: %d (IP: %s) Login Character:[%s] (guid:%u)",GetAccountId(),IP_str.c_str(),pCurrChar->GetName() ,pCurrChar->GetGUID());
+    sLog.outChar("Account: %d (IP: %s) Login Character:[%s] (guid:%u)",
+        GetAccountId(),IP_str.c_str(),pCurrChar->GetName() ,pCurrChar->GetGUIDLow());
 
     m_playerLoading = false;
     delete holder;

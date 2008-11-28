@@ -511,7 +511,7 @@ void BattleGround::SendRewardMarkByMail(Player *plr,uint32 mark, uint32 count)
         int loc_idx = plr->GetSession()->GetSessionDbLocaleIndex();
         if ( loc_idx >= 0 )
             if(ItemLocale const *il = objmgr.GetItemLocale(markProto->ItemId))
-                if (il->Name.size() > loc_idx && !il->Name[loc_idx].empty())
+                if (il->Name.size() > size_t(loc_idx) && !il->Name[loc_idx].empty())
                     subject = il->Name[loc_idx];
 
         // text
@@ -674,7 +674,7 @@ void BattleGround::Reset()
     m_PlayerScores.clear();
 
     // reset BGSubclass
-    this->ResetBGSubclass();
+    ResetBGSubclass();
 }
 
 void BattleGround::StartBattleGround()
@@ -998,7 +998,7 @@ bool BattleGround::DelCreature(uint32 type)
     Creature *cr = HashMapHolder<Creature>::Find(m_BgCreatures[type]);
     if(!cr)
     {
-        sLog.outError("Can't find creature guid: %u",m_BgCreatures[type]);
+        sLog.outError("Can't find creature guid: %u",GUID_LOPART(m_BgCreatures[type]));
         return false;
     }
     cr->CleanupsBeforeDelete();
@@ -1012,7 +1012,7 @@ bool BattleGround::DelObject(uint32 type)
     GameObject *obj = HashMapHolder<GameObject>::Find(m_BgObjects[type]);
     if(!obj)
     {
-        sLog.outError("Can't find gobject guid: %u",m_BgObjects[type]);
+        sLog.outError("Can't find gobject guid: %u",GUID_LOPART(m_BgObjects[type]));
         return false;
     }
     obj->SetRespawnTime(0);                                 // not save respawn time
@@ -1034,7 +1034,7 @@ bool BattleGround::AddSpiritGuide(uint32 type, float x, float y, float z, float 
     if(!pCreature)
     {
         sLog.outError("Can't create Spirit guide. BattleGround not created!");
-        this->EndNow();
+        EndNow();
         return false;
     }
 

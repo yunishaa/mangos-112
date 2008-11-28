@@ -707,7 +707,7 @@ void Spell::EffectDummy(uint32 i)
                 }
                 case 13567:                                 // Dummy Trigger
                 {
-                    // can be used for different aura triggreing, so select by aura
+                    // can be used for different aura triggering, so select by aura
                     if(!m_triggeredByAuraSpell || !unitTarget)
                         return;
 
@@ -1869,7 +1869,8 @@ void Spell::EffectTriggerMissileSpell(uint32 effect_idx)
 
     if(!spellInfo)
     {
-        sLog.outError("EffectTriggerMissileSpell of spell %u: triggering unknown spell id %effect_idx", m_spellInfo->Id,triggered_spell_id);
+        sLog.outError("EffectTriggerMissileSpell of spell %u (eff: %u): triggering unknown spell id %u",
+            m_spellInfo->Id,effect_idx,triggered_spell_id);
         return;
     }
 
@@ -2210,7 +2211,7 @@ void Spell::EffectPowerDrain(uint32 i)
 
         m_caster->ModifyPower(POWER_MANA,gain);
         //send log
-        m_caster->SendEnergizeSpellLog(m_caster, m_spellInfo->Id,gain,POWER_MANA,false);
+        m_caster->SendEnergizeSpellLog(m_caster, m_spellInfo->Id,gain,POWER_MANA);
     }
 }
 
@@ -2226,7 +2227,7 @@ void Spell::EffectSendEvent(uint32 EffectIndex)
                 case 23333:                                 // Pickup Horde Flag
                     /*do not uncomment .
                     if(bg->GetTypeID()==BATTLEGROUND_WS)
-                        bg->EventPlayerClickedOnFlag((Player*)m_caster, this->gameObjTarget);
+                        bg->EventPlayerClickedOnFlag((Player*)m_caster, gameObjTarget);
                     sLog.outDebug("Send Event Horde Flag Picked Up");
                     break;
                     /* not used :
@@ -2239,7 +2240,7 @@ void Spell::EffectSendEvent(uint32 EffectIndex)
                 case 23335:                                 // Pickup Alliance Flag
                     /*do not uncomment ... (it will cause crash, because of null targetobject!) anyway this is a bad way to call that event, because it would cause recursion
                     if(bg->GetTypeID()==BATTLEGROUND_WS)
-                        bg->EventPlayerClickedOnFlag((Player*)m_caster, this->gameObjTarget);
+                        bg->EventPlayerClickedOnFlag((Player*)m_caster, gameObjTarget);
                     sLog.outDebug("Send Event Alliance Flag Picked Up");
                     break;
                     /* not used :
@@ -2250,18 +2251,18 @@ void Spell::EffectSendEvent(uint32 EffectIndex)
                         break;
                     case 23385:                                 // Alliance Flag Returns
                         if(bg->GetTypeID()==BATTLEGROUND_WS)
-                            bg->EventPlayerClickedOnFlag((Player*)m_caster, this->gameObjTarget);
+                            bg->EventPlayerClickedOnFlag((Player*)m_caster, gameObjTarget);
                         sLog.outDebug("Alliance Flag Returned");
                         break;
                     case 23386:                                   // Horde Flag Returns
                         if(bg->GetTypeID()==BATTLEGROUND_WS)
-                            bg->EventPlayerClickedOnFlag((Player*)m_caster, this->gameObjTarget);
+                            bg->EventPlayerClickedOnFlag((Player*)m_caster, gameObjTarget);
                         sLog.outDebug("Horde Flag Returned");
                         break;*/
                 case 34976:
                     /*
                     if(bg->GetTypeID()==BATTLEGROUND_EY)
-                        bg->EventPlayerClickedOnFlag((Player*)m_caster, this->gameObjTarget);
+                        bg->EventPlayerClickedOnFlag((Player*)m_caster, gameObjTarget);
                     */
                     break;
                 default:
@@ -2638,31 +2639,31 @@ void Spell::EffectEnergize(uint32 i)
         return;
 
     // Some level depends spells
-    int multipler  = 0;
+    int multiplier = 0;
     int level_diff = 0;
     switch (m_spellInfo->Id)
     {
         // Restore Energy
         case 9512:
             level_diff = m_caster->getLevel() - 40;
-            multipler  = 2;
+            multiplier = 2;
             break;
         // Blood Fury
         case 24571:
             level_diff = m_caster->getLevel() - 60;
-            multipler  = 10;
+            multiplier = 10;
             break;
         // Burst of Energy
         case 24532:
             level_diff = m_caster->getLevel() - 60;
-            multipler  = 4;
+            multiplier = 4;
             break;
         default:
             break;
     }
 
     if (level_diff > 0)
-        damage -= multipler * level_diff;
+        damage -= multiplier * level_diff;
 
     if(damage < 0)
         return;
@@ -3183,7 +3184,8 @@ void Spell::EffectSummon(uint32 i)
 
     if(!spawnCreature->IsPositionValid())
     {
-        sLog.outError("ERROR: Pet (guidlow %d, entry %d) not summoned. Suggested coordinates isn't valid (X: %d Y: ^%d)", spawnCreature->GetGUIDLow(), spawnCreature->GetEntry(), spawnCreature->GetPositionX(), spawnCreature->GetPositionY());
+        sLog.outError("ERROR: Pet (guidlow %d, entry %d) not summoned. Suggested coordinates isn't valid (X: %f Y: %f)",
+            spawnCreature->GetGUIDLow(), spawnCreature->GetEntry(), spawnCreature->GetPositionX(), spawnCreature->GetPositionY());
         delete spawnCreature;
         return;
     }
@@ -3613,7 +3615,8 @@ void Spell::EffectSummonGuardian(uint32 i)
 
         if(!spawnCreature->IsPositionValid())
         {
-            sLog.outError("ERROR: Pet (guidlow %d, entry %d) not created base at creature. Suggested coordinates isn't valid (X: %d Y: ^%d)", spawnCreature->GetGUIDLow(), spawnCreature->GetEntry(), spawnCreature->GetPositionX(), spawnCreature->GetPositionY());
+            sLog.outError("ERROR: Pet (guidlow %d, entry %d) not created base at creature. Suggested coordinates isn't valid (X: %f Y: %f)",
+                spawnCreature->GetGUIDLow(), spawnCreature->GetEntry(), spawnCreature->GetPositionX(), spawnCreature->GetPositionY());
             delete spawnCreature;
             return;
         }
@@ -3681,13 +3684,13 @@ void Spell::EffectAddHonor(uint32 /*i*/)
     if(unitTarget->GetTypeId() != TYPEID_PLAYER)
         return;
 
-    sLog.outDebug("SpellEffect::AddHonor called for spell_id %u , that rewards %d honor points to player: %u", m_spellInfo->Id, this->damage, ((Player*)unitTarget)->GetGUIDLow());
+    sLog.outDebug("SpellEffect::AddHonor called for spell_id %u , that rewards %d honor points to player: %u", m_spellInfo->Id, damage, ((Player*)unitTarget)->GetGUIDLow());
 
     // TODO: find formula for honor reward based on player's level!
 
     // now fixed only for level 70 players:
     if (((Player*)unitTarget)->getLevel() == 70)
-        ((Player*)unitTarget)->RewardHonor(NULL, 1, this->damage);
+        ((Player*)unitTarget)->RewardHonor(NULL, 1, damage);
 }
 
 void Spell::EffectTradeSkill(uint32 /*i*/)
@@ -3883,56 +3886,36 @@ void Spell::EffectTameCreature(uint32 /*i*/)
     if(creatureTarget->isPet())
         return;
 
-    if(m_caster->getClass() == CLASS_HUNTER)
+    if(m_caster->getClass() != CLASS_HUNTER)
+        return;
+
+    // cast finish successfully
+    //SendChannelUpdate(0);
+    finish();
+
+    Pet* pet = m_caster->CreateTamedPetFrom(creatureTarget,m_spellInfo->Id);
+
+    // kill original creature
+    creatureTarget->setDeathState(JUST_DIED);
+    creatureTarget->RemoveCorpse();
+    creatureTarget->SetHealth(0);                       // just for nice GM-mode view
+
+    // prepare visual effect for levelup
+    pet->SetUInt32Value(UNIT_FIELD_LEVEL,creatureTarget->getLevel()-1);
+
+    // add to world
+    MapManager::Instance().GetMap(pet->GetMapId(), pet)->Add((Creature*)pet);
+
+    // visual effect for levelup
+    pet->SetUInt32Value(UNIT_FIELD_LEVEL,creatureTarget->getLevel());
+
+    // caster have pet now
+    m_caster->SetPet(pet);
+
+    if(m_caster->GetTypeId() == TYPEID_PLAYER)
     {
-        // cast finish successfully
-        //SendChannelUpdate(0);
-        finish();
-
-        Pet* pet = new Pet(HUNTER_PET);
-
-        if(!pet->CreateBaseAtCreature(creatureTarget))
-        {
-            delete pet;
-            return;
-        }
-
-        creatureTarget->setDeathState(JUST_DIED);
-        creatureTarget->RemoveCorpse();
-        creatureTarget->SetHealth(0);                       // just for nice GM-mode view
-
-        pet->SetUInt64Value(UNIT_FIELD_SUMMONEDBY, m_caster->GetGUID());
-        pet->SetUInt64Value(UNIT_FIELD_CREATEDBY, m_caster->GetGUID());
-        pet->SetUInt32Value(UNIT_FIELD_FACTIONTEMPLATE,m_caster->getFaction());
-        pet->SetUInt32Value(UNIT_CREATED_BY_SPELL, m_spellInfo->Id);
-
-        if(!pet->InitStatsForLevel(creatureTarget->getLevel()))
-        {
-            sLog.outError("ERROR: InitStatsForLevel() in EffectTameCreature failed! Pet deleted.");
-            delete pet;
-            return;
-        }
-
-        // prepare visual effect for levelup
-        pet->SetUInt32Value(UNIT_FIELD_LEVEL,creatureTarget->getLevel()-1);
-
-        pet->GetCharmInfo()->SetPetNumber(objmgr.GeneratePetNumber(), true);
-                                                            // this enables pet details window (Shift+P)
-        pet->AIM_Initialize();
-        pet->InitPetCreateSpells();
-        pet->SetHealth(pet->GetMaxHealth());
-
-        MapManager::Instance().GetMap(pet->GetMapId(), pet)->Add((Creature*)pet);
-
-        // visual effect for levelup
-        pet->SetUInt32Value(UNIT_FIELD_LEVEL,creatureTarget->getLevel());
-
-        if(m_caster->GetTypeId() == TYPEID_PLAYER)
-        {
-            m_caster->SetPet(pet);
-            pet->SavePetToDB(PET_SAVE_AS_CURRENT);
-            ((Player*)m_caster)->PetSpellInitialize();
-        }
+        pet->SavePetToDB(PET_SAVE_AS_CURRENT);
+        ((Player*)m_caster)->PetSpellInitialize();
     }
 }
 
@@ -4028,7 +4011,8 @@ void Spell::EffectSummonPet(uint32 i)
 
     if(!NewSummon->IsPositionValid())
     {
-        sLog.outError("ERROR: Pet (guidlow %d, entry %d) not summoned. Suggested coordinates isn't valid (X: %d Y: ^%d)", NewSummon->GetGUIDLow(), NewSummon->GetEntry(), NewSummon->GetPositionX(), NewSummon->GetPositionY());
+        sLog.outError("ERROR: Pet (guidlow %d, entry %d) not summoned. Suggested coordinates isn't valid (X: %f Y: %f)",
+            NewSummon->GetGUIDLow(), NewSummon->GetEntry(), NewSummon->GetPositionX(), NewSummon->GetPositionY());
         delete NewSummon;
         return;
     }
@@ -5352,7 +5336,7 @@ void Spell::EffectSummonObject(uint32 i)
     m_caster->m_ObjectSlot[slot] = pGameObj->GetGUID();
 }
 
-void Spell::EffectResurrect(uint32 i)
+void Spell::EffectResurrect(uint32 /*effIndex*/)
 {
     if(!unitTarget)
         return;
@@ -5536,13 +5520,7 @@ void Spell::EffectSkinning(uint32 /*i*/)
     Creature* creature = (Creature*) unitTarget;
     int32 targetLevel = creature->getLevel();
 
-    uint32 skill;
-    if(creature->GetCreatureInfo()->flag1 & 256)
-        skill = SKILL_HERBALISM;                            // special case
-    else if(creature->GetCreatureInfo()->flag1 & 512)
-        skill = SKILL_MINING;                               // special case
-    else
-        skill = SKILL_SKINNING;                             // normal case
+    uint32 skill = creature->GetCreatureInfo()->GetRequiredLootSkill();
 
     ((Player*)m_caster)->SendLoot(creature->GetGUID(),LOOT_SKINNING);
     creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_SKINNABLE);
@@ -5628,7 +5606,8 @@ void Spell::EffectSummonCritter(uint32 i)
 
     if(!critter->IsPositionValid())
     {
-        sLog.outError("ERROR: Pet (guidlow %d, entry %d) not summoned. Suggested coordinates isn't valid (X: %d Y: ^%d)", critter->GetGUIDLow(), critter->GetEntry(), critter->GetPositionX(), critter->GetPositionY());
+        sLog.outError("ERROR: Pet (guidlow %d, entry %d) not summoned. Suggested coordinates isn't valid (X: %f Y: %f)",
+            critter->GetGUIDLow(), critter->GetEntry(), critter->GetPositionX(), critter->GetPositionY());
         delete critter;
         return;
     }
