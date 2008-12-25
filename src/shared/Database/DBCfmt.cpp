@@ -22,6 +22,9 @@ const char AreaTableEntryfmt[]="iiinixxxxxissssssssssssssssxixxxxxx";
 const char AreaTriggerEntryfmt[]="niffffffff";
 const char BankBagSlotPricesEntryfmt[]="ni";
 const char BattlemasterListEntryfmt[]="niiixxxxxiiiixxssssssssssssssssxx";
+const char CharStartOutfitEntryfmt[]="diiiiiiiiiiiiixxxxxxxxxxxxxxxxxxxxxxxxxxx";
+// 3*12 new item fields in 3.0.x
+//const char CharStartOutfitEntryfmt[]="diiiiiiiiiiiiiiiiiiiiiiiiixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 const char CharTitlesEntryfmt[]="nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxi";
 const char ChatChannelsEntryfmt[]="iixssssssssssssssssxxxxxxxxxxxxxxxxxx";
                                                             // ChatChannelsEntryfmt, index not used (more compact store)
@@ -54,7 +57,7 @@ const char ItemRandomSuffixfmt[]="nxxxxxxxxxxxxxxxxxxiiiiii";
 const char ItemSetEntryfmt[]="dssssssssssssssssxxxxxxxxxxxxxxxxxxiiiiiiiiiiiiiiiiii";
 const char LockEntryfmt[]="niiiiixxxiiiiixxxiixxxxxxxxxxxxxx";
 const char MailTemplateEntryfmt[]="nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-const char MapEntryfmt[]="nxixssssssssssssssssxxxxxxxixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxixxiixxi";
+const char MapEntryfmt[]="nxixssssssssssssssssxxxxxxxixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxiffiixxi";
 const char QuestSortEntryfmt[]="nxxxxxxxxxxxxxxxxx";
 const char RandomPropertiesPointsfmt[]="niiiiiiiiiiiiiii";
 const char SkillLinefmt[]="nixssssssssssssssssxxxxxxxxxxxxxxxxxxi";

@@ -84,6 +84,21 @@ struct BattlemasterListEntry
                                                             // 32 unused
 };
 
+#define MAX_OUTFIT_ITEMS 12
+// #define MAX_OUTFIT_ITEMS 24                              // 12->24 in 3.0.x
+
+struct CharStartOutfitEntry
+{
+    //uint32 Id;                                            // 0
+    uint32 RaceClassGender;                                 // 1 (UNIT_FIELD_BYTES_0 & 0x00FFFFFF) comparable (0 byte = race, 1 byte = class, 2 byte = gender)
+    int32 ItemId[MAX_OUTFIT_ITEMS];                         // 2-13
+    //int32 ItemDisplayId[MAX_OUTFIT_ITEMS];                // 14-25 not required at server side
+    //int32 ItemInventorySlot[MAX_OUTFIT_ITEMS];            // 26-37 not required at server side
+    //uint32 Unknown1;                                      // 38, unique values (index-like with gaps ordered in other way as ids)
+    //uint32 Unknown2;                                      // 39
+    //uint32 Unknown3;                                      // 40
+};
+
 struct CharTitlesEntry
 {
     uint32      ID;                                         // 0, title ids, for example in Quest::GetCharTitleId()
@@ -113,9 +128,9 @@ struct ChrClassesEntry
                                                             // 4, unused
     //char*       name[16];                                 // 5-20 unused
                                                             // 21 string flag, unused
-    //char*       string1[16];                              // 21-36 unused
+    //char*       nameFemale[16];                           // 21-36 unused, if different from base (male) case
                                                             // 37 string flag, unused
-    //char*       string2[16];                              // 38-53 unused
+    //char*       nameNeutralGender[16];                    // 38-53 unused, if different from base (male) case
                                                             // 54 string flag, unused
                                                             // 55, unused
     uint32      spellfamily;                                // 56
@@ -136,9 +151,9 @@ struct ChrRacesEntry
     uint32      startmovie;                                 // 13 id from CinematicCamera.dbc
     char*       name[16];                                   // 14-29 used for DBC language detection/selection
                                                             // 30 string flags, unused
-    //char*       string1[16];                              // 31-46 used for DBC language detection/selection
+    //char*       nameFemale[16];                           // 31-46, if different from base (male) case
                                                             // 47 string flags, unused
-    //char*       string2[16];                              // 48-63 used for DBC language detection/selection
+    //char*       nameNeutralGender[16];                    // 48-63, if different from base (male) case
                                                             // 64 string flags, unused
                                                             // 65-67 unused
     uint32      addon;                                      // 68 (0 - original race, 1 - tbc addon, ...)
@@ -252,6 +267,7 @@ struct GemPropertiesEntry
     uint32      color;
 };
 
+// All Gt* DBC store data for 100 levels, some by 100 per class/race
 #define GT_MAX_LEVEL    100
 
 struct GtCombatRatingsEntry
@@ -408,9 +424,9 @@ struct MapEntry
                                                             // 99 text flags
     //chat*     unknownText2                                // 100-115 unknown empty text fields
                                                             // 116 text flags
-    int32       parent_map;                                 // 117 map_id of parent map
-    //float start_x                                         // 118 enter x coordinate (if exist single entry)
-    //float start_y                                         // 119 enter y coordinate (if exist single entry)
+    int32       entrance_map;                               // 117 map_id of entrance map
+    float       entrance_x;                                 // 118 entrance x coordinate (if exist single entry)
+    float       entrance_y;                                 // 119 entrance y coordinate (if exist single entry)
     uint32 resetTimeRaid;                                   // 120
     uint32 resetTimeHeroic;                                 // 121
                                                             // 122-123
@@ -418,9 +434,10 @@ struct MapEntry
 
     // Helpers
     uint32 Expansion() const { return addon; }
-    bool Instanceable() const { return map_type == MAP_INSTANCE || map_type == MAP_RAID; }
-    // NOTE: this duplicate of Instanceable(), but Instanceable() can be changed when BG also will be instanceable
+
+
     bool IsDungeon() const { return map_type == MAP_INSTANCE || map_type == MAP_RAID; }
+    bool Instanceable() const { return map_type == MAP_INSTANCE || map_type == MAP_RAID || map_type == MAP_BATTLEGROUND || map_type == MAP_ARENA; }
     bool IsRaid() const { return map_type == MAP_RAID; }
     bool IsBattleGround() const { return map_type == MAP_BATTLEGROUND; }
     bool IsBattleArena() const { return map_type == MAP_ARENA; }

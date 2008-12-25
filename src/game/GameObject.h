@@ -355,7 +355,7 @@ struct GameObjectInfo
             uint32 data[24];
         } raw;
     };
-    char   *ScriptName;
+    uint32 ScriptId;
 };
 
 struct GameObjectLocale
@@ -441,6 +441,9 @@ class MANGOS_DLL_SPEC GameObject : public WorldObject
         void Yell(int32 textId, uint32 language, uint64 TargetGuid) { MonsterYell(textId,language,TargetGuid); }
         void TextEmote(int32 textId, uint64 TargetGuid) { MonsterTextEmote(textId,TargetGuid); }
         void Whisper(int32 textId, uint64 receiver) { MonsterWhisper(textId,receiver); }
+
+        // overwrite WorldObject function for proper name localization
+        const char* GetNameForLocaleIdx(int32 locale_idx) const;
 
         void SaveToDB();
         void SaveToDB(uint32 mapid, uint8 spawnMask);

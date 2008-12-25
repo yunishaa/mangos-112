@@ -98,8 +98,14 @@ namespace VMAP
     void VMapFactory::clear()
     {
         if(iIgnoreSpellIds)
+        {
             delete iIgnoreSpellIds;
+            iIgnoreSpellIds = NULL;
+        }
         if(gVMapManager)
+        {
             delete gVMapManager;
+            gVMapManager = NULL;
+        }
     }
 }

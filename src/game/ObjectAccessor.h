@@ -72,7 +72,7 @@ class HashMapHolder
         static LockType* GetLock() { return &i_lock; }
     private:
 
-        //Non instanciable only static
+        //Non instanceable only static
         HashMapHolder() {}
 
         static LockType i_lock;
@@ -184,14 +184,13 @@ class MANGOS_DLL_DECL ObjectAccessor : public MaNGOS::Singleton<ObjectAccessor, 
         void RemoveUpdateObject(Object *obj);
 
         void Update(uint32 diff);
+        void UpdatePlayers(uint32 diff);
 
         Corpse* GetCorpseForPlayerGUID(uint64 guid);
         void RemoveCorpse(Corpse *corpse);
         void AddCorpse(Corpse* corpse);
         void AddCorpsesToGrid(GridPair const& gridpair,GridType& grid,Map* map);
         Corpse* ConvertCorpseForPlayer(uint64 player_guid);
-
-        bool PlayersNearGrid(uint32 x,uint32 y,uint32 m_id,uint32 i_id) const;
 
         static void UpdateObject(Object* obj, Player* exceptPlayer);
         static void _buildUpdateObject(Object* obj, UpdateDataMapType &);
@@ -216,7 +215,6 @@ class MANGOS_DLL_DECL ObjectAccessor : public MaNGOS::Singleton<ObjectAccessor, 
 
         static void _buildChangeObjectForPlayer(WorldObject *, UpdateDataMapType &);
         static void _buildPacket(Player *, Object *, UpdateDataMapType &);
-        void _update(void);
         std::set<Object *> i_objects;
         LockType i_playerGuard;
         LockType i_updateGuard;

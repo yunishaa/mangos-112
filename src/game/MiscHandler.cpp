@@ -79,7 +79,7 @@ void WorldSession::HandleWhoOpcode( WorldPacket & recv_data )
     std::string player_name, guild_name;
 
     recv_data >> level_min;                                 // maximal player level, default 0
-    recv_data >> level_max;                                 // minimal player level, default 100
+    recv_data >> level_max;                                 // minimal player level, default 100 (MAX_LEVEL)
     recv_data >> player_name;                               // player name, case sensitive...
 
     // recheck
@@ -144,8 +144,8 @@ void WorldSession::HandleWhoOpcode( WorldPacket & recv_data )
 
     // client send in case not set max level value 100 but mangos support 255 max level,
     // update it to show GMs with characters after 100 level
-    if(level_max >= 100)
-        level_max = 255;
+    if(level_max >= MAX_LEVEL)
+        level_max = STRONG_MAX_LEVEL;
 
     uint32 team = _player->GetTeam();
     uint32 security = GetSecurity();
@@ -273,13 +273,6 @@ void WorldSession::HandleLogoutRequestOpcode( WorldPacket & /*recv_data*/ )
     if (uint64 lguid = GetPlayer()->GetLootGUID())
         DoLootRelease(lguid);
 
-    //instant logout for admins, gm's, mod's
-    if( GetSecurity() > SEC_PLAYER )
-    {
-        LogoutPlayer(true);
-        return;
-    }
-
     //Can not logout if...
     if( GetPlayer()->isInCombat() ||                        //...is in combat
         GetPlayer()->duel         ||                        //...is in Duel
@@ -295,8 +288,9 @@ void WorldSession::HandleLogoutRequestOpcode( WorldPacket & /*recv_data*/ )
         return;
     }
 
-    //instant logout in taverns/cities or on taxi
-    if(GetPlayer()->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_RESTING) || GetPlayer()->isInFlight())
+    //instant logout in taverns/cities or on taxi or for admins, gm's, mod's if its enabled in mangosd.conf
+    if (GetPlayer()->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_RESTING) || GetPlayer()->isInFlight() ||
+        GetSecurity() >= sWorld.getConfig(CONFIG_INSTANT_LOGOUT))
     {
         LogoutPlayer(true);
         return;
@@ -489,7 +483,7 @@ void WorldSession::HandleAddFriendOpcodeCallBack(QueryResult *result, uint32 acc
     delete result;
 
     WorldSession * session = sWorld.FindSession(accountId);
-    if(!session)
+    if(!session || !session->GetPlayer())
         return;
 
     FriendsResult friendResult = FRIEND_NOT_FOUND;
@@ -572,7 +566,7 @@ void WorldSession::HandleAddIgnoreOpcodeCallBack(QueryResult *result, uint32 acc
     delete result;
 
     WorldSession * session = sWorld.FindSession(accountId);
-    if(!session)
+    if(!session || !session->GetPlayer())
         return;
 
     FriendsResult ignoreResult = FRIEND_IGNORE_NOT_FOUND;
@@ -658,6 +652,10 @@ void WorldSession::HandleCorpseReclaimOpcode(WorldPacket &recv_data)
 
     sLog.outDetail("WORLD: Received CMSG_RECLAIM_CORPSE");
     if (GetPlayer()->isAlive())
+        return;
+
+    // do not allow corpse reclaim in arena
+    if (GetPlayer()->InArena())
         return;
 
     // body not released yet
@@ -1254,13 +1252,11 @@ void WorldSession::HandleWhoisOpcode(WorldPacket& recv_data)
         return;
     }
 
-    if(charname.empty())
+    if(charname.empty() || !normalizePlayerName (charname))
     {
         SendNotification(LANG_NEED_CHARACTER_NAME);
         return;
     }
-
-    normalizePlayerName (charname);
 
     Player *plr = objmgr.GetPlayer(charname.c_str());
 
@@ -1383,7 +1379,7 @@ void WorldSession::HandleFarSightOpcode( WorldPacket & recv_data )
             sLog.outDebug("Removed FarSight from player %u", _player->GetGUIDLow());
             break;
         case 1:
-            sLog.outDebug("Added FarSight " I64FMTD " to player %u", _player->GetUInt64Value(PLAYER_FARSIGHT), _player->GetGUIDLow());
+            sLog.outDebug("Added FarSight " I64FMT " to player %u", _player->GetFarSight(), _player->GetGUIDLow());
             break;
     }
 }
@@ -1398,9 +1394,9 @@ void WorldSession::HandleChooseTitleOpcode( WorldPacket & recv_data )
     recv_data >> title;
 
     // -1 at none
-    if(title > 0 && title < 64)
+    if(title > 0 && title < 128)
     {
-       if(!GetPlayer()->HasFlag64(PLAYER__FIELD_KNOWN_TITLES,uint64(1) << title))
+       if(!GetPlayer()->HasTitle(title))
             return;
     }
     else

@@ -78,6 +78,7 @@ struct PetSpell
 {
     uint16 slotId;
     uint16 active;
+
     PetSpellState state : 16;
     PetSpellType type   : 16;
 };
@@ -144,7 +145,7 @@ class Pet : public Creature
         bool isTemporarySummoned() const { return m_duration > 0; }
 
         bool Create (uint32 guidlow, Map *map, uint32 Entry, uint32 pet_number);
-        bool CreateBaseAtCreature( Creature* creature );
+        bool CreateBaseAtCreature(Creature* creature);
         bool LoadPetFromDB( Unit* owner,uint32 petentry = 0,uint32 petnumber = 0, bool current = false );
         void SavePetToDB(PetSaveMode mode);
         void Remove(PetSaveMode mode, bool returnreagent = false);
@@ -233,6 +234,9 @@ class Pet : public Creature
         uint64 GetAuraUpdateMask() { return m_auraUpdateMask; }
         void SetAuraUpdateMask(uint8 slot) { m_auraUpdateMask |= (uint64(1) << slot); }
         void ResetAuraUpdateMask() { m_auraUpdateMask = 0; }
+
+        // overwrite Creature function for name localization back to WorldObject version without localization
+        const char* GetNameForLocaleIdx(int32 locale_idx) const { return WorldObject::GetNameForLocaleIdx(locale_idx); }
 
         DeclinedName const* GetDeclinedNames() const { return m_declinedname; }
 

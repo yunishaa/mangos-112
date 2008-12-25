@@ -112,10 +112,9 @@ void WorldSocket::CloseSocket (void)
         ACE_GUARD (LockType, Guard, m_OutBufferLock);
 
         if (closing_)
-        return;
+            return;
 
         closing_ = true;
-
         peer ().close_writer ();
     }
 
@@ -261,7 +260,7 @@ int WorldSocket::handle_input (ACE_HANDLE)
             if ((errno == EWOULDBLOCK) ||
                 (errno == EAGAIN))
             {
-                return Update (); // interesting line ,isnt it ?
+                return Update ();                           // interesting line ,isn't it ?
             }
 
             DEBUG_LOG ("WorldSocket::handle_input: Peer error closing connection errno = %s", ACE_OS::strerror (errno));
@@ -279,7 +278,7 @@ int WorldSocket::handle_input (ACE_HANDLE)
         case 1:
             return 1;
         default:
-            return Update (); // another interesting line ;)
+            return Update ();                               // another interesting line ;)
     }
 
     ACE_NOTREACHED(return -1);
@@ -460,20 +459,20 @@ int WorldSocket::handle_input_missing_data (void)
     {
         if (m_Header.space () > 0)
         {
-            //need to recieve the header
+            //need to receive the header
             const size_t to_header = (message_block.length () > m_Header.space () ? m_Header.space () : message_block.length ());
             m_Header.copy (message_block.rd_ptr (), to_header);
             message_block.rd_ptr (to_header);
 
             if (m_Header.space () > 0)
             {
-                //couldnt recieve the whole header this time
+                // Couldn't receive the whole header this time.
                 ACE_ASSERT (message_block.length () == 0);
                 errno = EWOULDBLOCK;
                 return -1;
             }
 
-          //we just recieved nice new header
+            // We just received nice new header
             if (handle_input_header () == -1)
             {
                 ACE_ASSERT ((errno != EWOULDBLOCK) && (errno != EAGAIN));
@@ -482,16 +481,16 @@ int WorldSocket::handle_input_missing_data (void)
         }
 
         // Its possible on some error situations that this happens
-        // for example on closing when epoll recieves more chunked data and stuff
+        // for example on closing when epoll receives more chunked data and stuff
         // hope this is not hack ,as proper m_RecvWPct is asserted around
         if (!m_RecvWPct)
         {
-            sLog.outError ("Forsing close on input m_RecvWPct = NULL");
+            sLog.outError ("Forcing close on input m_RecvWPct = NULL");
             errno = EINVAL;
             return -1;
         }
 
-        // We have full readed header, now check the data payload
+        // We have full read header, now check the data payload
         if (m_RecvPct.space () > 0)
         {
             //need more data in the payload
@@ -501,14 +500,14 @@ int WorldSocket::handle_input_missing_data (void)
 
             if (m_RecvPct.space () > 0)
             {
-                //couldnt recieve the whole data this time
+                // Couldn't receive the whole data this time.
                 ACE_ASSERT (message_block.length () == 0);
                 errno = EWOULDBLOCK;
                 return -1;
             }
         }
 
-        //just recieved fresh new payload
+        //just received fresh new payload
         if (handle_input_payload () == -1)
         {
             ACE_ASSERT ((errno != EWOULDBLOCK) && (errno != EAGAIN));
@@ -570,7 +569,7 @@ int WorldSocket::ProcessIncoming (WorldPacket* new_pct)
     if (closing_)
         return -1;
 
-    // dump recieved packet
+    // Dump received packet.
     if (sWorldLog.LogWorld ())
     {
         sWorldLog.Log ("CLIENT:\nSOCKET: %u\nLENGTH: %u\nOPCODE: %s (0x%.4X)\nDATA:\n",
@@ -635,7 +634,7 @@ int WorldSocket::ProcessIncoming (WorldPacket* new_pct)
 
 int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
 {
-    // NOTE: ATM the socket is singlethreaded, have this in mind ...
+    // NOTE: ATM the socket is singlethread, have this in mind ...
     uint8 digest[20];
     uint32 clientSeed;
     uint32 unk2;
@@ -712,7 +711,7 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
 
     Field* fields = result->Fetch ();
 
-    expansion = fields[8].GetUInt8 () && sWorld.getConfig (CONFIG_EXPANSION) > 0;
+    expansion = ((sWorld.getConfig(CONFIG_EXPANSION) > fields[8].GetUInt8()) ? fields[8].GetUInt8() : sWorld.getConfig(CONFIG_EXPANSION));
 
     N.SetHexStr ("894B645E89E1535BBDAD5B8B290650530801B18EBFBF5E8FAB3C82872A3E9BB7");
     g.SetDword (7);
@@ -734,8 +733,8 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
     x.SetBinary (sha1.GetDigest (), sha1.GetLength ());
     v = g.ModExp (x, N);
 
-    const char* sStr = s.AsHexStr (); //Must be freed by OPENSSL_free()
-    const char* vStr = v.AsHexStr (); //Must be freed by OPENSSL_free()
+    const char* sStr = s.AsHexStr ();                       //Must be freed by OPENSSL_free()
+    const char* vStr = v.AsHexStr ();                       //Must be freed by OPENSSL_free()
     const char* vold = fields[6].GetString ();
 
     DEBUG_LOG ("WorldSocket::HandleAuthSession: (s,v) check s: %s v_old: %s v_new: %s",
@@ -825,7 +824,7 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
 
         SendPacket (packet);
 
-        sLog.outBasic ("WorldSocket::HandleAuthSession: User tryes to login but his security level is not enough");
+        sLog.outBasic ("WorldSocket::HandleAuthSession: User tries to login but his security level is not enough");
         return -1;
     }
 
@@ -924,7 +923,7 @@ int WorldSocket::HandlePing (WorldPacket& recvPacket)
                 if (m_Session && m_Session->GetSecurity () == SEC_PLAYER)
                 {
                     sLog.outError  ("WorldSocket::HandlePing: Player kicked for "
-                                    "overspeeded pings adress = %s",
+                                    "over-speed pings address = %s",
                                     GetRemoteAddress ().c_str ());
 
                     return -1;
@@ -940,12 +939,12 @@ int WorldSocket::HandlePing (WorldPacket& recvPacket)
         ACE_GUARD_RETURN (LockType, Guard, m_SessionLock, -1);
 
         if (m_Session)
-        m_Session->SetLatency (latency);
+            m_Session->SetLatency (latency);
         else
         {
             sLog.outError ("WorldSocket::HandlePing: peer sent CMSG_PING, "
                             "but is not authenticated or got recently kicked,"
-                            " adress = %s",
+                            " address = %s",
                             GetRemoteAddress ().c_str ());
              return -1;
         }

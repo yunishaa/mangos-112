@@ -143,16 +143,12 @@ bool Guild::AddMember(uint64 plGuid, uint32 plRank)
     CharacterDatabase.PExecute("INSERT INTO guild_member (guildid,guid,rank,pnote,offnote) VALUES ('%u', '%u', '%u','%s','%s')",
         Id, GUID_LOPART(plGuid), newmember.RankId, dbPnote.c_str(), dbOFFnote.c_str());
 
+    // If player not in game data in data field will be loaded from guild tables, no need to update it!!
     if(pl)
     {
         pl->SetInGuild(Id);
         pl->SetRank(newmember.RankId);
         pl->SetGuildIdInvited(0);
-    }
-    else
-    {
-        Player::SetUInt32ValueInDB(PLAYER_GUILDID, Id, plGuid);
-        Player::SetUInt32ValueInDB(PLAYER_GUILDRANK, newmember.RankId, plGuid);
     }
     return true;
 }
@@ -363,28 +359,41 @@ bool Guild::FillPlayerData(uint64 guid, MemberSlot* memslot)
     }
     else
     {
-        if(!objmgr.GetPlayerNameByGUID(guid, plName))       // player doesn't exist
-            return false;
+        QueryResult *result = CharacterDatabase.PQuery("SELECT name,data,zone,class FROM characters WHERE guid = '%u'", GUID_LOPART(guid));
+        if(!result)
+            return false;                                   // player doesn't exist
 
-        plLevel = Player::GetUInt32ValueFromDB(UNIT_FIELD_LEVEL, guid);
-        if(plLevel<1||plLevel>255)                          // can be at broken `data` field
+        Field *fields = result->Fetch();
+
+        plName = fields[0].GetCppString();
+
+        Tokens data = StrSplit(fields[1].GetCppString(), " ");
+        plLevel = Player::GetUInt32ValueFromArray(data,UNIT_FIELD_LEVEL);
+
+        plZone = fields[2].GetUInt32();
+        plClass = fields[3].GetUInt32();
+        delete result;
+
+        if(plLevel<1||plLevel>STRONG_MAX_LEVEL)             // can be at broken `data` field
         {
             sLog.outError("Player (GUID: %u) has a broken data in field `characters`.`data`.",GUID_LOPART(guid));
             return false;
         }
-        plZone = Player::GetZoneIdFromDB(guid);
 
-        QueryResult *result = CharacterDatabase.PQuery("SELECT class FROM characters WHERE guid='%u'", GUID_LOPART(guid));
-        if(!result)
-            return false;
-        plClass = (*result)[0].GetUInt32();
+        if(!plZone)
+        {
+            sLog.outError("Player (GUID: %u) has broken zone-data",GUID_LOPART(guid));
+            //here it will also try the same, to get the zone from characters-table, but additional it tries to find
+            plZone = Player::GetZoneIdFromDB(guid);
+            //the zone through xy coords.. this is a bit redundant, but
+            //shouldn't be called often
+        }
+
         if(plClass<CLASS_WARRIOR||plClass>=MAX_CLASSES)     // can be at broken `class` field
         {
             sLog.outError("Player (GUID: %u) has a broken data in field `characters`.`class`.",GUID_LOPART(guid));
             return false;
         }
-
-        delete result;
     }
 
     memslot->name = plName;
@@ -421,68 +430,63 @@ void Guild::DelMember(uint64 guid, bool isDisbanding)
 {
     if(leaderGuid == guid && !isDisbanding)
     {
-        QueryResult *result = CharacterDatabase.PQuery("SELECT guid FROM guild_member WHERE guildid='%u' AND guid != '%u' ORDER BY rank ASC LIMIT 1", Id, GUID_LOPART(leaderGuid));
-        if( result )
+        MemberSlot* oldLeader = NULL;
+        MemberSlot* best = NULL;
+        uint64 newLeaderGUID = 0;
+        for(Guild::MemberList::iterator i = members.begin(); i != members.end(); ++i)
         {
-            uint64 newLeaderGUID;
-            Player *newLeader;
-            std::string newLeaderName, oldLeaderName;
-
-            newLeaderGUID = (*result)[0].GetUInt64();
-            delete result;
-
-            SetLeader(newLeaderGUID);
-
-            newLeader = objmgr.GetPlayer(newLeaderGUID);
-            if(newLeader)
+            if(i->first == GUID_LOPART(guid))
             {
-                newLeader->SetRank(GR_GUILDMASTER);
-                newLeaderName = newLeader->GetName();
-            }
-            else
-            {
-                Player::SetUInt32ValueInDB(PLAYER_GUILDRANK, GR_GUILDMASTER, newLeaderGUID);
-                objmgr.GetPlayerNameByGUID(newLeaderGUID, newLeaderName);
+                oldLeader = &(i->second);
+                continue;
             }
 
-            // when leader non-exist (at guild load with deleted leader only) not send broadcasts
-            if(objmgr.GetPlayerNameByGUID(guid, oldLeaderName))
+            if(!best || best->RankId > i->second.RankId)
             {
-                WorldPacket data(SMSG_GUILD_EVENT, (1+1+oldLeaderName.size()+1+newLeaderName.size()+1));
-                data << (uint8)GE_LEADER_CHANGED;
-                data << (uint8)2;
-                data << oldLeaderName;
-                data << newLeaderName;
-                BroadcastPacket(&data);
-
-                data.Initialize(SMSG_GUILD_EVENT, (1+1+oldLeaderName.size()+1));
-                data << (uint8)GE_LEFT;
-                data << (uint8)1;
-                data << oldLeaderName;
-                BroadcastPacket(&data);
+                best = &(i->second);
+                newLeaderGUID = i->first;
             }
-
-            sLog.outDebug( "WORLD: Sent (SMSG_GUILD_EVENT)" );
         }
-        else
+        if(!best)
         {
             Disband();
             return;
         }
+
+        SetLeader(newLeaderGUID);
+
+        // If player not online data in data field will be loaded from guild tabs no need to update it !!
+        if(Player *newLeader = objmgr.GetPlayer(newLeaderGUID))
+            newLeader->SetRank(GR_GUILDMASTER);
+
+        // when leader non-exist (at guild load with deleted leader only) not send broadcasts
+        if(oldLeader)
+        {
+            WorldPacket data(SMSG_GUILD_EVENT, (1+1+(oldLeader->name).size()+1+(best->name).size()+1));
+            data << (uint8)GE_LEADER_CHANGED;
+            data << (uint8)2;
+            data << oldLeader->name;
+            data << best->name;
+            BroadcastPacket(&data);
+
+            data.Initialize(SMSG_GUILD_EVENT, (1+1+(oldLeader->name).size()+1));
+            data << (uint8)GE_LEFT;
+            data << (uint8)1;
+            data << oldLeader->name;
+            BroadcastPacket(&data);
+        }
+
+        sLog.outDebug( "WORLD: Sent (SMSG_GUILD_EVENT)" );
     }
 
     members.erase(GUID_LOPART(guid));
 
     Player *player = objmgr.GetPlayer(guid);
+    // If player not online data in data field will be loaded from guild tabs no need to update it !!
     if(player)
     {
         player->SetInGuild(0);
         player->SetRank(0);
-    }
-    else
-    {
-        Player::SetUInt32ValueInDB(PLAYER_GUILDID, 0, guid);
-        Player::SetUInt32ValueInDB(PLAYER_GUILDRANK, GR_GUILDMASTER, guid);
     }
 
     CharacterDatabase.PExecute("DELETE FROM guild_member WHERE guid = '%u'", GUID_LOPART(guid));
@@ -495,10 +499,9 @@ void Guild::ChangeRank(uint64 guid, uint32 newRank)
         itr->second.RankId = newRank;
 
     Player *player = objmgr.GetPlayer(guid);
+    // If player not online data in data field will be loaded from guild tabs no need to update it !!
     if(player)
         player->SetRank(newRank);
-    else
-        Player::SetUInt32ValueInDB(PLAYER_GUILDRANK, newRank, guid);
 
     CharacterDatabase.PExecute( "UPDATE guild_member SET rank='%u' WHERE guid='%u'", newRank, GUID_LOPART(guid) );
 }
@@ -527,7 +530,7 @@ void Guild::SetOFFNOTE(uint64 guid,std::string offnote)
     CharacterDatabase.PExecute("UPDATE guild_member SET offnote = '%s' WHERE guid = '%u'", offnote.c_str(), itr->first);
 }
 
-void Guild::BroadcastToGuild(WorldSession *session, std::string msg, uint32 language)
+void Guild::BroadcastToGuild(WorldSession *session, const std::string& msg, uint32 language)
 {
     if (session && session->GetPlayer() && HasRankRight(session->GetPlayer()->GetRank(),GR_RIGHT_GCHATSPEAK))
     {
@@ -544,7 +547,7 @@ void Guild::BroadcastToGuild(WorldSession *session, std::string msg, uint32 lang
     }
 }
 
-void Guild::BroadcastToOfficers(WorldSession *session, std::string msg, uint32 language)
+void Guild::BroadcastToOfficers(WorldSession *session, const std::string& msg, uint32 language)
 {
     if (session && session->GetPlayer() && HasRankRight(session->GetPlayer()->GetRank(),GR_RIGHT_OFFCHATSPEAK))
     {
@@ -603,7 +606,7 @@ void Guild::CreateRank(std::string name_,uint32 rights)
     CharacterDatabase.PExecute( "INSERT INTO guild_rank (guildid,rid,rname,rights) VALUES ('%u', '%u', '%s', '%u')", Id, m_ranks.size(), name_.c_str(), rights );
 }
 
-void Guild::AddRank(std::string name_,uint32 rights, uint32 money)
+void Guild::AddRank(const std::string& name_,uint32 rights, uint32 money)
 {
     m_ranks.push_back(RankInfo(name_,rights,money));
 }

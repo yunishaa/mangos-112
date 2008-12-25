@@ -54,9 +54,18 @@ void BattleGroundEY::Update(time_t diff)
         {
             m_Events |= 0x01;
 
+            // setup here, only when at least one player has ported to the map
+            if(!SetupBattleGround())
+            {
+                EndNow();
+                return;
+            }
+
             SpawnBGObject(BG_EY_OBJECT_DOOR_A, RESPAWN_IMMEDIATELY);
             SpawnBGObject(BG_EY_OBJECT_DOOR_H, RESPAWN_IMMEDIATELY);
 
+//            SpawnBGCreature(EY_SPIRIT_MAIN_ALLIANCE, RESPAWN_IMMEDIATELY);
+//            SpawnBGCreature(EY_SPIRIT_MAIN_HORDE, RESPAWN_IMMEDIATELY);
             for(uint32 i = BG_EY_OBJECT_A_BANNER_FEL_REALVER_CENTER; i < BG_EY_OBJECT_MAX; ++i)
                 SpawnBGObject(i, RESPAWN_ONE_DAY);
 
@@ -173,7 +182,7 @@ void BattleGroundEY::CheckSomeoneJoinedPoint()
                     ++j;
                     continue;
                 }
-                if (plr->isAlive() && plr->IsWithinDistInMap(obj, BG_EY_POINT_RADIUS))
+                if (plr->isAllowUseBattleGroundObject() && plr->IsWithinDistInMap(obj, BG_EY_POINT_RADIUS))
                 {
                     //player joined point!
                     //show progress bar
@@ -216,7 +225,7 @@ void BattleGroundEY::CheckSomeoneLeftPoint()
                     ++j;
                     continue;
                 }
-                if (!plr->isAlive() || !plr->IsWithinDistInMap(obj, BG_EY_POINT_RADIUS))
+                if (!plr->isAllowUseBattleGroundObject() || !plr->IsWithinDistInMap(obj, BG_EY_POINT_RADIUS))
                     //move player out of point (add him to players that are out of points
                 {
                     m_PlayersNearPoint[EY_POINTS_MAX].push_back(m_PlayersNearPoint[i][j]);
@@ -572,7 +581,17 @@ void BattleGroundEY::HandleKillPlayer(Player *player, Player *killer)
 
 void BattleGroundEY::EventPlayerDroppedFlag(Player *Source)
 {
-    // Drop allowed in any BG state
+    if(GetStatus() != STATUS_IN_PROGRESS)
+    {
+        // if not running, do not cast things at the dropper player, neither send unnecessary messages
+        // just take off the aura
+        if(IsFlagPickedup() && GetFlagPickerGUID() == Source->GetGUID())
+        {
+            SetFlagPicker(0);
+            Source->RemoveAurasDueToSpell(BG_EY_NETHERSTORM_FLAG_SPELL);
+        }
+        return;
+    }
 
     if(!IsFlagPickedup())
         return;
@@ -743,6 +762,8 @@ void BattleGroundEY::EventTeamCapturedPoint(Player *Source, uint32 Point)
     if(!sg || !AddSpiritGuide(Point, sg->x, sg->y, sg->z, 3.124139f, Team))
         sLog.outError("BatteGroundEY: Failed to spawn spirit guide! point: %u, team: %u, graveyard_id: %u",
             Point, Team, m_CapturingPointTypes[Point].GraveYardId);
+
+//    SpawnBGCreature(Point,RESPAWN_IMMEDIATELY);
 
     UpdatePointsIcons(Team, Point);
     UpdatePointsCount(Team);

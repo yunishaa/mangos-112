@@ -670,8 +670,8 @@ void AreaAura::Update(uint32 diff)
                     TypeContainerVisitor<MaNGOS::UnitListSearcher<MaNGOS::AnyFriendlyUnitInObjectRangeCheck>, WorldTypeMapContainer > world_unit_searcher(searcher);
                     TypeContainerVisitor<MaNGOS::UnitListSearcher<MaNGOS::AnyFriendlyUnitInObjectRangeCheck>, GridTypeMapContainer >  grid_unit_searcher(searcher);
                     CellLock<GridReadGuard> cell_lock(cell, p);
-                    cell_lock->Visit(cell_lock, world_unit_searcher, *MapManager::Instance().GetMap(caster->GetMapId(), caster));
-                    cell_lock->Visit(cell_lock, grid_unit_searcher, *MapManager::Instance().GetMap(caster->GetMapId(), caster));
+                    cell_lock->Visit(cell_lock, world_unit_searcher, *caster->GetMap());
+                    cell_lock->Visit(cell_lock, grid_unit_searcher, *caster->GetMap());
                     break;
                 }
                 case AREA_AURA_ENEMY:
@@ -686,8 +686,8 @@ void AreaAura::Update(uint32 diff)
                     TypeContainerVisitor<MaNGOS::UnitListSearcher<MaNGOS::AnyAoETargetUnitInObjectRangeCheck>, WorldTypeMapContainer > world_unit_searcher(searcher);
                     TypeContainerVisitor<MaNGOS::UnitListSearcher<MaNGOS::AnyAoETargetUnitInObjectRangeCheck>, GridTypeMapContainer >  grid_unit_searcher(searcher);
                     CellLock<GridReadGuard> cell_lock(cell, p);
-                    cell_lock->Visit(cell_lock, world_unit_searcher, *MapManager::Instance().GetMap(caster->GetMapId(), caster));
-                    cell_lock->Visit(cell_lock, grid_unit_searcher, *MapManager::Instance().GetMap(caster->GetMapId(), caster));
+                    cell_lock->Visit(cell_lock, world_unit_searcher, *caster->GetMap());
+                    cell_lock->Visit(cell_lock, grid_unit_searcher, *caster->GetMap());
                     break;
                 }
                 case AREA_AURA_OWNER:
@@ -1974,7 +1974,7 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
             ( GetSpellProto()->EffectApplyAuraName[0]==1 || GetSpellProto()->EffectApplyAuraName[0]==128 ) ) )
         {
             // spells with SpellEffect=72 and aura=4: 6196, 6197, 21171, 21425
-            m_target->SetUInt64Value(PLAYER_FARSIGHT, 0);
+            ((Player*)m_target)->SetFarSight(NULL);
             WorldPacket data(SMSG_CLEAR_FAR_SIGHT_IMMEDIATE, 0);
             ((Player*)m_target)->GetSession()->SendPacket(&data);
             return;
@@ -2009,6 +2009,17 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
                 caster->CastSpell(m_target,finalSpelId,true,NULL,this);
             return;
         }
+
+        // Waiting to Resurrect
+        if(GetId()==2584)
+        {
+            // Waiting to resurrect spell cancel, we must remove player from resurrect queue
+            if(m_target->GetTypeId() == TYPEID_PLAYER)
+                if(BattleGround *bg = ((Player*)m_target)->GetBattleGround())
+                    bg->RemovePlayerFromResurrectQueue(m_target->GetGUID());
+            return;
+        }
+
         // Dark Fiend
         if(GetId()==45934)
         {
@@ -2129,13 +2140,14 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
 
                     // have a look if there is still some other Lifebloom dummy aura
                     Unit::AuraList auras = m_target->GetAurasByType(SPELL_AURA_DUMMY);
-                    for(Unit::AuraList::iterator itr = auras.begin(); itr!=auras.end(); itr++)
+                    for(Unit::AuraList::iterator itr = auras.begin(); itr!=auras.end(); ++itr)
                         if((*itr)->GetSpellProto()->SpellFamilyName == SPELLFAMILY_DRUID &&
                             (*itr)->GetSpellProto()->SpellFamilyFlags & 0x1000000000LL)
                             return;
 
                     // final heal
-                    m_target->CastCustomSpell(m_target,33778,&m_modifier.m_amount,NULL,NULL,true,NULL,this,GetCasterGUID());
+                    if(m_target->IsInWorld())
+                        m_target->CastCustomSpell(m_target,33778,&m_modifier.m_amount,NULL,NULL,true,NULL,this,GetCasterGUID());
                 }
                 return;
             }
@@ -2566,7 +2578,8 @@ void Aura::HandleAuraModShapeshift(bool apply, bool Real)
     }
     else
     {
-        m_target->SetDisplayId(m_target->GetNativeDisplayId());
+        if(modelid > 0)
+            m_target->SetDisplayId(m_target->GetNativeDisplayId());
         m_target->SetByteValue(UNIT_FIELD_BYTES_2, 3, FORM_NONE);
         if(m_target->getClass() == CLASS_DRUID)
             m_target->setPowerType(POWER_MANA);
@@ -2831,7 +2844,7 @@ void Aura::HandleBindSight(bool apply, bool Real)
     if(!caster || caster->GetTypeId() != TYPEID_PLAYER)
         return;
 
-    caster->SetUInt64Value(PLAYER_FARSIGHT,apply ? m_target->GetGUID() : 0);
+    ((Player*)caster)->SetFarSight(apply ? m_target->GetGUID() : NULL);
 }
 
 void Aura::HandleFarSight(bool apply, bool Real)
@@ -2840,7 +2853,7 @@ void Aura::HandleFarSight(bool apply, bool Real)
     if(!caster || caster->GetTypeId() != TYPEID_PLAYER)
         return;
 
-    caster->SetUInt64Value(PLAYER_FARSIGHT,apply ? m_modifier.m_miscvalue : 0);
+    ((Player*)caster)->SetFarSight(apply ? m_target->GetGUID() : NULL);
 }
 
 void Aura::HandleAuraTrackCreatures(bool apply, bool Real)
@@ -2946,7 +2959,7 @@ void Aura::HandleModPossess(bool apply, bool Real)
         }
     }
     if(caster->GetTypeId() == TYPEID_PLAYER)
-        caster->SetUInt64Value(PLAYER_FARSIGHT,apply ? m_target->GetGUID() : 0);
+        ((Player*)caster)->SetFarSight(apply ? m_target->GetGUID() : NULL);
 }
 
 void Aura::HandleModPossessPet(bool apply, bool Real)
@@ -3648,7 +3661,7 @@ void Aura::HandleAuraModIncreaseFlightSpeed(bool apply, bool Real)
             m_target->SetUInt32Value(UNIT_FIELD_MOUNTDISPLAYID,16314);
     }
 
-    m_target->UpdateSpeed(MOVE_FLY, true);*/
+    m_target->UpdateSpeed(MOVE_FLIGHT, true);*/
 }
 
 void Aura::HandleAuraModIncreaseSwimSpeed(bool /*apply*/, bool Real)
@@ -3668,7 +3681,7 @@ void Aura::HandleAuraModDecreaseSpeed(bool /*apply*/, bool Real)
 
     m_target->UpdateSpeed(MOVE_RUN, true);
     m_target->UpdateSpeed(MOVE_SWIM, true);
-    m_target->UpdateSpeed(MOVE_FLY, true);
+    m_target->UpdateSpeed(MOVE_FLIGHT, true);
 }
 
 void Aura::HandleAuraModUseNormalSpeed(bool /*apply*/, bool Real)
@@ -3679,7 +3692,7 @@ void Aura::HandleAuraModUseNormalSpeed(bool /*apply*/, bool Real)
 
     m_target->UpdateSpeed(MOVE_RUN,  true);
     m_target->UpdateSpeed(MOVE_SWIM, true);
-    m_target->UpdateSpeed(MOVE_FLY,  true);
+    m_target->UpdateSpeed(MOVE_FLIGHT,  true);
 }
 
 /*********************************************************/
@@ -4668,21 +4681,24 @@ void Aura::HandleAuraModIncreaseEnergy(bool apply, bool Real)
     if(int32(powerType) != m_modifier.m_miscvalue)
         return;
 
-    m_target->HandleStatModifier(UnitMods(UNIT_MOD_POWER_START + powerType), TOTAL_VALUE, float(m_modifier.m_amount), apply);
+    UnitMods unitMod = UnitMods(UNIT_MOD_POWER_START + powerType);
+
+    m_target->HandleStatModifier(unitMod, TOTAL_VALUE, float(m_modifier.m_amount), apply);
 }
 
-void Aura::HandleAuraModIncreaseEnergyPercent(bool apply, bool Real)
+void Aura::HandleAuraModIncreaseEnergyPercent(bool apply, bool /*Real*/)
 {
     Powers powerType = m_target->getPowerType();
     if(int32(powerType) != m_modifier.m_miscvalue)
         return;
 
-    m_target->HandleStatModifier(UnitMods(UNIT_MOD_POWER_START + powerType), TOTAL_PCT, float(m_modifier.m_amount), apply);
+    UnitMods unitMod = UnitMods(UNIT_MOD_POWER_START + powerType);
+
+    m_target->HandleStatModifier(unitMod, TOTAL_PCT, float(m_modifier.m_amount), apply);
 }
 
-void Aura::HandleAuraModIncreaseHealthPercent(bool apply, bool Real)
+void Aura::HandleAuraModIncreaseHealthPercent(bool apply, bool /*Real*/)
 {
-    //m_target->ApplyMaxHealthPercentMod(m_modifier.m_amount,apply);
     m_target->HandleStatModifier(UNIT_MOD_HEALTH, TOTAL_PCT, float(m_modifier.m_amount), apply);
 }
 
@@ -5601,7 +5617,7 @@ void Aura::PeriodicTick()
 
             // DO NOT ACCESS MEMBERS OF THE AURA FROM NOW ON (DealDamage can delete aura)
 
-            pCaster->ProcDamageAndSpell(target, PROC_FLAG_HIT_SPELL, PROC_FLAG_TAKE_DAMAGE, (pdamage <= absorb+resist) ? 0 : (pdamage-absorb-resist), GetSpellSchoolMask(spellProto), spellProto);
+            pCaster->ProcDamageAndSpell(target, PROC_FLAG_NONE, PROC_FLAG_TAKE_DAMAGE, (pdamage <= absorb+resist) ? 0 : (pdamage-absorb-resist), GetSpellSchoolMask(spellProto), spellProto);
             break;
         }
         case SPELL_AURA_PERIODIC_LEECH:
@@ -5714,7 +5730,7 @@ void Aura::PeriodicTick()
 
             // DO NOT ACCESS MEMBERS OF THE AURA FROM NOW ON (DealDamage can delete aura)
 
-            pCaster->ProcDamageAndSpell(target, PROC_FLAG_HIT_SPELL, PROC_FLAG_TAKE_DAMAGE, new_damage, GetSpellSchoolMask(spellProto), spellProto);
+            pCaster->ProcDamageAndSpell(target, PROC_FLAG_HEALED, PROC_FLAG_TAKE_DAMAGE, new_damage, GetSpellSchoolMask(spellProto), spellProto);
             if (!target->isAlive() && pCaster->IsNonMeleeSpellCasted(false))
             {
                 for (uint32 i = CURRENT_FIRST_NON_MELEE_SPELL; i < CURRENT_MAX_SPELL; i++)
@@ -5817,7 +5833,7 @@ void Aura::PeriodicTick()
 
             // ignore item heals
             if(procSpell && !haveCastItem)
-                pCaster->ProcDamageAndSpell(target,PROC_FLAG_HEAL, PROC_FLAG_HEALED, pdamage, SPELL_SCHOOL_MASK_NONE, spellProto);
+                pCaster->ProcDamageAndSpell(target,PROC_FLAG_NONE, PROC_FLAG_HEALED, pdamage, SPELL_SCHOOL_MASK_NONE, spellProto);
             break;
         }
         case SPELL_AURA_PERIODIC_MANA_LEECH:
